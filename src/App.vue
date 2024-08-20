@@ -2,27 +2,21 @@
 import headerPart from '@/components/headerPart.vue'
 import mainPart from '@/components/mainPart.vue';
 import footerPart from '@/components/footerPart.vue';
-
-// import editor from '@/assets/svgs/menuSvg/editor.svg';
-import editor from "./assets/svgs/menuSvg/editor.svg";
 </script>
 
 <template>
-  <div class="h-[100vh]  flex flex-col">
-    <el-header>
+  <div class="h-[100vh]  flex flex-col bg-[url('@/assets/backgroundImages/bg-1.png')] bg-cover bg-center text-[#fff] ">
+    <div>
       <headerPart></headerPart>
-    </el-header>
-    <el-main>
-   <div class="">
-    <!-- <editor class="text-[#b81616]"/> -->
-     <img class="w-[30px] h-[30px] text-[#982020]" :src="editor" alt="" srcset="">
-   </div>
+    </div>
+    <div>
       <mainPart></mainPart>
-    </el-main>
-    <el-footer>
+    </div>
+    <div>
       <footerPart></footerPart>
-    </el-footer>
+    </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>
