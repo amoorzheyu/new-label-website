@@ -1,4 +1,15 @@
 <script setup>
+import { storeToRefs } from 'pinia';
+
+// pinia->useThemeSwapStore
+import { useThemeSwapStore } from '@/stores/themeSwap'
+let { nowThemeIndex } = storeToRefs(useThemeSwapStore())
+const { changeTheme } = useThemeSwapStore()
+
+
+const swapThemeEvent = () => {
+  changeTheme(nowThemeIndex.value)
+}
 
 </script>
 <template>
@@ -10,11 +21,16 @@
         </path>
       </svg>
     </div>
-    <div class="button-class">
-      <svg class="svg-class" data-v-81d5a9b4="" viewBox="0 0 24 24" width="1em" height="1em">
+    <div class="button-class" @click="swapThemeEvent">
+      <svg v-show="nowThemeIndex == 0" class="svg-class" data-v-81d5a9b4="" viewBox="0 0 24 24" width="1em"
+        height="1em">
         <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
           d="M12 18a6 6 0 1 0 0-12a6 6 0 0 0 0 12m10-6h1M12 2V1m0 22v-1m8-2l-1-1m1-15l-1 1M4 20l1-1M4 4l1 1m-4 7h1">
         </path>
+      </svg>
+      <svg v-show="nowThemeIndex == 1" class="svg-class" data-v-81d5a9b4="" viewBox="0 0 24 24" width="1em" height="1em" style="">
+        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+          d="M3 11.507a9.493 9.493 0 0 0 18 4.219c-8.507 0-12.726-4.22-12.726-12.726A9.494 9.494 0 0 0 3 11.507"></path>
       </svg>
     </div>
     <div class="button-class">
@@ -31,10 +47,10 @@
 </template>
 <style scoped>
 .button-class {
-  @apply w-[50px] h-[50px] rounded-full text-[#dcdfda] bg-[#dfdede] flex justify-center items-center bg-opacity-30 mx-1 backdrop-blur;
-  @apply hover:scale-110 hover:bg-[#fff] hover:text-[#e8e6e6] hover:bg-opacity-30 transition-all duration-[200ms] ease-in-out;
+  @apply w-[50px] h-[50px] rounded-full text-[var(--ground-glass-icon-color)] flex justify-center items-center bg-[var(--ground-glass-background-color)] mx-[4px] backdrop-blur;
+  @apply hover:scale-110 hover:bg-[var(--ground-glass-background-hover-color)] transition-all duration-[200ms] ease-in-out;
   border: 1px solid #fff3;
-  box-shadow: 0px 0px 2px 0px #fffc;
+  box-shadow: 0px 0px 1px 0px #fffc;
 }
 
 .button-class:hover .svg-class {

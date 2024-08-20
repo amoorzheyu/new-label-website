@@ -1,7 +1,19 @@
 <script setup>
+import { onBeforeMount } from 'vue';
+import { storeToRefs } from 'pinia';
 import headerPart from '@/components/headerPart.vue'
 import mainPart from '@/components/mainPart.vue';
 import footerPart from '@/components/footerPart.vue';
+
+// pinia->useThemeSwapStore
+import { useThemeSwapStore } from '@/stores/themeSwap'
+const {initTheme} = useThemeSwapStore()
+
+
+//生命周期渲染之前
+onBeforeMount(()=>{
+  initTheme()
+})
 </script>
 
 <template>

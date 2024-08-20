@@ -1,0 +1,16 @@
+.light-theme{
+    /* 毛玻璃背景色 */
+    --ground-glass-background-color:#dfdede4d;
+    --ground-glass-background-hover-color:#dfdede66;
+    --ground-glass-icon-color:#dcdfda;
+    --date-text-color:#ffffffb3;
+    --ground-glass-boardr-color:#ffffff1a;
+}
+
+.dark-theme{
+    --ground-glass-background-color:#00000030;
+    --ground-glass-background-hover-color:#00000033;
+    --ground-glass-icon-color:#babfb8;
+    --date-text-color:#000000b3;
+    --ground-glass-boardr-color:#00000020;
+}

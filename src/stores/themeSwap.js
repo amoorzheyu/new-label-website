@@ -29,10 +29,29 @@ export const useThemeSwapStore = defineStore('themeSwap', () => {
         return themeList.value[nowThemeIndex.value].className
     })
 
+    //点击切换主题
+    function changeTheme(index) {
+        if(index==0) index = 1
+        else index = 0
+        nowThemeIndex.value = index
+        document.body.className = nowThemeClassName.value
+    }
+
+    //初始化主题
+    function initTheme() {
+        document.body.className = nowThemeClassName.value
+    }
 
     return {
         themeList,
         nowThemeIndex,
-        nowThemeClassName
+        nowThemeClassName,
+        initTheme,
+        changeTheme
+    }
+},{
+    persist: {
+        storage: localStorage,
+        paths: ['nowThemeIndex']
     }
 })

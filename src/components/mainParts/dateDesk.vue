@@ -71,7 +71,7 @@ onMounted(() => {
 
 </script>
 <template>
-    <div class=" opacity-70 font-bold text-[#fff] flex justify-center">
+    <div class="font-bold text-[var(--date-text-color)] flex justify-center">
         <div class="w-[700px] flex flex-col items-end">
             <div class="text-[128px] font-bold">
                 {{ timeStr }}
