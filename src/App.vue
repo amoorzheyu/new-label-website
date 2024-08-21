@@ -14,7 +14,7 @@ const { initTheme } = useThemeSwapStore()
 //pinia->useBackgroundImageStore
 import { useBackgroundImageStore } from '@/stores/backgroundImage'
 let {currentImageUrl,currentImageDom} = storeToRefs(useBackgroundImageStore())
-const { initBackgroundImage } = useBackgroundImageStore()
+const { initBackgroundImage} = useBackgroundImageStore()
 
 //生命周期渲染之前
 onBeforeMount(() => {
@@ -31,7 +31,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="currentImageDom" class="h-[100vh]  flex flex-col bg-cover bg-center text-[#fff] bg-[url('@/assets/backgroundImages/bg-2.png')]">
+  <div ref="currentImageDom" class="h-[100vh]  flex flex-col bg-cover bg-center text-[#fff]">
     <div>
       <headerPart></headerPart>
     </div>

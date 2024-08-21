@@ -25,6 +25,23 @@ export const useBackgroundImageStore = defineStore('backgroundImage', () => {
     //当前使用预设图片下标
     let currentPresetImageIndex = ref(0)
 
+    //自定义图片点击
+    const customImageClick = () => {
+        currentImageUrl.value = customImageUrl.value
+        useCustomImage.value = true
+        setBackgroundImage(currentImageUrl.value)
+    }
+
+    //预设图片点击
+    const presentImageClick=(index)=>{
+        console.log(index)
+        currentPresetImageIndex.value = index
+        console.log(presetImageUrls.value[index])
+        currentImageUrl.value=presetImageUrls.value[index]
+        useCustomImage.value = false
+        setBackgroundImage(currentImageUrl.value)
+    }
+
     //设置背景图片
     const setBackgroundImage = (url) => {
         currentImageUrl.value = url
@@ -56,7 +73,7 @@ export const useBackgroundImageStore = defineStore('backgroundImage', () => {
 
     }
 
-    return { currentImageDom,currentImageUrl, currentPresetImageIndex,presetImageUrls,customImageUrl,initBackgroundImage }
+    return { currentImageDom,currentImageUrl,customImageClick,presentImageClick, currentPresetImageIndex,useCustomImage,presetImageUrls,customImageUrl,initBackgroundImage }
 },{
     persist: {
         enabled: true
