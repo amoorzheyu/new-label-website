@@ -3,8 +3,7 @@ import { ref } from 'vue'
 
 import { storeToRefs } from 'pinia';
 
-import { Picture as IconPicture } from '@element-plus/icons-vue'
-
+import { ElMessage } from 'element-plus'
 
 
 // pinia->useIsShowDialogsStore
@@ -19,15 +18,36 @@ let { isDarkMode, isShowTopMenu, isShowDatePart, isShowNavigationBar, isAdaptive
 //pinia->useBackgroundImageStore
 import { useBackgroundImageStore } from '@/stores/backgroundImage'
 let { presetImageUrls, customImageUrl, useCustomImage, currentPresetImageIndex } = storeToRefs(useBackgroundImageStore())
-const {customImageClick,presentImageClick} = useBackgroundImageStore()
+const { customImageClick, presentImageClick } = useBackgroundImageStore()
 //自定义图片点击事件
 const customImageClickEvent = () => {
     customImageClick();
+
+    ElMessage({
+        message: '壁纸设置成功',
+        type: 'success',
+        duration:1000,
+        plain: true
+    })
+
+    ElMessage({
+        message: '高清图片来源推荐彼岸壁纸网',
+        type: 'info',
+        duration:3000,
+        plain: true
+    })
 }
 
 //预设图片点击事件
 const presentImageClickEvent = (index) => {
     presentImageClick(index);
+
+    ElMessage({
+        message: '壁纸设置成功',
+        type: 'success',
+        duration:1000,
+        plain: true
+    })
 }
 
 </script>
@@ -125,7 +145,7 @@ const presentImageClickEvent = (index) => {
                                         <div class="text-[20px] mb-3">预设壁纸</div>
                                         <div>
                                             <ul class="flex justify-between">
-                                                <li v-for="(item,index) in presetImageUrls"
+                                                <li v-for="(item, index) in presetImageUrls"
                                                     class="w-[290px] h-[150px] relative">
                                                     <div @click="presentImageClickEvent(index)"
                                                         class="w-[100%] h-[100%] rounded-xl el-image-box-class overflow-hidden ">
@@ -138,10 +158,10 @@ const presentImageClickEvent = (index) => {
                                                                 </div>
                                                             </template>
                                                         </el-image>
-                                                        <div v-show="(!useCustomImage)&&(currentPresetImageIndex!=index)"
+                                                        <div v-show="(!useCustomImage) && (currentPresetImageIndex != index)"
                                                             class="hidden absolute  bg-[#0006] w-[100%] h-[100%] top-0 left-0 rounded-xl el-image-moudle-class">
                                                         </div>
-                                                        <div v-show="(!useCustomImage)&&(currentPresetImageIndex==index)"
+                                                        <div v-show="(!useCustomImage) && (currentPresetImageIndex == index)"
                                                             class="absolute w-[100%] h-[100%] top-0 left-0 rounded-xl bg-[#0006] text-[#fff] flex justify-center items-center">
                                                             <svg viewBox="0 0 24 24" width="1em" height="1em"
                                                                 class="w-[30%] h-[30%] opacity-70">
@@ -171,6 +191,7 @@ const presentImageClickEvent = (index) => {
     </div>
 </template>
 <style scoped>
+
 .el-image-box-class:hover .el-image-moudle-class {
     display: block;
 }
