@@ -10,11 +10,16 @@ export const useLayoutElementStore = defineStore('layoutElement', () => {
     let isShowDatePart = ref(true) //是否显示日期
     let isShowSearch = ref(true)// 是否显示搜索框
     let isShowNavigationBar = ref(true)// 是否显示导航栏
+    let isAdaptiveNavigationWidth = ref(false)// 是否自适应导航栏宽度
+    let isSwapTobuttomNavigation = ref(false)// 是否切换为底部导航栏
+
 
     return {
         isShowTopMenu,
         isShowDatePart,
         isShowSearch,
-        isShowNavigationBar
+        isShowNavigationBar,
+        isAdaptiveNavigationWidth,
+        isSwapTobuttomNavigation
     }
 })

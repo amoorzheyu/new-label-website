@@ -6,14 +6,24 @@ import { useThemeSwapStore } from '@/stores/themeSwap'
 let { nowThemeIndex } = storeToRefs(useThemeSwapStore())
 const { changeTheme } = useThemeSwapStore()
 
+// pinia->useIsShowDialogsStore
+import { useIsShowDialogsStore } from '@/stores/isShowDialogs'
+let { isShowSettingDialog } = storeToRefs(useIsShowDialogsStore())
 
+
+// pinia-> useLayoutElementStore
+import { useLayoutElementStore } from '@/stores/layoutElement'
+let { isShowTopMenu } = storeToRefs(useLayoutElementStore())
+
+//切换主题事件
 const swapThemeEvent = () => {
   changeTheme(nowThemeIndex.value)
 }
 
 </script>
 <template>
-  <div class="flex justify-end mr-2 mt-2">
+  <div v-show="!isShowTopMenu" class="h-[58px]"></div>
+  <div class="flex justify-end mr-2 mt-2" v-show="isShowTopMenu">
     <div class="button-class">
       <svg class="svg-class" data-v-81d5a9b4="" viewBox="0 0 24 24" width="1em" height="1em">
         <path fill="none" stroke="currentColor" stroke-width="1.5"
@@ -33,7 +43,7 @@ const swapThemeEvent = () => {
           d="M3 11.507a9.493 9.493 0 0 0 18 4.219c-8.507 0-12.726-4.22-12.726-12.726A9.494 9.494 0 0 0 3 11.507"></path>
       </svg>
     </div>
-    <div class="button-class">
+    <div class="button-class" @click="isShowSettingDialog = true">
       <svg class="svg-class" data-v-81d5a9b4="" viewBox="0 0 24 24" width="1em" height="1em">
         <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
           <path d="M12 15a3 3 0 1 0 0-6a3 3 0 0 0 0 6"></path>

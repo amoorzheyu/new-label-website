@@ -1,6 +1,11 @@
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import calendar from 'js-calendar-converter'
+
+// pinia-> useLayoutElementStore
+import { useLayoutElementStore } from '@/stores/layoutElement'
+let { isShowDatePart} = storeToRefs(useLayoutElementStore())
 
 //年月日星期，时分秒
 let dateDesk = reactive({
@@ -71,7 +76,9 @@ onMounted(() => {
 
 </script>
 <template>
-    <div class="font-bold text-[var(--date-text-color)] flex justify-center">
+    <div v-show="!isShowDatePart" class="h-[222px]">
+    </div>
+    <div v-show="isShowDatePart" class="font-bold text-[var(--date-text-color)] flex justify-center">
         <div class="w-[700px] flex flex-col items-end">
             <div class="text-[128px] font-bold">
                 {{ timeStr }}

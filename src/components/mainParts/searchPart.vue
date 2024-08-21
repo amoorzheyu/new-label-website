@@ -1,8 +1,13 @@
 <script setup>
+import { storeToRefs } from 'pinia'
+// pinia-> useLayoutElementStore
+import { useLayoutElementStore } from '@/stores/layoutElement'
+let { isShowSearch } = storeToRefs(useLayoutElementStore())
 
 </script>
 <template>
-    <div class="flex justify-center">
+    <div v-show="!isShowSearch " class="h-[80px]" ></div>
+    <div v-show="isShowSearch" class="flex justify-center">
         <div class="w-[1000px] h-[80px] flex justify-center relative">
             <div
                 class="button-class absolute z-10 left-[65px] top-[16px] flex items-center justify-center bg-[var(--ground-glass-background-color)] backdrop-blur-2xl  rounded-[32px] w-[130px] h-[50px]">

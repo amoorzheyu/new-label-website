@@ -1,6 +1,7 @@
 <script setup>
 import dateDesk from "@/components/mainParts/dateDesk.vue";
 import searchPart from "@/components/mainParts/searchPart.vue";
+
 </script>
 <template>
   <div class="">
