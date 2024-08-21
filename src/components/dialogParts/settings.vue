@@ -102,7 +102,7 @@ const presentImageClickEvent = (index) => {
                                                     </div>
                                                 </template>
                                             </el-image>
-                                            <div
+                                            <div v-show="!useCustomImage"
                                                 class="hidden   bg-[#0006] w-[100%] h-[100%] top-0 left-0 rounded-xl el-image-moudle-class">
                                             </div>
                                             <div v-show="useCustomImage"
@@ -138,10 +138,10 @@ const presentImageClickEvent = (index) => {
                                                                 </div>
                                                             </template>
                                                         </el-image>
-                                                        <div
+                                                        <div v-show="(!useCustomImage)&&(currentPresetImageIndex!=index)"
                                                             class="hidden absolute  bg-[#0006] w-[100%] h-[100%] top-0 left-0 rounded-xl el-image-moudle-class">
                                                         </div>
-                                                        <div v-show="currentPresetImageIndex==index"
+                                                        <div v-show="(!useCustomImage)&&(currentPresetImageIndex==index)"
                                                             class="absolute w-[100%] h-[100%] top-0 left-0 rounded-xl bg-[#0006] text-[#fff] flex justify-center items-center">
                                                             <svg viewBox="0 0 24 24" width="1em" height="1em"
                                                                 class="w-[30%] h-[30%] opacity-70">
