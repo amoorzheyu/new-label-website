@@ -5,7 +5,7 @@ import calendar from 'js-calendar-converter'
 
 // pinia-> useLayoutElementStore
 import { useLayoutElementStore } from '@/stores/layoutElement'
-let { isShowDatePart} = storeToRefs(useLayoutElementStore())
+let { isShowDatePart } = storeToRefs(useLayoutElementStore())
 
 //年月日星期，时分秒
 let dateDesk = reactive({
@@ -76,14 +76,16 @@ onMounted(() => {
 
 </script>
 <template>
-    <div v-show="!isShowDatePart" class="h-[222px]">
-    </div>
-    <div v-show="isShowDatePart" class="font-bold text-[var(--date-text-color)] flex justify-center">
-        <div class="w-[700px] flex flex-col items-end">
-            <div class="text-[128px] font-bold">
-                {{ timeStr }}
+    <div class="z-40 relative">
+        <div v-show="!isShowDatePart" class="h-[222px]">
+        </div>
+        <div v-show="isShowDatePart" class="font-bold text-[var(--date-text-color)] flex justify-center">
+            <div class="w-[700px] flex flex-col items-end">
+                <div class="text-[128px] font-bold">
+                    {{ timeStr }}
+                </div>
+                <div class="text-[20px] font-bold">{{ dateStr }}</div>
             </div>
-            <div class="text-[20px] font-bold">{{ dateStr }}</div>
         </div>
     </div>
 </template>
