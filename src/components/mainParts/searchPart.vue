@@ -22,7 +22,7 @@ const searchBlurEvent = () => {
 </script>
 <template>
     <div>
-        <div v-show="isShowSearchMask" class="w-[100vw] h-[100vh] fixed bg-[#fff3] left-0 top-[0px]" style="backdrop-filter:blur(30px)"></div>
+        <div v-show="isShowSearchMask" class="w-[100vw] h-[100vh] fixed bg-[#ffffff01] left-0 top-[0px]" style="backdrop-filter:blur(30px)"></div>
         <div v-show="!isShowSearch" class="h-[80px]"></div>
         <div v-show="isShowSearch" class="flex justify-center">
             <div class="w-[1000px] h-[80px] flex justify-center relative">

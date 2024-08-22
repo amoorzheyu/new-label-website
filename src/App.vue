@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeMount,onMounted } from 'vue';
+import { onBeforeMount, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import headerPart from '@/components/headerPart.vue'
 import mainPart from '@/components/mainPart.vue';
@@ -13,13 +13,13 @@ const { initTheme } = useThemeSwapStore()
 
 //pinia->useBackgroundImageStore
 import { useBackgroundImageStore } from '@/stores/backgroundImage'
-let {currentImageUrl,currentImageDom} = storeToRefs(useBackgroundImageStore())
-const { initBackgroundImage} = useBackgroundImageStore()
+let { currentImageUrl, currentImageDom } = storeToRefs(useBackgroundImageStore())
+const { initBackgroundImage } = useBackgroundImageStore()
 
 //生命周期渲染之前
 onBeforeMount(() => {
   initTheme()
-  
+
 })
 
 //生命周期渲染之后
@@ -31,7 +31,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="currentImageDom" class="h-[100vh]  flex flex-col bg-cover bg-center text-[#fff] overflow-hidden transition-all" style="transition: background-size 0.5s linear, background-image 0.5s;">
+  <div ref="currentImageDom"
+    class="h-[100vh]  flex flex-col bg-cover bg-center text-[#fff] overflow-hidden transition-all"
+    style="transition: background-size 0.5s linear, background-image 0.5s;">
     <div>
       <headerPart></headerPart>
     </div>

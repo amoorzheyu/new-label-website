@@ -68,9 +68,6 @@ export const useBackgroundImageStore = defineStore('backgroundImage', () => {
     const initPresetImageUrls = () => {
 
         const files = import.meta.glob('/public/backgroundImages/*')
-        Object.keys(files).forEach(item => {
-            console.log(item)
-        })
     
 
         presetImageUrls.value = []
