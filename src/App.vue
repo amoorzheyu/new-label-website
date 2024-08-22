@@ -31,7 +31,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="currentImageDom" class="h-[100vh]  flex flex-col bg-cover bg-center text-[#fff] overflow-hidden transition-all" style="transition: background-size 5s ease;">
+  <div ref="currentImageDom" class="h-[100vh]  flex flex-col bg-cover bg-center text-[#fff] overflow-hidden transition-all" style="transition: background-size 0.5s linear, background-image 0.5s;">
     <div>
       <headerPart></headerPart>
     </div>

@@ -52,7 +52,7 @@ export const useBackgroundImageStore = defineStore('backgroundImage', () => {
     //初始化背景图片
     const initBackgroundImage = () => {
 
-     
+
 
         //初始化预设图片资源
         initPresetImageUrls()
@@ -66,15 +66,20 @@ export const useBackgroundImageStore = defineStore('backgroundImage', () => {
 
     //初始化预设图片资源
     const initPresetImageUrls = () => {
+
         const files = import.meta.glob('/public/backgroundImages/*')
+        Object.keys(files).forEach(item => {
+            console.log(item)
+        })
+    
+
         presetImageUrls.value = []
         Object.keys(files).forEach(item => {
 
             //将/public替换为.
             let itemNew = item.replace('/public', '.')
-            if(itemNew.indexOf('bg')!=-1){
-               
-            presetImageUrls.value.push(itemNew)
+            if (itemNew.indexOf('bg') != -1) {
+                presetImageUrls.value.push(itemNew)
             }
         })
 

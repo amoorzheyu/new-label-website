@@ -14,9 +14,11 @@ export const useSearchPartStore = defineStore('searchPart', () => {
     //输入框获取焦点
     let searchOnFocus = () => {
         isShowSearchMask.value = true
-
+         currentImageDom.value.style.backgroundSize = '110%'
         //修改backfround-size
-        currentImageDom.value.style.backgroundSize = '150%'
+        setTimeout(() => {
+            currentImageDom.value.style.backgroundSize = '120%'
+        }, 100)
     }
 
     //输入框失去焦点
