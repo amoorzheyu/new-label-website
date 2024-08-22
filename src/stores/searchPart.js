@@ -9,7 +9,7 @@ import { useBackgroundImageStore } from '@/stores/backgroundImage'
 import fetchJsonp from 'fetch-jsonp';
 
 export const useSearchPartStore = defineStore('searchPart', () => {
-    let { currentImageDom } = storeToRefs(useBackgroundImageStore())
+    let { manualMockBackgroundDom,isShowManualMockBackground } = storeToRefs(useBackgroundImageStore())
 
     let searchText = ref('')//搜索文本
     let isShowSearchMask = ref(false)//是否显示搜索遮罩
@@ -111,18 +111,18 @@ export const useSearchPartStore = defineStore('searchPart', () => {
 
     //输入框获取焦点
     let searchOnFocus = () => {
+        isShowManualMockBackground.value = true
         isShowSearchMask.value = true
-        currentImageDom.value.style.backgroundSize = '110%'
-        //修改backfround-size
-        setTimeout(() => {
-            currentImageDom.value.style.backgroundSize = '120%'
-        }, 100)
+        //放大
+
+        console.log(manualMockBackgroundDom.value)
+        manualMockBackgroundDom.value.style.transform = 'scale(1.1)'
     }
 
     //输入框失去焦点
     let searchOnBlur = () => {
         isShowSearchMask.value = false
-        currentImageDom.value.style.backgroundSize = 'cover'
+        manualMockBackgroundDom.value.style.transform = 'scale(1)'
     }
 
     return { searchText, isShowSearchMask, searchOnFocus, searchOnBlur }

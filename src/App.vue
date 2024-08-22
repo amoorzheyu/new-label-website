@@ -13,7 +13,7 @@ const { initTheme } = useThemeSwapStore()
 
 //pinia->useBackgroundImageStore
 import { useBackgroundImageStore } from '@/stores/backgroundImage'
-let { currentImageUrl, currentImageDom } = storeToRefs(useBackgroundImageStore())
+let { currentImageUrl, currentImageDom ,isShowManualMockBackground,manualMockBackgroundDom} = storeToRefs(useBackgroundImageStore())
 const { initBackgroundImage } = useBackgroundImageStore()
 
 //生命周期渲染之前
@@ -32,8 +32,10 @@ onMounted(() => {
 
 <template>
   <div ref="currentImageDom"
-    class="h-[100vh]  flex flex-col bg-cover bg-center text-[#fff] overflow-hidden transition-all"
-    style="transition: background-size 0.5s linear, background-image 0.5s;">
+    class="h-[100vh]  flex flex-col bg-cover bg-center text-[#fff] overflow-hidden transition-all" style="transition: background-size 0.5s linear, background-image 0.5s;">
+    <div v-show="isShowManualMockBackground" ref="manualMockBackgroundDom" class="h-[100vh] w-[100vw] z-0 fixed" style="transition: transform 0.3s linear;">
+      <el-image  :src="currentImageUrl" fit="cover" class="w-[100%] h-[100%] " ></el-image>
+    </div>
     <div>
       <headerPart></headerPart>
     </div>

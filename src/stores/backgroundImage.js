@@ -26,8 +26,14 @@ export const useBackgroundImageStore = defineStore('backgroundImage', () => {
     //当前使用预设图片下标
     let currentPresetImageIndex = ref(0)
 
+    //是否显示手动模拟背景
+    let isShowManualMockBackground = ref(true)
+
+    //手动模拟背景Dom
+    let manualMockBackgroundDom = ref(null)
     //自定义图片点击
     const customImageClick = () => {
+        isShowManualMockBackground.value = false
         currentImageUrl.value = customImageUrl.value
         useCustomImage.value = true
         setBackgroundImage(currentImageUrl.value)
@@ -35,7 +41,7 @@ export const useBackgroundImageStore = defineStore('backgroundImage', () => {
 
     //预设图片点击
     const presentImageClick = (index) => {
-        console.log(index)
+        isShowManualMockBackground.value = false
         currentPresetImageIndex.value = index
         console.log(presetImageUrls.value[index])
         currentImageUrl.value = presetImageUrls.value[index]
@@ -82,7 +88,7 @@ export const useBackgroundImageStore = defineStore('backgroundImage', () => {
 
     }
 
-    return { currentImageDom, currentImageUrl, customImageClick, presentImageClick, currentPresetImageIndex, useCustomImage, presetImageUrls, customImageUrl, initBackgroundImage }
+    return { currentImageDom, currentImageUrl,isShowManualMockBackground, manualMockBackgroundDom,customImageClick, presentImageClick, currentPresetImageIndex, useCustomImage, presetImageUrls, customImageUrl, initBackgroundImage }
 }, {
     persist: {
         enabled: true
