@@ -26,14 +26,14 @@ const customImageClickEvent = () => {
     ElMessage({
         message: '壁纸设置成功',
         type: 'success',
-        duration:1000,
+        duration: 1000,
         plain: true
     })
 
     ElMessage({
         message: '高清图片来源推荐彼岸壁纸网',
         type: 'info',
-        duration:3000,
+        duration: 3000,
         plain: true
     })
 }
@@ -45,7 +45,7 @@ const presentImageClickEvent = (index) => {
     ElMessage({
         message: '壁纸设置成功',
         type: 'success',
-        duration:1000,
+        duration: 1000,
         plain: true
     })
 }
@@ -102,7 +102,7 @@ const presentImageClickEvent = (index) => {
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="h-[400px] bg-[var(--background-color-dialog-area-box)] rounded-2xl mt-4">
+                                <div class="bg-[var(--background-color-dialog-area-box)] rounded-2xl mt-4">
                                     <div
                                         class="mx-5 pt-4 flex border-b-[1px] pb-2 border-[var(--background-color-dialog-area-box-under-line)]">
                                         <div class="">
@@ -123,7 +123,7 @@ const presentImageClickEvent = (index) => {
                                                 </template>
                                             </el-image>
                                             <div v-show="!useCustomImage"
-                                                class="hidden   bg-[#0006] w-[100%] h-[100%] top-0 left-0 rounded-xl el-image-moudle-class">
+                                                class="hidden  absolute  bg-[#0006] w-[100%] h-[100%] top-0 left-0 rounded-xl el-image-moudle-class">
                                             </div>
                                             <div v-show="useCustomImage"
                                                 class="absolute w-[100%] h-[100%] top-0 left-0 rounded-xl bg-[#0006] text-[#fff] flex justify-center items-center">
@@ -144,9 +144,9 @@ const presentImageClickEvent = (index) => {
                                     <div class="mx-5 pt-4">
                                         <div class="text-[20px] mb-3">预设壁纸</div>
                                         <div>
-                                            <ul class="flex justify-between">
+                                            <ul class="flex justify-stretch flex-wrap image-item-ul">
                                                 <li v-for="(item, index) in presetImageUrls"
-                                                    class="w-[290px] h-[150px] relative">
+                                                    class="w-[290px] h-[150px] relative mb-4 mr-[13px] ">
                                                     <div @click="presentImageClickEvent(index)"
                                                         class="w-[100%] h-[100%] rounded-xl el-image-box-class overflow-hidden ">
                                                         <el-image :src="item" fit="cover"
@@ -158,7 +158,7 @@ const presentImageClickEvent = (index) => {
                                                                 </div>
                                                             </template>
                                                         </el-image>
-                                                        <div v-show="(!useCustomImage) && (currentPresetImageIndex != index)"
+                                                        <div v-show="(useCustomImage) || (currentPresetImageIndex != index)"
                                                             class="hidden absolute  bg-[#0006] w-[100%] h-[100%] top-0 left-0 rounded-xl el-image-moudle-class">
                                                         </div>
                                                         <div v-show="(!useCustomImage) && (currentPresetImageIndex == index)"
@@ -191,6 +191,9 @@ const presentImageClickEvent = (index) => {
     </div>
 </template>
 <style scoped>
+.image-item-ul>li:nth-child(3n+3) {
+ margin-right: 0px;
+}
 
 .el-image-box-class:hover .el-image-moudle-class {
     display: block;

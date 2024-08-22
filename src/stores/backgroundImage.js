@@ -5,6 +5,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
+
 export const useBackgroundImageStore = defineStore('backgroundImage', () => {
 
     //当前背景图片所在Dom
@@ -33,11 +34,11 @@ export const useBackgroundImageStore = defineStore('backgroundImage', () => {
     }
 
     //预设图片点击
-    const presentImageClick=(index)=>{
+    const presentImageClick = (index) => {
         console.log(index)
         currentPresetImageIndex.value = index
         console.log(presetImageUrls.value[index])
-        currentImageUrl.value=presetImageUrls.value[index]
+        currentImageUrl.value = presetImageUrls.value[index]
         useCustomImage.value = false
         setBackgroundImage(currentImageUrl.value)
     }
@@ -50,31 +51,37 @@ export const useBackgroundImageStore = defineStore('backgroundImage', () => {
 
     //初始化背景图片
     const initBackgroundImage = () => {
+
+     
+
         //初始化预设图片资源
         initPresetImageUrls()
-       
-        if(useCustomImage.value){
+
+        if (useCustomImage.value) {
             setBackgroundImage(customImageUrl.value)
-        }else{
+        } else {
             setBackgroundImage(presetImageUrls.value[currentPresetImageIndex.value])
         }
     }
 
     //初始化预设图片资源
     const initPresetImageUrls = () => {
-        let imagePath='/src/assets/backgroundImages'
-        let imagesName=['bg-1.png','bg-2.png','bg-3.png']
+        const files = import.meta.glob('/public/backgroundImages/*')
+        presetImageUrls.value = []
+        Object.keys(files).forEach(item => {
 
-        presetImageUrls.value=[]
-        imagesName.forEach(item => {
-            let url= `${imagePath}/${item}`
-            presetImageUrls.value.push(url)
-        });
+            //将/public替换为.
+            let itemNew = item.replace('/public', '.')
+            if(itemNew.indexOf('bg')!=-1){
+               
+            presetImageUrls.value.push(itemNew)
+            }
+        })
 
     }
 
-    return { currentImageDom,currentImageUrl,customImageClick,presentImageClick, currentPresetImageIndex,useCustomImage,presetImageUrls,customImageUrl,initBackgroundImage }
-},{
+    return { currentImageDom, currentImageUrl, customImageClick, presentImageClick, currentPresetImageIndex, useCustomImage, presetImageUrls, customImageUrl, initBackgroundImage }
+}, {
     persist: {
         enabled: true
     }
