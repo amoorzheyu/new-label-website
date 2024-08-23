@@ -58,7 +58,7 @@ const closedDialog=()=>{
 </script>
 <template>
     <div>
-        <div>
+        <div class=" overflow-hidden">
             <el-dialog modal-class="modal-myClass" @closed="closedDialog" v-model="isShowSettingDialog">
                 <div>
                     <div class="text-[22px] font-[400] text-[var(--dialog-text-color)]">
@@ -232,6 +232,12 @@ const closedDialog=()=>{
     @apply scale-[120%];
 }
 
+/* 以下为修改el遮罩的样式 */
+::v-deep(.el-overlay-dialog) {
+    @apply w-[100vw] h-[100vh] overflow-hidden;
+}
+
+
 
 /* 以下为修改el对话框的样式 */
 ::v-deep(.modal-myClass) {
@@ -240,7 +246,7 @@ const closedDialog=()=>{
 
 ::v-deep(.el-dialog) {
     border-radius: 12px;
-    @apply pl-[30px] pr-[8px] pt-[25px] bg-[var(--background-color-dialog-large-box)] w-[1000px] mt-[280px] h-[730px]
+    @apply pl-[30px] pr-[8px] pt-[25px] bg-[var(--background-color-dialog-large-box)] w-[1000px] ;
 }
 
 ::v-deep(.el-dialog__header) {
