@@ -17,7 +17,7 @@ let { isDarkMode, isShowTopMenu, isShowDatePart, isShowNavigationBar, isAdaptive
 
 //pinia->useBackgroundImageStore
 import { useBackgroundImageStore } from '@/stores/backgroundImage'
-let { presetImageUrls, customImageUrl, useCustomImage, currentPresetImageIndex } = storeToRefs(useBackgroundImageStore())
+let { presetImageUrls, customImageUrl, isShowManualMockBackground,useCustomImage, currentPresetImageIndex } = storeToRefs(useBackgroundImageStore())
 const { customImageClick, presentImageClick } = useBackgroundImageStore()
 //自定义图片点击事件
 const customImageClickEvent = () => {
@@ -50,11 +50,16 @@ const presentImageClickEvent = (index) => {
     })
 }
 
+//关闭对话框（动画结束）
+const closedDialog=()=>{
+    isShowManualMockBackground.value=true;
+}
+
 </script>
 <template>
     <div>
         <div>
-            <el-dialog modal-class="modal-myClass" v-model="isShowSettingDialog">
+            <el-dialog modal-class="modal-myClass" @closed="closedDialog" v-model="isShowSettingDialog">
                 <div>
                     <div class="text-[22px] font-[400] text-[var(--dialog-text-color)]">
                         设置
