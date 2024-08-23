@@ -31,7 +31,7 @@ const customImageClickEvent = () => {
     })
 
     ElMessage({
-        message: '高清图片来源推荐彼岸壁纸网',
+        message: '高清图片链接来源推荐彼岸壁纸网',
         type: 'info',
         duration: 3000,
         plain: true
@@ -46,6 +46,13 @@ const presentImageClickEvent = (index) => {
         message: '壁纸设置成功',
         type: 'success',
         duration: 1000,
+        plain: true
+    })
+
+    ElMessage({
+        message: '高清图片下载来源推荐哲风壁纸网',
+        type: 'info',
+        duration: 3000,
         plain: true
     })
 }

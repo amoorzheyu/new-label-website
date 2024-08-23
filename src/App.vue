@@ -9,7 +9,7 @@ import settings from '@/components/dialogParts/settings.vue'
 
 // pinia->useThemeSwapStore
 import { useThemeSwapStore } from '@/stores/themeSwap'
-const { initTheme } = useThemeSwapStore()
+const { initTheme} = useThemeSwapStore()
 
 //pinia->useBackgroundImageStore
 import { useBackgroundImageStore } from '@/stores/backgroundImage'
@@ -19,7 +19,6 @@ const { initBackgroundImage } = useBackgroundImageStore()
 //生命周期渲染之前
 onBeforeMount(() => {
   initTheme()
-
 })
 
 //生命周期渲染之后

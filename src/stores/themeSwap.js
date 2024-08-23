@@ -3,10 +3,14 @@
  */
 
 import { ref, computed } from 'vue'
-import { defineStore } from 'pinia'
+import { defineStore, storeToRefs } from 'pinia'
+
+// pinia-> useSettingOptStore
+import { useSettingOptStore } from '@/stores/settingopt'
 
 export const useThemeSwapStore = defineStore('themeSwap', () => {
-    
+
+    let { isDarkMode } = storeToRefs(useSettingOptStore())
     // 主题列表
     let themeList = ref([
         {
@@ -30,15 +34,21 @@ export const useThemeSwapStore = defineStore('themeSwap', () => {
     })
 
     //点击切换主题
-    function changeTheme(index) {
-        if(index==0) index = 1
-        else index = 0
+    const changeTheme=(index)=> {
+        if (index == 0) {
+            index = 1
+            // isDarkMode.value = true;
+        }
+        else {
+            index = 0
+            // isDarkMode.value = false;
+        }
         nowThemeIndex.value = index
         document.body.className = nowThemeClassName.value
     }
 
     //初始化主题
-    function initTheme() {
+    const initTheme=()=> {
         document.body.className = nowThemeClassName.value
     }
 
@@ -49,7 +59,7 @@ export const useThemeSwapStore = defineStore('themeSwap', () => {
         initTheme,
         changeTheme
     }
-},{
+}, {
     persist: {
         storage: localStorage,
         paths: ['nowThemeIndex']
