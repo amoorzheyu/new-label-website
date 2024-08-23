@@ -7,7 +7,7 @@ let { isShowSearch } = storeToRefs(useLayoutElementStore())
 
 //pinia-> useSearchPartStore
 import { useSearchPartStore } from "@/stores/searchPart";
-let { searchText, isShowSearchMask, searchTips, isShowSearchTips } = storeToRefs(useSearchPartStore());
+let { searchText, isShowSearchMask, searchTips, isShowSearchTips, searchEnginesMess } = storeToRefs(useSearchPartStore());
 const { searchOnFocus, searchOnBlur, getTipListsMess } = useSearchPartStore();
 
 //输入框获取焦点事件
@@ -37,9 +37,23 @@ const searchChangeEvent = () => {
                         <div>
 
                         </div>
-                        <div>百度</div>
+                        <div class="font-bold ">百度</div>
                     </div>
                 </div>
+                <!-- 搜索引擎下拉 -->
+                <div class="button-dropList absolute left-[50px] top-[68px] z-10  pt-[20px]">
+                    <div
+                    class="flex-col items-center justify-center text-center p-2 bg-[var(--ground-glass-background-color)] backdrop-blur-xl rounded-[16px] ">
+                    <div class="button-dropList-item rounded-[32px]  w-[130px] p-[10px] m-1" v-for="item in searchEnginesMess">
+                        <div class="">
+                            <div>
+                            </div>
+                            <div class="font-bold text-base">{{ item.name }}</div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
                 <div><input placeholder="百度一下" @focus="searchFocusEvent" @blur="searchBlurEvent"
                         @change="searchChangeEvent" v-model="searchText"
                         class="input-class bg-[var(--ground-glass-boardr-color)] backdrop-blur-xl w-[900px] h-[80px]  rounded-[52px] shadow-md" />
@@ -55,33 +69,24 @@ const searchChangeEvent = () => {
                 </div>
             </div>
         </div>
-            <!-- 搜索下拉框-->
-    <div class="flex justify-center" v-show="isShowSearchTips">
-        <div
-          class="w-[900px] bg-[#fff3] bg-[var(--ground-glass-boardr-color)] backdrop-blur-xl rounded-[26px] shadow-md mt-[20px]"
-        >
-          <div class="flex items-center content-center m-3 p-5 rounded-[26px] search" v-for="item in searchTips">
+        <!-- 搜索下拉框-->
+        <div class="flex justify-center" v-show="isShowSearchTips">
             <div
-              class="w-[30px] h-[30px] text-[var(--ground-glass-icon-color)] button-inner-class"
-            >
-              <svg viewBox="0 0 24 24">
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.5"
-                  d="m17 17l4 4M3 11a8 8 0 1 0 16 0a8 8 0 0 0-16 0"
-                ></path>
-              </svg>
+                class="w-[900px] bg-[#fff3] bg-[var(--ground-glass-boardr-color)] backdrop-blur-xl rounded-[26px] shadow-md mt-[20px]">
+                <div class="flex items-center content-center m-3 p-5 rounded-[26px] search" v-for="item in searchTips">
+                    <div class="w-[30px] h-[30px] text-[var(--ground-glass-icon-color)] button-inner-class">
+                        <svg viewBox="0 0 24 24">
+                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1.5" d="m17 17l4 4M3 11a8 8 0 1 0 16 0a8 8 0 0 0-16 0"></path>
+                        </svg>
+                    </div>
+                    <div class="text-xl pl-3">
+                        {{ item }}
+                    </div>
+
+                </div>
             </div>
-            <div class="text-xl pl-3">
-              {{ item }}
-            </div>
-            
-          </div>
         </div>
-      </div>
     </div>
 </template>
 <style scoped>
@@ -109,9 +114,30 @@ const searchChangeEvent = () => {
     transition: all 0.2s ease-in-out;
     transform: scale(1.2);
 }
+
+
 /*** 搜索下拉框 ***/
-.search:hover{
-    background-color: rgba(255, 255, 255,0.2);
+.search:hover {
+    background-color: rgba(255, 255, 255, 0.2);
     transition: all 0.1s ease-in-out;
+}
+/*** 搜索引擎 ***/
+.button-dropList{
+    
+    transition: all 3s ease-in-out;
+    display: none;
+}
+
+.button-class:hover + .button-dropList, .button-dropList:hover{
+    
+    height: fit-content;
+    display: block;
+}
+
+.button-dropList-item:hover {
+    transition: all 0.1s ease-in-out;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: rgba(72, 86, 88, 0.8);
+
 }
 </style>
