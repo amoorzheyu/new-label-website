@@ -115,8 +115,6 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         isShowManualMockBackground.value = true
         isShowSearchMask.value = true
         //放大
-
-        console.log(manualMockBackgroundDom.value)
         manualMockBackgroundDom.value.style.transform = 'scale(1.1)'
     }
 

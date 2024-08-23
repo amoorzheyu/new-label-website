@@ -43,7 +43,6 @@ export const useBackgroundImageStore = defineStore('backgroundImage', () => {
     const presentImageClick = (index) => {
         isShowManualMockBackground.value = false
         currentPresetImageIndex.value = index
-        console.log(presetImageUrls.value[index])
         currentImageUrl.value = presetImageUrls.value[index]
         useCustomImage.value = false
         setBackgroundImage(currentImageUrl.value)
