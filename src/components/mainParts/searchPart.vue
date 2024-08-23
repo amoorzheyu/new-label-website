@@ -7,11 +7,13 @@ let { isShowSearch } = storeToRefs(useLayoutElementStore())
 
 //pinia-> useSearchPartStore
 import { useSearchPartStore } from "@/stores/searchPart";
-let { searchText, isShowSearchMask, searchTips, isShowSearchTips, searchEnginesMess } = storeToRefs(useSearchPartStore());
-const { searchOnFocus, searchOnBlur, getTipListsMess } = useSearchPartStore();
-
+import { ref } from 'vue';
+let { searchText, isShowSearchMask, searchTips, isShowSearchTips, searchEnginesMess, searchEngineIndex } = storeToRefs(useSearchPartStore());
+const { searchOnFocus, searchOnBlur, getTipListsMess, searchObtOnClick, searchTipsOnClick } = useSearchPartStore();
+let myInput = ref(null);
 //输入框获取焦点事件
 const searchFocusEvent = () => {
+    myInput.value.focus();
     searchOnFocus();
 }
 
@@ -19,16 +21,29 @@ const searchFocusEvent = () => {
 const searchBlurEvent = () => {
     searchOnBlur();
 }
+//切换引擎
+const changeSearchEngine = (index) => {
+    searchEngineIndex.value = index;
+}
+//点击搜索按钮进行搜索
+const searchClickEvent = () => {
+    searchObtOnClick();
+}
 //搜索框下拉
 const searchChangeEvent = () => {
     getTipListsMess();
 };
+//点击搜索提示列表进行搜索
+const searchTipClickEvent = (index) => {
+    console.log('点击了搜索按钮',index)
+    searchTipsOnClick(index);
+}
 </script>
 <template>
     <div>
         <div v-show="isShowSearchMask" class="w-[100vw] h-[100vh] fixed bg-[#ffffff01] left-0 top-[0px]"
-            style="backdrop-filter:blur(30px)"></div>
-        <div v-show="!isShowSearch" class="h-[80px]"></div>
+            style="backdrop-filter:blur(30px)" @click="searchBlurEvent"></div>
+        <div v-show="!isShowSearch" class="h-[80px]" ></div>
         <div v-show="isShowSearch" class="flex justify-center">
             <div class="w-[1000px] h-[80px] flex justify-center relative">
                 <div
@@ -37,29 +52,30 @@ const searchChangeEvent = () => {
                         <div>
 
                         </div>
-                        <div class="font-bold ">百度</div>
+                        <div class="font-bold ">{{ searchEnginesMess[searchEngineIndex].name }}</div>
                     </div>
                 </div>
                 <!-- 搜索引擎下拉 -->
                 <div class="button-dropList absolute left-[50px] top-[68px] z-10  pt-[20px]">
                     <div
-                    class="flex-col items-center justify-center text-center p-2 bg-[var(--ground-glass-background-color)] backdrop-blur-xl rounded-[16px] ">
-                    <div class="button-dropList-item rounded-[32px]  w-[130px] p-[10px] m-1" v-for="item in searchEnginesMess">
-                        <div class="">
-                            <div>
+                        class="flex-col items-center justify-center text-center p-2 bg-[var(--ground-glass-background-color)] backdrop-blur-xl rounded-[16px] ">
+                        <div class="button-dropList-item rounded-[32px]  w-[130px] p-[10px] m-1"
+                            v-for="(item, index) in searchEnginesMess" @click.stop="changeSearchEngine(index)">
+                            <div class="">
+                                <div>
+                                </div>
+                                <div class="font-bold text-base">{{ item.name }}</div>
                             </div>
-                            <div class="font-bold text-base">{{ item.name }}</div>
                         </div>
                     </div>
                 </div>
-                </div>
 
-                <div><input placeholder="百度一下" @focus="searchFocusEvent" @blur="searchBlurEvent"
-                        @change="searchChangeEvent" v-model="searchText"
+                <div><input placeholder="百度一下" @focus="searchFocusEvent" 
+                        @change="searchChangeEvent" v-model="searchText" ref="myInput"
                         class="input-class bg-[var(--ground-glass-boardr-color)] backdrop-blur-xl w-[900px] h-[80px]  rounded-[52px] shadow-md" />
                 </div>
-                <div
-                    class="button-class absolute z-10 right-[60px] top-[16px] flex items-center justify-center bg-[var(--ground-glass-background-color)] backdrop-blur-2xl  rounded-[32px] w-[50px] h-[50px]">
+                <div class="button-class absolute z-10 right-[60px] top-[16px] flex items-center justify-center bg-[var(--ground-glass-background-color)] backdrop-blur-2xl  rounded-[32px] w-[50px] h-[50px]"
+                    @click.stop="searchClickEvent">
                     <div class="w-[30px] h-[30px] text-[var(--ground-glass-icon-color)] button-inner-class">
                         <svg viewBox="0 0 24 24">
                             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -73,7 +89,9 @@ const searchChangeEvent = () => {
         <div class="flex justify-center" v-show="isShowSearchTips">
             <div
                 class="w-[900px] bg-[#fff3] bg-[var(--ground-glass-boardr-color)] backdrop-blur-xl rounded-[26px] shadow-md mt-[20px]">
-                <div class="flex items-center content-center m-3 p-5 rounded-[26px] search" v-for="item in searchTips">
+                <div class="flex items-center content-center m-3 p-5 rounded-[26px] search" 
+                v-for="(item,index) in searchTips"
+                @click="searchTipClickEvent(index)">
                     <div class="w-[30px] h-[30px] text-[var(--ground-glass-icon-color)] button-inner-class">
                         <svg viewBox="0 0 24 24">
                             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -121,15 +139,17 @@ const searchChangeEvent = () => {
     background-color: rgba(255, 255, 255, 0.2);
     transition: all 0.1s ease-in-out;
 }
+
 /*** 搜索引擎 ***/
-.button-dropList{
-    
+.button-dropList {
+
     transition: all 3s ease-in-out;
     display: none;
 }
 
-.button-class:hover + .button-dropList, .button-dropList:hover{
-    
+.button-class:hover+.button-dropList,
+.button-dropList:hover {
+
     height: fit-content;
     display: block;
 }

@@ -2,14 +2,14 @@
  * @description 搜索有关
  */
 
-import { ref, computed,watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 import { useBackgroundImageStore } from '@/stores/backgroundImage'
 
 import fetchJsonp from 'fetch-jsonp';
 
 export const useSearchPartStore = defineStore('searchPart', () => {
-    let { manualMockBackgroundDom,isShowManualMockBackground } = storeToRefs(useBackgroundImageStore())
+    let { manualMockBackgroundDom, isShowManualMockBackground } = storeToRefs(useBackgroundImageStore())
 
     let searchText = ref('')//搜索文本
     let isShowSearchMask = ref(false)//是否显示搜索遮罩
@@ -43,13 +43,19 @@ export const useSearchPartStore = defineStore('searchPart', () => {
     let isShowSearchTips = computed(() => {//是否显示搜索提示列表
         return isShowSearchMask.value && searchTips.value.length > 0
     })
+    //切换搜索引擎
+    const changeSearchEngine = (index) => {
+        searchEngineIndex.value = index;
+
+        return searchEnginesMess[searchEngineIndex].name;
+    }
 
     //解析jsonp数据
     const getParseJsonpData = {
         0: (data) => {
             let Results = data['AS']['Results']
             let Result = [];
-            if(!Results) return [];
+            if (!Results) return [];
             Results.forEach(element => {
                 let Suggests = element['Suggests']
                 Suggests.forEach(element => {
@@ -89,6 +95,7 @@ export const useSearchPartStore = defineStore('searchPart', () => {
             })
     }
 
+
     //点击搜索按钮进行搜索
     const searchObtOnClick = () => {
         let searchUrl = searchEnginesMess.value[searchEngineIndex.value].searchUrlMod.replace('#context#', searchText.value)
@@ -99,9 +106,12 @@ export const useSearchPartStore = defineStore('searchPart', () => {
     const searchTipsOnClick = (index) => {
         let item = searchTips.value[index]
         let searchUrl = searchEnginesMess.value[searchEngineIndex.value].searchUrlMod.replace('#context#', item)
+        //失去焦点
+        searchOnBlur();
         window.open(searchUrl)
+        
     }
-    
+
 
     //监听搜索文本
     watch(searchText, (newValue, oldValue) => {
@@ -124,5 +134,5 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         manualMockBackgroundDom.value.style.transform = 'scale(1)'
     }
 
-    return { searchText, isShowSearchMask,searchTips,isShowSearchTips,searchEnginesMess, searchOnFocus, searchOnBlur,getTipListsMess }
+    return { searchText, isShowSearchMask, searchTips, isShowSearchTips, searchEnginesMess, searchEngineIndex, searchOnFocus, searchOnBlur, getTipListsMess, changeSearchEngine,searchObtOnClick,searchTipsOnClick }
 })
