@@ -6,9 +6,9 @@ let { isShowSearch } = storeToRefs(useLayoutElementStore())
 
 
 //pinia-> useSearchPartStore
-import { useSearchPartStore } from '@/stores/searchPart'
-let { searchText,isShowSearchMask } = storeToRefs(useSearchPartStore())
-const {searchOnFocus,searchOnBlur} = useSearchPartStore()
+import { useSearchPartStore } from "@/stores/searchPart";
+let { searchText, isShowSearchMask, searchTips, isShowSearchTips } = storeToRefs(useSearchPartStore());
+const { searchOnFocus, searchOnBlur, getTipListsMess } = useSearchPartStore();
 
 //输入框获取焦点事件
 const searchFocusEvent = () => {
@@ -19,10 +19,15 @@ const searchFocusEvent = () => {
 const searchBlurEvent = () => {
     searchOnBlur();
 }
+//搜索框下拉
+const searchChangeEvent = () => {
+    getTipListsMess();
+};
 </script>
 <template>
     <div>
-        <div v-show="isShowSearchMask" class="w-[100vw] h-[100vh] fixed bg-[#ffffff01] left-0 top-[0px]" style="backdrop-filter:blur(30px)"></div>
+        <div v-show="isShowSearchMask" class="w-[100vw] h-[100vh] fixed bg-[#ffffff01] left-0 top-[0px]"
+            style="backdrop-filter:blur(30px)"></div>
         <div v-show="!isShowSearch" class="h-[80px]"></div>
         <div v-show="isShowSearch" class="flex justify-center">
             <div class="w-[1000px] h-[80px] flex justify-center relative">
@@ -35,7 +40,8 @@ const searchBlurEvent = () => {
                         <div>百度</div>
                     </div>
                 </div>
-                <div><input placeholder="百度一下" @focus="searchFocusEvent" @blur="searchBlurEvent" v-model="searchText"
+                <div><input placeholder="百度一下" @focus="searchFocusEvent" @blur="searchBlurEvent"
+                        @change="searchChangeEvent" v-model="searchText"
                         class="input-class bg-[var(--ground-glass-boardr-color)] backdrop-blur-xl w-[900px] h-[80px]  rounded-[52px] shadow-md" />
                 </div>
                 <div
@@ -49,6 +55,33 @@ const searchBlurEvent = () => {
                 </div>
             </div>
         </div>
+            <!-- 搜索下拉框-->
+    <div class="flex justify-center" v-show="isShowSearchTips">
+        <div
+          class="w-[900px] bg-[#fff3] bg-[var(--ground-glass-boardr-color)] backdrop-blur-xl rounded-[26px] shadow-md mt-[20px]"
+        >
+          <div class="flex items-center content-center m-3 p-5 rounded-[26px] search" v-for="item in searchTips">
+            <div
+              class="w-[30px] h-[30px] text-[var(--ground-glass-icon-color)] button-inner-class"
+            >
+              <svg viewBox="0 0 24 24">
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  d="m17 17l4 4M3 11a8 8 0 1 0 16 0a8 8 0 0 0-16 0"
+                ></path>
+              </svg>
+            </div>
+            <div class="text-xl pl-3">
+              {{ item }}
+            </div>
+            
+          </div>
+        </div>
+      </div>
     </div>
 </template>
 <style scoped>
@@ -75,5 +108,10 @@ const searchBlurEvent = () => {
 .button-class:hover .button-inner-class {
     transition: all 0.2s ease-in-out;
     transform: scale(1.2);
+}
+/*** 搜索下拉框 ***/
+.search:hover{
+    background-color: rgba(255, 255, 255,0.2);
+    transition: all 0.1s ease-in-out;
 }
 </style>

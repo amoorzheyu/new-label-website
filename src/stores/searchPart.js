@@ -49,6 +49,7 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         0: (data) => {
             let Results = data['AS']['Results']
             let Result = [];
+            if(!Results) return [];
             Results.forEach(element => {
                 let Suggests = element['Suggests']
                 Suggests.forEach(element => {
@@ -125,5 +126,5 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         manualMockBackgroundDom.value.style.transform = 'scale(1)'
     }
 
-    return { searchText, isShowSearchMask, searchOnFocus, searchOnBlur }
+    return { searchText, isShowSearchMask,searchTips,isShowSearchTips, searchOnFocus, searchOnBlur,getTipListsMess }
 })
