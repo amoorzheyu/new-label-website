@@ -66,7 +66,7 @@ onMounted(() => {
       <div>
         <settings></settings>
       </div>
-      <div ref="menuDom" class=" absolute z-[100] top-[50%] left-[50%] translate-x-[-50%]">
+      <div ref="menuDom" class=" absolute">
         <menuPart></menuPart>
       </div>
     </div>
