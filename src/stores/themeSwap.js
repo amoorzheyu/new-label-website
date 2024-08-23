@@ -37,11 +37,11 @@ export const useThemeSwapStore = defineStore('themeSwap', () => {
     const changeTheme=(index)=> {
         if (index == 0) {
             index = 1
-            // isDarkMode.value = true;
+            isDarkMode.value = true;
         }
         else {
             index = 0
-            // isDarkMode.value = false;
+            isDarkMode.value = false;
         }
         nowThemeIndex.value = index
         document.body.className = nowThemeClassName.value
