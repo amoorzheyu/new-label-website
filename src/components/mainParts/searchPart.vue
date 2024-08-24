@@ -8,7 +8,7 @@ let { isShowSearch } = storeToRefs(useLayoutElementStore())
 
 //pinia-> useSearchPartStore
 import { useSearchPartStore } from "@/stores/searchPart";
-let { searchText, isShowSearchMask, searchEngineName,searchTips, isShowSearchTips, searchEnginesMess } = storeToRefs(useSearchPartStore());
+let { searchText, isShowSearchMask, searchPlaceHolder,searchEngineName,searchTips, isShowSearchTips, searchEnginesMess } = storeToRefs(useSearchPartStore());
 const { searchOnFocus, searchOnBlur, getTipListsMess,changeSearchEngine,searchTipsOnClick,searchObtOnClick } = useSearchPartStore();
 
 //输入框获取焦点事件
@@ -29,6 +29,11 @@ const searchBarOutClickEvent = () => {
 const searchChangeEvent = () => {
     getTipListsMess();
 };
+//点击搜索提示列表进行搜索
+const searchTipClickEvent = (index) => {
+    console.log('点击了搜索按钮',index)
+    searchTipsOnClick(index);
+}
 </script>
 <template>
     <div>
@@ -62,7 +67,7 @@ const searchChangeEvent = () => {
                     </div>
                 </div>
 
-                <div><input placeholder="百度一下" @focus="searchFocusEvent"
+                <div><input :placeholder="searchPlaceHolder" @focus="searchFocusEvent"
                         @change="searchChangeEvent" v-model="searchText"
                         class="input-class bg-[var(--ground-glass-boardr-color)] backdrop-blur-xl w-[900px] h-[80px]  rounded-[52px] shadow-md" />
                 </div>

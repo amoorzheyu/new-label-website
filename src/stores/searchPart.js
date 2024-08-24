@@ -2,14 +2,15 @@
  * @description 搜索有关
  */
 
-import { ref, computed,watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 import { useBackgroundImageStore } from '@/stores/backgroundImage'
+import { ElNotification } from 'element-plus'
 
 import fetchJsonp from 'fetch-jsonp';
 
 export const useSearchPartStore = defineStore('searchPart', () => {
-    let { manualMockBackgroundDom,isShowManualMockBackground } = storeToRefs(useBackgroundImageStore())
+    let { manualMockBackgroundDom, isShowManualMockBackground } = storeToRefs(useBackgroundImageStore())
 
     let searchText = ref('')//搜索文本
     let isShowSearchMask = ref(false)//是否显示搜索遮罩
@@ -17,6 +18,7 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         {
             id: 0,
             name: '必应',
+            placeHolder: '必应搜索',
             searchUrlMod: 'https://cn.bing.com/search?q=#context#',
             searchTipsMod: 'https://api.bing.com/qsonhs.aspx?type=cb&q=#context#',
             jsonpKey: 'cb',
@@ -24,6 +26,7 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         {
             id: 1,
             name: '百度',
+            placeHolder: '百度一下',
             searchUrlMod: 'https://www.baidu.com/s?wd=#context#',
             searchTipsMod: 'https://suggestion.baidu.com/su?ie=UTF-8&wd=#context#',
             jsonpKey: 'cb',
@@ -31,6 +34,7 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         {
             id: 2,
             name: '谷歌',
+            placeHolder: 'Google',
             searchUrlMod: 'https://www.google.com/search?q=#context#',
             searchTipsMod: 'http://suggestqueries.google.com/complete/search?client=youtube&q=123&jsonp=window.google.ac.h',
             jsonpKey: 'jsonp',
@@ -43,6 +47,10 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         return searchEnginesMess.value[searchEngineIndex.value].name;
     })
 
+    let searchPlaceHolder = computed(() => {//当前placeHolder文本
+        return searchEnginesMess.value[searchEngineIndex.value].placeHolder;
+    })
+
 
     //切换当前搜索引擎
     const changeSearchEngine = (index) => {
@@ -51,6 +59,9 @@ export const useSearchPartStore = defineStore('searchPart', () => {
     }
 
     let searchTips = ref([])//搜索提示列表
+
+    //处理提示列表失败情况的定时器
+    let getTipListsMessErrorTimer = null;
 
     let isShowSearchTips = computed(() => {//是否显示搜索提示列表
         return isShowSearchMask.value && searchTips.value.length > 0
@@ -61,7 +72,7 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         0: (data) => {
             let Results = data['AS']['Results']
             let Result = [];
-            if(!Results) return [];
+            if (!Results) return [];
             Results.forEach(element => {
                 let Suggests = element['Suggests']
                 Suggests.forEach(element => {
@@ -85,7 +96,7 @@ export const useSearchPartStore = defineStore('searchPart', () => {
 
     //获取搜索提示列表
     const getTipListsMess = () => {
-        if(searchText.value.length==0) return;
+        if (searchText.value.length == 0) return;
         let index = searchEngineIndex.value
         let item = searchEnginesMess.value[index]
         let { searchTipsMod, jsonpKey } = item
@@ -98,8 +109,28 @@ export const useSearchPartStore = defineStore('searchPart', () => {
             }).then(function (data) {
                 searchTips.value = getParseJsonpData[index](data);
             }).catch(function (ex) {
-                console.error('parsing failed', ex)
+                if(getTipListsMessErrorTimer) clearTimeout(getTipListsMessErrorTimer)
+                    getTipListsMessErrorTimer = setTimeout(() => {
+                        getTipListsMessError(searchEngineIndex.value)
+                    }, 1000)
             })
+    }
+
+    //获取搜索提示失败处理
+    const getTipListsMessError = (searchEngineIndex) => {
+        if (searchEngineIndex == 2) {
+            ElNotification({
+                title: 'VPN未开启或网络异常',
+                message: '请检查VPN及网络是否通畅',
+                type: 'error',
+            })
+        }else{
+            ElNotification({
+                title: '网络异常',
+                message: '请检查网络是否通畅',
+                type: 'error',
+            })
+        }
     }
 
     //点击搜索按钮进行搜索
@@ -114,7 +145,7 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         let searchUrl = searchEnginesMess.value[searchEngineIndex.value].searchUrlMod.replace('#context#', item)
         window.open(searchUrl)
     }
-    
+
 
     //监听搜索文本
     watch(searchText, (newValue, oldValue) => {
@@ -137,5 +168,5 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         manualMockBackgroundDom.value.style.transform = 'scale(1)'
     }
 
-    return { searchText, searchEngineName,isShowSearchMask,searchTips,isShowSearchTips,searchEnginesMess, searchOnFocus, searchOnBlur,getTipListsMess,changeSearchEngine,searchObtOnClick,searchTipsOnClick }
+    return { searchText, searchPlaceHolder, searchEngineName, isShowSearchMask, searchTips, isShowSearchTips, searchEnginesMess, searchOnFocus, searchOnBlur, getTipListsMess, changeSearchEngine, searchObtOnClick, searchTipsOnClick }
 })
