@@ -9,7 +9,7 @@ let { isShowSearch } = storeToRefs(useLayoutElementStore())
 //pinia-> useSearchPartStore
 import { useSearchPartStore } from "@/stores/searchPart";
 let { searchText, isShowSearchMask,inputDom, searchPlaceHolder,searchEngineName,searchTips, isShowSearchTips, searchEnginesMess } = storeToRefs(useSearchPartStore());
-const { searchOnFocus,inputFocus, searchOnBlur, getTipListsMess,changeSearchEngine,searchTipsOnClick,searchObtOnClick } = useSearchPartStore();
+const { searchOnFocus,inputFocus, searchOnBlur, getTipListsMess,changeSearchEngine,searchTipsOnClick,searchObtOnClick,clearSearchTextOnClick } = useSearchPartStore();
 
 //输入框获取焦点事件
 const searchFocusEvent = () => {

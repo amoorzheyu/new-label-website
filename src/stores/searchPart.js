@@ -193,5 +193,5 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         manualMockBackgroundDom.value.style.transform = 'scale(1)'
     }
 
-    return { inputDom, searchText, searchPlaceHolder, searchEngineName, isShowSearchMask, searchTips, isShowSearchTips, searchEnginesMess, searchOnFocus, searchOnBlur, getTipListsMess, changeSearchEngine, searchObtOnClick, searchTipsOnClick,inputFocus}
+    return { inputDom, searchText, searchPlaceHolder, searchEngineName, isShowSearchMask, searchTips, isShowSearchTips, searchEnginesMess, searchOnFocus, searchOnBlur, getTipListsMess, changeSearchEngine, searchObtOnClick, searchTipsOnClick,inputFocus,clearSearchTextOnClick}
 })
