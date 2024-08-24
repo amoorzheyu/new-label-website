@@ -25,19 +25,7 @@ const searchBarOutClickEvent = () => {
 const searchBarClickEvent = () => {
     inputFocus();
 }
-//搜索框下拉
-const searchChangeEvent = () => {
-    getTipListsMess();
-};
-//点击搜索提示列表进行搜索
-const searchTipClickEvent = (index) => {
-    console.log('点击了搜索按钮', index)
-    searchTipsOnClick(index);
-}
-//清空搜索框按钮点击事件
-const clearSearchTextClickEvent = () => {
-    clearSearchTextOnClick();
-}
+
 </script>
 <template>
     <div>
@@ -72,7 +60,7 @@ const clearSearchTextClickEvent = () => {
                 </div>
 
                 <div><input ref="inputDom" :placeholder="searchPlaceHolder" @focus="searchFocusEvent"
-                        @change="searchChangeEvent" v-model="searchText"
+                         v-model="searchText"
                         class="input-class bg-[var(--ground-glass-boardr-color)] backdrop-blur-xl w-[900px] h-[80px]  rounded-[52px] shadow-md" />
                 </div>
                 <!-- 清空搜索框 -->
@@ -100,10 +88,10 @@ const clearSearchTextClickEvent = () => {
                 </div>
 
                 <!-- 搜索下拉框-->
-                <div class="flex justify-center absolute top-[70px]" v-show="isShowSearchTips">
+                <div class="flex justify-center absolute top-[70px] " v-show="isShowSearchTips">
                     <div
-                        class="w-[900px] bg-[#fff3] bg-[var(--ground-glass-boardr-color)] backdrop-blur-xl rounded-[26px] shadow-md mt-[20px]">
-                        <div class="flex items-center content-center m-4 p-3 rounded-[26px] search"
+                        class="w-[900px] bg-[#fff3] bg-[var(--ground-glass-boardr-color)] backdrop-blur-xl rounded-[26px] shadow-md mt-[20px] p-1">
+                        <div class="flex items-center content-center m-2 p-3 rounded-[26px] search"
                             v-for="(item, index) in searchTips" @click="searchTipsOnClick(index)">
                             <div class="w-[30px] h-[30px] text-[var(--ground-glass-icon-color)] button-inner-class">
                                 <svg viewBox="0 0 24 24">

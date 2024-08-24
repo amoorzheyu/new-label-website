@@ -127,7 +127,7 @@ export const useSearchPartStore = defineStore('searchPart', () => {
             }).then(function (data) {
                 searchTips.value = getParseJsonpData[index](data);
             }).catch(function (ex) {
-                
+
                 closeTipListsMessErrorTimer();
 
                 getTipListsMessErrorTimer = setTimeout(() => {
@@ -155,7 +155,7 @@ export const useSearchPartStore = defineStore('searchPart', () => {
     //清空搜索框
     const clearSearchTextOnClick = () => {
         searchText.value = '';
-        searchTips.value=[]
+        searchTips.value = []
     }
 
     //点击搜索按钮进行搜索
@@ -174,7 +174,9 @@ export const useSearchPartStore = defineStore('searchPart', () => {
 
     //监听搜索文本
     watch(searchText, (newValue, oldValue) => {
-        if (newValue.length > 0) {
+        if (newValue.length == 0) {
+            searchTips.value = []
+        } else {
             getTipListsMess()
         }
     })
@@ -193,5 +195,5 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         manualMockBackgroundDom.value.style.transform = 'scale(1)'
     }
 
-    return { inputDom, searchText, searchPlaceHolder, searchEngineName, isShowSearchMask, searchTips, isShowSearchTips, searchEnginesMess, searchOnFocus, searchOnBlur, getTipListsMess, changeSearchEngine, searchObtOnClick, searchTipsOnClick,inputFocus,clearSearchTextOnClick}
+    return { inputDom, searchText, searchPlaceHolder, searchEngineName, isShowSearchMask, searchTips, isShowSearchTips, searchEnginesMess, searchOnFocus, searchOnBlur, getTipListsMess, changeSearchEngine, searchObtOnClick, searchTipsOnClick, inputFocus, clearSearchTextOnClick }
 })
