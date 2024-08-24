@@ -79,7 +79,7 @@ onMounted(() => {
       <div>
         <settings></settings>
       </div>
-      <div ref="menuDom" class="absolute transition-opacity ease-in-out duration-500">
+      <div ref="menuDom" class="absolute top-0 transition-opacity ease-in-out duration-500 z-[-1]">
         <menuPart></menuPart>
       </div>
     </div>
