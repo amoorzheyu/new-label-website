@@ -132,6 +132,11 @@ export const useSearchPartStore = defineStore('searchPart', () => {
             })
         }
     }
+    //清空搜索框
+    const clearSearchTextOnClick = () => {
+        searchText.value = '';
+        searchTips.value=[]
+    }
 
     //点击搜索按钮进行搜索
     const searchObtOnClick = () => {
@@ -168,5 +173,5 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         manualMockBackgroundDom.value.style.transform = 'scale(1)'
     }
 
-    return { searchText, searchPlaceHolder, searchEngineName, isShowSearchMask, searchTips, isShowSearchTips, searchEnginesMess, searchOnFocus, searchOnBlur, getTipListsMess, changeSearchEngine, searchObtOnClick, searchTipsOnClick }
+    return { searchText, searchPlaceHolder, searchEngineName, isShowSearchMask, searchTips, isShowSearchTips, searchEnginesMess, searchOnFocus, searchOnBlur, getTipListsMess, changeSearchEngine, searchObtOnClick, searchTipsOnClick,clearSearchTextOnClick }
 })
