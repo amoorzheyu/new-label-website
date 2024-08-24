@@ -22,12 +22,11 @@ export const useSearchPartStore = defineStore('searchPart', () => {
             searchUrlMod: 'https://cn.bing.com/search?q=#context#',
             searchTipsMod: 'https://api.bing.com/qsonhs.aspx?type=cb&q=#context#',
             jsonpKey: 'cb',
-        },
-        {
+        }, {
             id: 1,
             name: '百度',
             placeHolder: '百度一下',
-            searchUrlMod: 'https://www.baidu.com/s?wd=#context#',
+            searchUrlMod: 'https://www.baidu.com/s?wd="#context#"',
             searchTipsMod: 'https://suggestion.baidu.com/su?ie=UTF-8&wd=#context#',
             jsonpKey: 'cb',
         },
@@ -50,6 +49,9 @@ export const useSearchPartStore = defineStore('searchPart', () => {
     let searchPlaceHolder = computed(() => {//当前placeHolder文本
         return searchEnginesMess.value[searchEngineIndex.value].placeHolder;
     })
+
+    //发出请求频率控制时钟
+    let requestControlTimer = null;
 
     //输入框Dom
     let inputDom = ref(null)
@@ -108,7 +110,7 @@ export const useSearchPartStore = defineStore('searchPart', () => {
     //关闭获取提示列表错误定时器
     const closeTipListsMessErrorTimer = () => {
         if (getTipListsMessErrorTimer) {
-            clearTimeout(getTipListsMessErrorTimer.value)
+            clearTimeout(getTipListsMessErrorTimer)
         }
     }
 
@@ -116,27 +118,37 @@ export const useSearchPartStore = defineStore('searchPart', () => {
     const getTipListsMess = () => {
         if (searchText.value.length == 0) return;
         let index = searchEngineIndex.value
+        let text = searchText.value
+        if (index == 1) {
+            text = encodeURIComponent(text)
+            text = text.replace(/([a-zA-Z])([a-zA-Z])/g, '\$1%20\$2%20')
+        }
         let item = searchEnginesMess.value[index]
         let { searchTipsMod, jsonpKey } = item
-        let url = searchTipsMod.replace('#context#', searchText.value)
-        fetchJsonp(url, {
-            jsonpCallback: jsonpKey,
-        })
-            .then(function (response) {
-                return response.json()
-            }).then(function (data) {
-                if(searchText.value){
-                    searchTips.value = getParseJsonpData[index](data);
-                }
-               
-            }).catch(function (ex) {
+        let url = searchTipsMod.replace('#context#', text)
 
-                closeTipListsMessErrorTimer();
-
-                getTipListsMessErrorTimer = setTimeout(() => {
-                    getTipListsMessError(searchEngineIndex.value)
-                }, 1000)
+        try {
+            fetchJsonp(url, {
+                jsonpCallback: jsonpKey,
             })
+                .then(function (response) {
+                    return response.json()
+                }).then(function (data) {
+                    if (searchText.value) {
+                        searchTips.value = getParseJsonpData[index](data);
+                    }
+
+                }).catch(function (ex) {
+                    closeTipListsMessErrorTimer();
+
+                    getTipListsMessErrorTimer = setTimeout(() => {
+                        getTipListsMessError(searchEngineIndex.value)
+                    }, 1000)
+                })
+        }
+        catch (err) {
+            // console.log('err',err)
+        }
     }
 
     //获取搜索提示失败处理
@@ -145,12 +157,6 @@ export const useSearchPartStore = defineStore('searchPart', () => {
             ElNotification({
                 title: 'VPN未开启或网络异常',
                 message: '请检查VPN及网络是否通畅',
-                type: 'error',
-            })
-        } else {
-            ElNotification({
-                title: '网络异常',
-                message: '请检查网络是否通畅',
                 type: 'error',
             })
         }
@@ -180,7 +186,18 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         if (newValue.length == 0) {
             searchTips.value = []
         } else {
-            getTipListsMess()
+            if (requestControlTimer) {
+                clearTimeout(requestControlTimer)
+            }
+            requestControlTimer = setTimeout(() => {
+                try {
+                    getTipListsMess()
+                }
+                catch (err) {
+                    console.log('3333')
+                }
+            }, 100)
+
         }
     })
 

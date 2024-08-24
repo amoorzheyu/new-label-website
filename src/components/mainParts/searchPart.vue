@@ -123,6 +123,7 @@ const searchBarClickEvent = () => {
     outline: none;
     display: block;
     padding-left: 170px;
+    padding-right: 120px;
     font-size: 21px;
 }
 
