@@ -7,3 +7,9 @@
 :root {
     -webkit-user-select: none;
 }
+
+::-webkit-scrollbar {
+    width: 0px; /* 纵向滚动条*/
+    height: 0px; /* 横向滚动条 */
+    background-color: #fff;
+}

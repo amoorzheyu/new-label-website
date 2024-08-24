@@ -37,7 +37,19 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         }
     ]) //搜素引擎信息
 
-    let searchEngineIndex = ref(0)//搜索引擎索引
+    let searchEngineIndex = ref(0)//当前搜索引擎索引
+
+    let searchEngineName = computed(() => {//当前搜索引擎名字
+        return searchEnginesMess.value[searchEngineIndex.value].name;
+    })
+
+
+    //切换当前搜索引擎
+    const changeSearchEngine = (index) => {
+        searchEngineIndex.value = index
+        getTipListsMess()
+    }
+
     let searchTips = ref([])//搜索提示列表
 
     let isShowSearchTips = computed(() => {//是否显示搜索提示列表
@@ -73,6 +85,7 @@ export const useSearchPartStore = defineStore('searchPart', () => {
 
     //获取搜索提示列表
     const getTipListsMess = () => {
+        if(searchText.value.length==0) return;
         let index = searchEngineIndex.value
         let item = searchEnginesMess.value[index]
         let { searchTipsMod, jsonpKey } = item
@@ -124,5 +137,5 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         manualMockBackgroundDom.value.style.transform = 'scale(1)'
     }
 
-    return { searchText, isShowSearchMask,searchTips,isShowSearchTips,searchEnginesMess, searchOnFocus, searchOnBlur,getTipListsMess }
+    return { searchText, searchEngineName,isShowSearchMask,searchTips,isShowSearchTips,searchEnginesMess, searchOnFocus, searchOnBlur,getTipListsMess,changeSearchEngine,searchObtOnClick,searchTipsOnClick }
 })
