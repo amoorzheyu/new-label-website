@@ -152,6 +152,11 @@ export const useSearchPartStore = defineStore('searchPart', () => {
             })
         }
     }
+    //清空搜索框
+    const clearSearchTextOnClick = () => {
+        searchText.value = '';
+        searchTips.value=[]
+    }
 
     //点击搜索按钮进行搜索
     const searchObtOnClick = () => {
