@@ -8,22 +8,22 @@ let { isShowSearch } = storeToRefs(useLayoutElementStore())
 
 //pinia-> useSearchPartStore
 import { useSearchPartStore } from "@/stores/searchPart";
-let { searchText, isShowSearchMask, searchPlaceHolder,searchEngineName,searchTips, isShowSearchTips, searchEnginesMess } = storeToRefs(useSearchPartStore());
-const { searchOnFocus, searchOnBlur, getTipListsMess,changeSearchEngine,searchTipsOnClick,searchObtOnClick } = useSearchPartStore();
+let { searchText, isShowSearchMask,inputDom, searchPlaceHolder,searchEngineName,searchTips, isShowSearchTips, searchEnginesMess } = storeToRefs(useSearchPartStore());
+const { searchOnFocus,inputFocus, searchOnBlur, getTipListsMess,changeSearchEngine,searchTipsOnClick,searchObtOnClick } = useSearchPartStore();
 
 //输入框获取焦点事件
 const searchFocusEvent = () => {
     searchOnFocus();
 }
 
-//输入框失去焦点事件
-const searchBlurEvent = () => {
-    searchOnBlur();
-}
-
 //搜索框外整体点击事件
 const searchBarOutClickEvent = () => {
     searchOnBlur();
+}
+
+//搜索所有部分点击事件
+const searchBarClickEvent = () => {
+    inputFocus();
 }
 //搜索框下拉
 const searchChangeEvent = () => {
@@ -41,7 +41,7 @@ const searchTipClickEvent = (index) => {
             style="backdrop-filter:blur(30px)">
         </div>
         <div v-show="!isShowSearch" class="h-[80px]"></div>
-        <div v-show="isShowSearch" class="flex justify-center" v-click-outside="searchBarOutClickEvent">
+        <div v-show="isShowSearch" class="flex justify-center" @click="searchBarClickEvent" v-click-outside="searchBarOutClickEvent">
             <div class="w-[1000px] h-[80px] flex justify-center relative">
                 <div
                     class="button-class absolute z-10 left-[65px] top-[16px] flex items-center justify-center bg-[var(--ground-glass-background-color)] backdrop-blur-2xl  rounded-[32px] w-[130px] h-[50px]">
@@ -67,7 +67,7 @@ const searchTipClickEvent = (index) => {
                     </div>
                 </div>
 
-                <div><input :placeholder="searchPlaceHolder" @focus="searchFocusEvent"
+                <div><input ref="inputDom" :placeholder="searchPlaceHolder" @focus="searchFocusEvent"
                         @change="searchChangeEvent" v-model="searchText"
                         class="input-class bg-[var(--ground-glass-boardr-color)] backdrop-blur-xl w-[900px] h-[80px]  rounded-[52px] shadow-md" />
                 </div>
