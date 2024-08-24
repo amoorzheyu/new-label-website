@@ -51,11 +51,22 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         return searchEnginesMess.value[searchEngineIndex.value].placeHolder;
     })
 
+    //输入框Dom
+    let inputDom = ref(null)
+
+    //输入框Dom获取焦点
+    const inputFocus = () => {
+        inputDom.value.focus();
+    }
 
     //切换当前搜索引擎
     const changeSearchEngine = (index) => {
         searchEngineIndex.value = index
         getTipListsMess()
+        if (isShowSearchMask.value) {
+            inputFocus()
+        }
+        closeTipListsMessErrorTimer()
     }
 
     let searchTips = ref([])//搜索提示列表
@@ -94,6 +105,13 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         }
     }
 
+    //关闭获取提示列表错误定时器
+    const closeTipListsMessErrorTimer = () => {
+        if (getTipListsMessErrorTimer) {
+            clearTimeout(getTipListsMessErrorTimer.value)
+        }
+    }
+
     //获取搜索提示列表
     const getTipListsMess = () => {
         if (searchText.value.length == 0) return;
@@ -109,10 +127,12 @@ export const useSearchPartStore = defineStore('searchPart', () => {
             }).then(function (data) {
                 searchTips.value = getParseJsonpData[index](data);
             }).catch(function (ex) {
-                if(getTipListsMessErrorTimer) clearTimeout(getTipListsMessErrorTimer)
-                    getTipListsMessErrorTimer = setTimeout(() => {
-                        getTipListsMessError(searchEngineIndex.value)
-                    }, 1000)
+                
+                closeTipListsMessErrorTimer();
+
+                getTipListsMessErrorTimer = setTimeout(() => {
+                    getTipListsMessError(searchEngineIndex.value)
+                }, 1000)
             })
     }
 
@@ -124,13 +144,18 @@ export const useSearchPartStore = defineStore('searchPart', () => {
                 message: '请检查VPN及网络是否通畅',
                 type: 'error',
             })
-        }else{
+        } else {
             ElNotification({
                 title: '网络异常',
                 message: '请检查网络是否通畅',
                 type: 'error',
             })
         }
+    }
+    //清空搜索框
+    const clearSearchTextOnClick = () => {
+        searchText.value = '';
+        searchTips.value=[]
     }
 
     //点击搜索按钮进行搜索
@@ -168,5 +193,5 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         manualMockBackgroundDom.value.style.transform = 'scale(1)'
     }
 
-    return { searchText, searchPlaceHolder, searchEngineName, isShowSearchMask, searchTips, isShowSearchTips, searchEnginesMess, searchOnFocus, searchOnBlur, getTipListsMess, changeSearchEngine, searchObtOnClick, searchTipsOnClick }
+    return { inputDom, searchText, searchPlaceHolder, searchEngineName, isShowSearchMask, searchTips, isShowSearchTips, searchEnginesMess, searchOnFocus, searchOnBlur, getTipListsMess, changeSearchEngine, searchObtOnClick, searchTipsOnClick,inputFocus}
 })
