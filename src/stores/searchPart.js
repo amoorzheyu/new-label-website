@@ -125,7 +125,10 @@ export const useSearchPartStore = defineStore('searchPart', () => {
             .then(function (response) {
                 return response.json()
             }).then(function (data) {
-                searchTips.value = getParseJsonpData[index](data);
+                if(searchText.value){
+                    searchTips.value = getParseJsonpData[index](data);
+                }
+               
             }).catch(function (ex) {
 
                 closeTipListsMessErrorTimer();
