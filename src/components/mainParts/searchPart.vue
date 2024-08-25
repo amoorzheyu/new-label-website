@@ -8,8 +8,8 @@ let { isShowSearch } = storeToRefs(useLayoutElementStore())
 
 //pinia-> useSearchPartStore
 import { useSearchPartStore } from "@/stores/searchPart";
-let { searchText, isShowSearchMask,inputDom, searchPlaceHolder,searchEngineName,searchTips, isShowSearchTips, searchEnginesMess } = storeToRefs(useSearchPartStore());
-const { searchOnFocus,inputFocus, searchOnBlur, getTipListsMess,changeSearchEngine,searchTipsOnClick,searchObtOnClick,clearSearchTextOnClick } = useSearchPartStore();
+let { searchText, isShowSearchMask,inputDom, searchPlaceHolder,searchEngineName,searchTips, isShowSearchTips, searchEnginesMess ,nowSelectedSearchTipsIndex} = storeToRefs(useSearchPartStore());
+const { searchOnFocus,inputFocus, searchOnBlur,searchOnKeyup,changeSearchEngine,searchTipsOnClick,searchObtOnClick,clearSearchTextOnClick } = useSearchPartStore();
 
 //输入框获取焦点事件
 const searchFocusEvent = () => {
@@ -24,6 +24,11 @@ const searchBarOutClickEvent = () => {
 //搜索所有部分点击事件
 const searchBarClickEvent = () => {
     inputFocus();
+}
+
+//输入框键盘事件
+const searchKeyupEvent = (e) => {
+    searchOnKeyup(e);
 }
 
 </script>
@@ -65,7 +70,7 @@ const searchBarClickEvent = () => {
                     </div>
                 </div>
 
-                <div><input ref="inputDom" :placeholder="searchPlaceHolder" @focus="searchFocusEvent"
+                <div><input ref="inputDom" :placeholder="searchPlaceHolder" @keydown="searchKeyupEvent" @focus="searchFocusEvent"
                          v-model="searchText"
                         class="input-class bg-[var(--ground-glass-boardr-color)] backdrop-blur-xl w-[900px] h-[80px]  rounded-[52px] shadow-md" />
                 </div>
@@ -97,7 +102,7 @@ const searchBarClickEvent = () => {
                 <div class="flex justify-center absolute top-[70px] " v-show="isShowSearchTips">
                     <div
                         class="w-[900px] bg-[#fff3] bg-[var(--ground-glass-boardr-color)] backdrop-blur-xl rounded-[26px] shadow-md mt-[20px] p-1">
-                        <div class="flex items-center content-center m-2 p-3 rounded-[26px] search"
+                        <div :class="`flex items-center content-center m-2 p-3 rounded-[26px] search ${nowSelectedSearchTipsIndex==index?'searchSelected':''}`"
                             v-for="(item, index) in searchTips" @click="searchTipsOnClick(index)">
                             <div class="w-[30px] h-[30px] text-[var(--ground-glass-icon-color)] button-inner-class">
                                 <svg viewBox="0 0 24 24">
@@ -158,6 +163,11 @@ const searchBarClickEvent = () => {
 
 /*** 搜索下拉框 ***/
 .search:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: all 0.1s ease-in-out;
+}
+
+.searchSelected{
     background-color: rgba(255, 255, 255, 0.2);
     transition: all 0.1s ease-in-out;
 }

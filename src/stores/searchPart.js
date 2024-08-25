@@ -50,9 +50,6 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         return searchEnginesMess.value[searchEngineIndex.value].placeHolder;
     })
 
-    //发出请求频率控制时钟
-    let requestControlTimer = null;
-
     //输入框Dom
     let inputDom = ref(null)
 
@@ -63,8 +60,11 @@ export const useSearchPartStore = defineStore('searchPart', () => {
 
     //切换当前搜索引擎
     const changeSearchEngine = (index) => {
+        if (searchEngineIndex.value != 2) {
+            getTipListsMess()
+        }
         searchEngineIndex.value = index
-        getTipListsMess()
+
         if (isShowSearchMask.value) {
             inputFocus()
         }
@@ -169,6 +169,7 @@ export const useSearchPartStore = defineStore('searchPart', () => {
 
     //点击搜索按钮进行搜索
     const searchObtOnClick = () => {
+        if (searchText.value.length == 0) return;
         let searchUrl = searchEnginesMess.value[searchEngineIndex.value].searchUrlMod.replace('#context#', searchText.value)
         window.open(searchUrl)
     }
@@ -180,24 +181,72 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         window.open(searchUrl)
     }
 
+    //记录原搜素内容
+    let originalSearchText = ref('')
+
+    //当前选择记录索引
+    let nowSelectedSearchTipsIndex = ref(-1)
+
+    //点击上下键事件
+    const searchOnAndDownKeyDown = (value) => {
+        if (searchTips.length == 0) return;
+        //存储原输入框的搜索文本
+        let keepOrinSearchText = () => {
+            if (nowSelectedSearchTipsIndex.value == -1) {
+                originalSearchText.value = searchText.value
+            }
+        }
+
+        //转化为当前实际搜索记录的索引
+        let toRealSearchTipsIndex = () => {
+            let index = nowSelectedSearchTipsIndex.value
+            let length = searchTips.value.length
+            if (index == -2) {
+                nowSelectedSearchTipsIndex.value = length - 1
+            } else if (index == length) {
+                nowSelectedSearchTipsIndex.value = -1
+            }
+        }
+
+        //恢复原先文本
+        let recoverOrinSearchText = () => {
+            if (nowSelectedSearchTipsIndex.value == -1) {
+                searchText.value = originalSearchText.value
+            }
+        }
+
+        //设置当前搜索框内容
+        let setSearchTextFromTips = () => {
+            if (nowSelectedSearchTipsIndex.value != -1) {
+                searchText.value = searchTips.value[nowSelectedSearchTipsIndex.value]
+            }
+        }
+        keepOrinSearchText()
+        switch (value) {
+            case 'ArrowUp':
+                nowSelectedSearchTipsIndex.value--
+                break;
+            case 'ArrowDown':
+                nowSelectedSearchTipsIndex.value++
+                break;
+        }
+        toRealSearchTipsIndex()
+        setSearchTextFromTips()
+        recoverOrinSearchText()
+    }
+
+
+
 
     //监听搜索文本
     watch(searchText, (newValue, oldValue) => {
         if (newValue.length == 0) {
+            nowSelectedSearchTipsIndex.value = -1
             searchTips.value = []
         } else {
-            if (requestControlTimer) {
-                clearTimeout(requestControlTimer)
+            if (nowSelectedSearchTipsIndex.value == -1) {
+                getTipListsMess()
             }
-            requestControlTimer = setTimeout(() => {
-                try {
-                    getTipListsMess()
-                }
-                catch (err) {
-                    console.log('3333')
-                }
-            }, 100)
-
         }
     })
 
@@ -215,5 +264,47 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         manualMockBackgroundDom.value.style.transform = 'scale(1)'
     }
 
-    return { inputDom, searchText, searchPlaceHolder, searchEngineName, isShowSearchMask, searchTips, isShowSearchTips, searchEnginesMess, searchOnFocus, searchOnBlur, getTipListsMess, changeSearchEngine, searchObtOnClick, searchTipsOnClick, inputFocus, clearSearchTextOnClick }
+    //手动去除焦点
+    let searchOnManualBlur = () => {
+        searchOnBlur();
+        inputDom.value.blur()
+    }
+
+    //手动切换引擎
+    let changeSearchEngineOnClick = () => {
+        let index = searchEngineIndex.value + 1
+        if (index == searchEnginesMess.value.length) {
+            index = 0
+        }
+        changeSearchEngine(index)
+    }
+
+    //输入框按键事件
+    let searchOnKeyup = (event) => {
+        let keyCode = event.keyCode
+        switch (keyCode) {
+            case 13://回车
+                searchObtOnClick()
+                break;
+            case 38://上键
+                event.preventDefault();
+                searchOnAndDownKeyDown('ArrowUp')
+                break;
+            case 40://下键
+                event.preventDefault();
+                searchOnAndDownKeyDown('ArrowDown')
+                break;
+            case 9: //tab键
+                event.preventDefault();
+                changeSearchEngineOnClick()
+                break;
+            case 27://esc键
+                searchOnManualBlur();
+                break;
+            default:
+                break;
+        }
+    }
+
+    return { inputDom, searchText, searchPlaceHolder, searchEngineName, isShowSearchMask, searchTips, isShowSearchTips, searchEnginesMess,nowSelectedSearchTipsIndex, searchOnKeyup, searchOnFocus, searchOnBlur, getTipListsMess, changeSearchEngine, searchObtOnClick, searchTipsOnClick, inputFocus, clearSearchTextOnClick }
 })
