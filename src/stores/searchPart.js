@@ -303,7 +303,7 @@ export const useSearchPartStore = defineStore('searchPart', () => {
                 break;
             default:
                 nowSelectedSearchTipsIndex.value = -1
-                originalSearchText.value = newValue
+                originalSearchText.value = searchText.value
                 break;
         }
     }
