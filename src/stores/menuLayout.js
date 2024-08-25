@@ -15,7 +15,7 @@ export const useMenuLayoutStore = defineStore('menuLayout', () => {
 
     watch(() => isShowMenu.value, (newValue) => {
         if (newValue) {
-            menuDom.value.style.zIndex = 999;
+            menuDom.value.style.zIndex = 9999;
             menuDom.value.style.opacity = 1;
 
         } else {

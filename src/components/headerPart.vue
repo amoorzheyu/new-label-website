@@ -8,8 +8,7 @@ const { changeTheme } = useThemeSwapStore()
 
 // pinia->useIsShowDialogsStore
 import { useIsShowDialogsStore } from '@/stores/isShowDialogs'
-let { isShowSettingDialog } = storeToRefs(useIsShowDialogsStore())
-
+let { isShowSettingDialog,isShowNavigationManagementDialog } = storeToRefs(useIsShowDialogsStore())
 
 // pinia-> useLayoutElementStore
 import { useLayoutElementStore } from '@/stores/layoutElement'
@@ -25,7 +24,7 @@ const swapThemeEvent = () => {
   <div class=" relative z-10">
     <div v-show="!isShowTopMenu" class="h-[58px]"></div>
     <div class="flex justify-end mr-2 mt-2" v-show="isShowTopMenu">
-      <div class="button-class">
+      <div class="button-class" @click="isShowNavigationManagementDialog=true">
         <svg class="svg-class" data-v-81d5a9b4="" viewBox="0 0 24 24" width="1em" height="1em">
           <path fill="none" stroke="currentColor" stroke-width="1.5"
             d="M3 7.4V3.6a.6.6 0 0 1 .6-.6h5.8a.6.6 0 0 1 .6.6v3.8a.6.6 0 0 1-.6.6H3.6a.6.6 0 0 1-.6-.6Zm11 13v-3.8a.6.6 0 0 1 .6-.6h5.8a.6.6 0 0 1 .6.6v3.8a.6.6 0 0 1-.6.6h-5.8a.6.6 0 0 1-.6-.6Zm0-8V3.6a.6.6 0 0 1 .6-.6h5.8a.6.6 0 0 1 .6.6v8.8a.6.6 0 0 1-.6.6h-5.8a.6.6 0 0 1-.6-.6Zm-11 8v-8.8a.6.6 0 0 1 .6-.6h5.8a.6.6 0 0 1 .6.6v8.8a.6.6 0 0 1-.6.6H3.6a.6.6 0 0 1-.6-.6Z">

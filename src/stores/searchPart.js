@@ -302,11 +302,11 @@ export const useSearchPartStore = defineStore('searchPart', () => {
                 searchOnManualBlur();
                 break;
             default:
-                    nowSelectedSearchTipsIndex.value = -1
-                    originalSearchText.value = newValue
+                nowSelectedSearchTipsIndex.value = -1
+                originalSearchText.value = newValue
                 break;
         }
     }
 
-    return { inputDom, searchText, searchPlaceHolder, searchEngineName, isShowSearchMask, searchTips, isShowSearchTips, searchEnginesMess,nowSelectedSearchTipsIndex, searchOnKeyup, searchOnFocus, searchOnBlur, getTipListsMess, changeSearchEngine, searchObtOnClick, searchTipsOnClick, inputFocus, clearSearchTextOnClick }
+    return { inputDom, searchText, searchPlaceHolder, searchEngineName, isShowSearchMask, searchTips, isShowSearchTips, searchEnginesMess, nowSelectedSearchTipsIndex, searchOnKeyup, searchOnFocus, searchOnBlur, getTipListsMess, changeSearchEngine, searchObtOnClick, searchTipsOnClick, inputFocus, clearSearchTextOnClick }
 })

@@ -38,10 +38,10 @@ const searchKeyupEvent = (e) => {
             style="backdrop-filter:blur(30px)">
         </div>
         <div v-show="!isShowSearch" class="h-[80px]"></div>
-        <div v-show="isShowSearch" class="flex justify-center" @click="searchBarClickEvent" v-click-outside="searchBarOutClickEvent">
+        <div v-show="isShowSearch" class="flex justify-center " @click="searchBarClickEvent" v-click-outside="searchBarOutClickEvent">
             <div class="w-[1000px] h-[80px] flex justify-center relative">
                 <div
-                    class="button-class absolute z-10 left-[65px] top-[16px] flex items-center justify-center bg-[var(--ground-glass-background-color)] backdrop-blur-2xl  rounded-[32px] w-[130px] h-[50px]">
+                    class="button-class  absolute z-10 left-[65px] top-[16px] flex items-center justify-center bg-[var(--ground-glass-background-color)] backdrop-blur-2xl  rounded-[32px] w-[130px] h-[50px]">
                     <div class="button-inner-class flex text-[20px] items-center justify-between w-[95px]">
                         <div class="">
                             <svg data-v-92a36aee="" viewBox="0 0 24 24" width="1em" height="1em" class="text-3xl"><path d="M6.217 12.486c1.964-.422 1.693-2.772 1.637-3.287c-.096-.788-1.028-2.172-2.291-2.061c-1.588.141-1.821 2.44-1.821 2.44c-.216 1.06.515 3.33 2.475 2.908m3.646-3.944c1.084 0 1.959-1.251 1.959-2.792c0-1.537-.871-2.785-1.955-2.785c-1.086 0-1.966 1.242-1.966 2.785s.88 2.792 1.965 2.792m4.671.186c1.454.195 2.38-1.355 2.568-2.53c.188-1.166-.754-2.528-1.776-2.763c-1.031-.237-2.303 1.411-2.431 2.484c-.136 1.318.188 2.627 1.634 2.813m5.751 1.973c0-.562-.46-2.253-2.19-2.253c-1.729 0-1.965 1.596-1.965 2.726c0 1.077.089 2.573 2.247 2.528c2.148-.052 1.913-2.438 1.913-3.002M18.1 15.626s-2.247-1.739-3.557-3.613c-1.776-2.768-4.304-1.64-5.144-.239c-.845 1.418-2.153 2.306-2.339 2.544c-.188.232-2.709 1.596-2.147 4.079c.563 2.483 2.528 2.439 2.528 2.439s1.446.142 3.133-.234c1.686-.375 3.13.091 3.13.091s3.92 1.317 5.005-1.212c1.072-2.537-.61-3.847-.61-3.847" fill="currentColor"></path></svg>
@@ -53,7 +53,7 @@ const searchKeyupEvent = (e) => {
                     </div>
                 </div>
                 <!-- 搜索引擎下拉 -->
-                <div class="button-dropList absolute left-[50px] top-[68px] z-10  pt-[20px]">
+                <div class="button-dropList absolute left-[50px] top-[63px] z-10  pt-[20px]">
                     <div
                         class="flex-col items-center justify-center text-center p-2 bg-[var(--ground-glass-background-color)] backdrop-blur-xl rounded-[16px] ">
                         <div class="button-dropList-item rounded-[32px]  w-[130px] p-[10px] m-1 text-[20px]"
@@ -70,7 +70,8 @@ const searchKeyupEvent = (e) => {
                     </div>
                 </div>
 
-                <div><input ref="inputDom" :placeholder="searchPlaceHolder" @keydown="searchKeyupEvent" @focus="searchFocusEvent"
+                <div class="">
+                    <input ref="inputDom" :placeholder="searchPlaceHolder" @keydown="searchKeyupEvent" @focus="searchFocusEvent"
                          v-model="searchText"
                         class="input-class bg-[var(--ground-glass-boardr-color)] backdrop-blur-xl w-[900px] h-[80px]  rounded-[52px] shadow-md" />
                 </div>
@@ -174,15 +175,15 @@ const searchKeyupEvent = (e) => {
 /*** 搜索引擎 ***/
 .button-dropList {
 
-    transition: all 3s ease-in-out;
-    display: none;
+    transition: all 100ms ease-out;
+    height: 0px;
+    @apply  overflow-auto delay-[300ms];
 }
 
 .button-class:hover+.button-dropList,
 .button-dropList:hover {
 
-    height: fit-content;
-    display: block;
+    height: 250px;
 }
 
 .button-dropList-item:hover {

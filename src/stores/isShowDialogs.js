@@ -9,5 +9,7 @@ import { defineStore } from 'pinia'
 export const useIsShowDialogsStore = defineStore('isShowDialogs', () => {
     let isShowSettingDialog = ref(false)
 
-    return { isShowSettingDialog }
+    let isShowNavigationManagementDialog = ref(false)
+
+    return { isShowSettingDialog,isShowNavigationManagementDialog }
 })

@@ -64,7 +64,7 @@ const closedDialog=()=>{
 
 </script>
 <template>
-    <div>
+    <div @contextmenu.stop>
         <div class=" overflow-hidden">
             <el-dialog modal-class="modal-myClass" @closed="closedDialog" v-model="isShowSettingDialog">
                 <div>

@@ -9,6 +9,8 @@ import menuPart from "@/components/mainParts/menuPart.vue";
 
 import settings from "@/components/dialogParts/settings.vue";
 
+import navigationManagement from "@/components/dialogParts/navigationManagement.vue";
+
 // pinia->useThemeSwapStore
 import { useThemeSwapStore } from "@/stores/themeSwap";
 const { initTheme } = useThemeSwapStore();
@@ -46,10 +48,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <div   @contextmenu="menuClickEvent">
     <div
       ref="currentImageDom"
-      @contextmenu="menuClickEvent"
       class="h-[100vh] flex flex-col bg-cover bg-center text-[#fff] transition-all"
       style="transition: background-size 0.5s linear, background-image 0.5s"
     >
@@ -78,6 +79,9 @@ onMounted(() => {
     <div>
       <div>
         <settings></settings>
+      </div>
+      <div>
+        <navigationManagement></navigationManagement>
       </div>
       <div ref="menuDom" class="absolute top-0 transition-opacity ease-in-out duration-500 z-[-1]">
         <menuPart></menuPart>

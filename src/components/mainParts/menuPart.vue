@@ -19,6 +19,16 @@ let {
   isShowSwitchTheme,
 } = storeToRefs(useMenuLayoutStore());
 
+// pinia->useThemeSwapStore
+import { useThemeSwapStore } from '@/stores/themeSwap'
+let { nowThemeIndex } = storeToRefs(useThemeSwapStore())
+const { changeTheme } = useThemeSwapStore()
+
+// 切换主题
+const changeThemeEvent = () => {
+  changeTheme(nowThemeIndex.value);
+};
+
 //点击菜单之外
 const clickMenuOutsideEvent = () => {
   isShowMenu.value = false;
@@ -184,7 +194,7 @@ const clickMenuOutsideEvent = () => {
           <div>设置</div>
         </div>
       </div>
-      <div v-show="isShowSwitchTheme" class="menuItem">
+      <div v-show="isShowSwitchTheme" @click="changeThemeEvent" class="menuItem">
         <div>
           <div>
             <svg viewBox="0 0 24 24" width="1em" height="1em">
