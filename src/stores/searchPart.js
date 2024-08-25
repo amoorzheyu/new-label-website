@@ -302,6 +302,8 @@ export const useSearchPartStore = defineStore('searchPart', () => {
                 searchOnManualBlur();
                 break;
             default:
+                    nowSelectedSearchTipsIndex.value = -1
+                    originalSearchText.value = newValue
                 break;
         }
     }
