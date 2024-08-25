@@ -164,12 +164,11 @@ const searchKeyupEvent = (e) => {
 /*** 搜索下拉框 ***/
 .search:hover {
     background-color: rgba(255, 255, 255, 0.2);
-    transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-out;
 }
 
 .searchSelected{
     background-color: rgba(255, 255, 255, 0.2);
-    transition: all 0.1s ease-in-out;
 }
 
 /*** 搜索引擎 ***/
