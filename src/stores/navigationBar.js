@@ -25,24 +25,24 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
                     id: 0,
                     url: '',
                     name: '项目1-0',
-                    iconType: 'Text',
+                    iconType: 'Icon',
                     isShowOnDesktop: true,
-                    icon: '',
+                    icon: 'https://blog.csdn.net/favicon.ico',
                     sortId: 0,
                 },
                 {
                     id: 1,
                     url: '',
-                    name: '项目 1-1',
+                    name: '1',
                     iconType: 'Text',
                     isShowOnDesktop: true,
-                    icon: '',
+                    icon: '123',
                     sortId: 1,
                 },
                 {
                     id: 2,
                     url: '',
-                    name: '项目 1-2',
+                    name: '笑123 1-2111111111111',
                     iconType: 'Text',
                     isShowOnDesktop: true,
                     icon: '',
@@ -193,6 +193,84 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
                     icon: '',
                     sortId: 4,
                     sortName: '项目 2-2'
+                }
+            ]
+        },
+        {
+            id: 3,
+            name: '导航 3',
+            items: [
+                {
+                    id: 5,
+                    url: '',
+                    name: '项目 3-1',
+                    iconType: 'Text',
+                    isShowOnDesktop: true,
+                    icon: '',
+                    sortId: 5,
+                    sortName: '项目 3-1'
+                },
+                {
+                    id: 6,
+                    url: '',
+                    name: '项目 3-2',
+                    iconType: 'Text',
+                    isShowOnDesktop: true,
+                    icon: '',
+                    sortId: 6,
+                    sortName: '项目 3-2'
+                }
+            ]
+        },
+        {
+            id: 3,
+            name: '导航 3',
+            items: [
+                {
+                    id: 5,
+                    url: '',
+                    name: '项目 3-1',
+                    iconType: 'Text',
+                    isShowOnDesktop: true,
+                    icon: '',
+                    sortId: 5,
+                    sortName: '项目 3-1'
+                },
+                {
+                    id: 6,
+                    url: '',
+                    name: '项目 3-2',
+                    iconType: 'Text',
+                    isShowOnDesktop: true,
+                    icon: '',
+                    sortId: 6,
+                    sortName: '项目 3-2'
+                }
+            ]
+        },
+        {
+            id: 3,
+            name: '导航 3',
+            items: [
+                {
+                    id: 5,
+                    url: '',
+                    name: '项目 3-1',
+                    iconType: 'Text',
+                    isShowOnDesktop: true,
+                    icon: '',
+                    sortId: 5,
+                    sortName: '项目 3-1'
+                },
+                {
+                    id: 6,
+                    url: '',
+                    name: '项目 3-2',
+                    iconType: 'Text',
+                    isShowOnDesktop: true,
+                    icon: '',
+                    sortId: 6,
+                    sortName: '项目 3-2'
                 }
             ]
         },
