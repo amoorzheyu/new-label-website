@@ -36,7 +36,7 @@ const clickMenuOutsideEvent = () => {
 </script>
 <template>
   <div v-click-outside="clickMenuOutsideEvent">
-    <div class="bg-[#fff] text-[#000] px-[18px] py-[10px] rounded-xl">
+    <div class="bg-[#fff] text-[#000] px-[18px] py-[10px] rounded-xl shadow">
       <div v-show="isShowEdit" class="menuItem">
         <div>
           <div>
