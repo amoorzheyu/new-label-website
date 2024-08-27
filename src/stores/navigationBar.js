@@ -42,107 +42,20 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
                 {
                     id: 2,
                     url: '',
-                    name: '笑123 1-2111111111111',
-                    iconType: 'Text',
+                    name: '2',
+                    iconType: 'Icon',
                     isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 2,
-                },   {
-                    id: 1,
-                    url: '',
-                    name: '项目 1-1',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 1,
-                },
-                {
-                    id: 2,
-                    url: '',
-                    name: '项目 1-2',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 2,
-                },
-                {
-                    id: 0,
-                    url: '',
-                    name: '项目1-0',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
+                    icon: 'https://blog.csdn.net/favicon.ico',
                     sortId: 0,
                 },
                 {
-                    id: 1,
+                    id: 3,
                     url: '',
-                    name: '项目 1-1',
+                    name: '3',
                     iconType: 'Text',
                     isShowOnDesktop: true,
-                    icon: '',
+                    icon: '123',
                     sortId: 1,
-                },
-                {
-                    id: 2,
-                    url: '',
-                    name: '项目 1-2',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 2,
-                },   {
-                    id: 1,
-                    url: '',
-                    name: '项目 1-1',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 1,
-                },
-                {
-                    id: 2,
-                    url: '',
-                    name: '项目 1-2',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 2,
-                },
-                {
-                    id: 1,
-                    url: '',
-                    name: '项目 1-1',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 1,
-                },
-                {
-                    id: 2,
-                    url: '',
-                    name: '项目 1-2',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 2,
-                },   {
-                    id: 1,
-                    url: '',
-                    name: '项目 1-1',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 1,
-                },
-                {
-                    id: 2,
-                    url: '',
-                    name: '项目 1-2',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 2,
                 }
             ]
         },
@@ -223,18 +136,44 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
             ]
         },
         {
-            id: 3,
-            name: '导航 3',
+            id: 4,
+            name: '导航 4',
             items: [
                 {
                     id: 5,
                     url: '',
-                    name: '项目 3-1',
+                    name: '项目 4-1',
                     iconType: 'Text',
                     isShowOnDesktop: true,
                     icon: '',
                     sortId: 5,
-                    sortName: '项目 3-1'
+                    sortName: '项目 4-1'
+                },
+                {
+                    id: 6,
+                    url: '',
+                    name: '项目 4-2',
+                    iconType: 'Text',
+                    isShowOnDesktop: true,
+                    icon: '',
+                    sortId: 6,
+                    sortName: '项目 4-2'
+                }
+            ]
+        },
+        {
+            id: 5,
+            name: '导航 5',
+            items: [
+                {
+                    id: 0,
+                    url: '',
+                    name: '项目 5-1',
+                    iconType: 'Text',
+                    isShowOnDesktop: true,
+                    icon: '',
+                    sortId: 5,
+                    sortName: '项目 5-1'
                 },
                 {
                     id: 6,
@@ -249,34 +188,8 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
             ]
         },
         {
-            id: 3,
-            name: '导航 3',
-            items: [
-                {
-                    id: 5,
-                    url: '',
-                    name: '项目 3-1',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 5,
-                    sortName: '项目 3-1'
-                },
-                {
-                    id: 6,
-                    url: '',
-                    name: '项目 3-2',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 6,
-                    sortName: '项目 3-2'
-                }
-            ]
-        },
-        {
-            id: 3,
-            name: '导航 3',
+            id: 6,
+            name: '导航 6',
             items: [
                 {
                     id: 5,
@@ -312,7 +225,7 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
     
     //当前分类内容列表
     let currentNavigationList = computed(() => {
-        return allNavigationList.value[currentNavigationIndex.value].items
+        return allNavigationList.value[currentNavigationIndex.value].items;
     })
 
     //导航栏名字列表
