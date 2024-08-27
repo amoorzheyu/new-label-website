@@ -59,6 +59,7 @@ export const useMenuLayoutStore = defineStore('menuLayout', () => {
         isShowDelete.value = false
         isShowAddNavigation.value = false
         isShowAllNavigations.value = false
+        isShowAddClass.value = false
         isShowSetting.value = false
         isShowSwitchTheme.value = false
     }
@@ -70,16 +71,61 @@ export const useMenuLayoutStore = defineStore('menuLayout', () => {
             isShowAllNavigations.value = true
             isShowSetting.value = true
             isShowSwitchTheme.value = true
-        }
+        },
+        sortItem: () => {
+            isShowAddNavigation.value = true
+            isShowAddClass.value = true
+            isShowSetting.value = true
+            isShowSwitchTheme.value = true
+        },
+
     }
 
+    //找到最近拥有menuName属性的父元素或自身
+    let findParentWithMenuName = (dom) => {
+        //如果为根元素
+        if (dom === document.body) {
+            return dom;
+        }
+
+        let returnMenuName = '';
+        let getMenuNameDomToParent = (dom) => {
+            if (dom.hasAttribute('menuName')) {
+                returnMenuName = dom.getAttribute('menuName')
+            } else {
+                if (dom.parentNode) {
+                    getMenuNameDomToParent(dom.parentNode)
+                }
+                else {
+                    return;
+                }
+            }
+        }
+        if (dom.hasAttribute('menuName')) {
+            returnMenuName = dom.getAttribute('menuName')
+        } else {
+            return findParentWithMenuName(dom.parentNode)
+        }
+        return returnMenuName;
+    }
 
     //设置菜单文本
     const setMenuTextState = (target) => {
-        setAllFalse();
 
-        //TODO:判断特殊情况的判断
-        menuTextStateFuns['comment']();
+        setAllFalse();
+        let menuName = findParentWithMenuName(target);
+
+        switch (menuName) {
+            case 'sortItem':
+                menuTextStateFuns['sortItem']();
+                break;
+
+            default:
+                menuTextStateFuns['comment']();
+                break;
+        }
+
+
     }
 
     //通过坐标设置菜单位置

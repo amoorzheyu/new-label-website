@@ -216,20 +216,20 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
     ]);
 
     //当前选中分类索引
-    let currentNavigationIndex = ref(0)
+    let currentSortIndex = ref(0)
 
     //点击切换当前分类
     let changeCurrentNavigation = (index) => {
-        currentNavigationIndex.value = index
+        currentSortIndex.value = index
     }
     
     //当前分类内容列表
-    let currentNavigationList = computed(() => {
-        return allNavigationList.value[currentNavigationIndex.value].items;
+    let currentSortList = computed(() => {
+        return allNavigationList.value[currentSortIndex.value].items;
     })
 
     //导航栏名字列表
-    let navigationNameList = computed(() => {
+    let sortNameList = computed(() => {
         let list = []
         allNavigationList.value.forEach(item => {
             let newItem = {}
@@ -240,12 +240,41 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         return list
     })
 
+    //删除分类
+    let deleteSort = (index,id) => {
+        allNavigationList.value.splice(index, 1)
+    }
+
+    //新增分类
+    let addSort = (value) => {
+        let newSort = {
+            id: getNewSortId(),
+            name: value,
+            items: []
+        }
+        allNavigationList.value.push(newSort)
+    }
+
+    //获取当前分类最大id的+1
+    let getNewSortId = () => {
+        let maxId = 0
+        allNavigationList.value.forEach(item => {
+            if (item.id > maxId) {
+                maxId = item.id
+            }
+        })
+        return maxId + 1
+    }
+
+
     return {
         showingNavigationList,
         allNavigationList,
-        navigationNameList,
-        currentNavigationList,
-        currentNavigationIndex,
-        changeCurrentNavigation
+        sortNameList,
+        currentSortList,
+        currentSortIndex,
+        changeCurrentNavigation,
+        deleteSort,
+        addSort
     }
 })

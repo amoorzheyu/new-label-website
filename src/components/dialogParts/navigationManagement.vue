@@ -4,6 +4,8 @@ import { VueDraggable } from 'vue-draggable-plus'
 
 import { storeToRefs } from 'pinia';
 
+import { ElMessage, ElMessageBox } from 'element-plus'
+
 
 // pinia->useIsShowDialogsStore
 import { useIsShowDialogsStore } from '@/stores/isShowDialogs'
@@ -11,13 +13,76 @@ let { isShowNavigationManagementDialog } = storeToRefs(useIsShowDialogsStore())
 
 // pinia->useNavigationBarStore
 import { useNavigationBarStore } from '@/stores/navigationBar'
-let { allNavigationList, navigationNameList, currentNavigationList, currentNavigationIndex } = storeToRefs(useNavigationBarStore())
-const { changeCurrentNavigation } = useNavigationBarStore()
+let { allNavigationList, sortNameList, currentSortList, currentSortIndex } = storeToRefs(useNavigationBarStore())
+const { changeCurrentNavigation, deleteSort,addSort } = useNavigationBarStore()
+
+// pinia->useMenuLayoutStore
+import { useMenuLayoutStore } from "@/stores/menuLayout";
+let { menuClickSlove } = useMenuLayoutStore();
 
 //点击切换分类事件
 const changeCurrentNavigationEvent = (index) => {
     changeCurrentNavigation(index);
 }
+
+//右键点击事件
+const menuClickEvent = (e) => {
+  e.preventDefault();
+  menuClickSlove(e);
+};
+
+//删除分类栏目事件
+const deleteNavigationEvent = (index) => {
+    let { name, id } = sortNameList.value[index];
+
+    ElMessageBox.confirm(
+        `删除分类 ${name} 会删除其中的导航`,
+        '警告',
+        {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+        }
+    )
+        .then(() => {
+            deleteSort(index, id);
+            ElMessage({
+                type: 'success',
+                message: '删除分类成功',
+            })
+        })
+        .catch(() => {
+            ElMessage({
+                type: 'info',
+                message: '已取消删除分类',
+            })
+        })
+
+}
+
+//新增分类事件
+const addSortEvent = () => {
+    ElMessageBox.prompt('分类名称', '新增分类', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /\S/,
+        inputErrorMessage: '分类名称不能为空',
+    })
+        .then(({ value }) => {
+            addSort(value);
+            ElMessage({
+                type: 'success',
+                message: `新增分类 ${value} 成功`,
+            })
+        })
+        .catch(() => {
+            ElMessage({
+                type: 'info',
+                message: '已取消新增分类',
+            })
+        })
+}
+
 
 //关闭对话框（动画结束）
 const closedDialog = () => {
@@ -61,7 +126,7 @@ const onSortDragEnd = (event) => {
 //拖动导航
 const onNavigationDragEnd = (event) => {
     let { oldIndex, newIndex } = event;
-    let NavigationIndex = currentNavigationIndex.value;
+    let NavigationIndex = currentSortIndex.value;
     let temp = allNavigationList.value[NavigationIndex]['items'][oldIndex];
 
     allNavigationList.value[NavigationIndex]['items'][oldIndex] = allNavigationList.value[NavigationIndex]['items'][newIndex];
@@ -76,7 +141,7 @@ const onMoveEvnet = (event) => {
     //目标被替换的元素
     const targetElement = event.related;
     if (targetElement.classList.contains('no-drag') || draggedElement.classList.contains('no-drag')) {
-         // 阻止拖拽
+        // 阻止拖拽
         return false;
     }
 };
@@ -89,16 +154,17 @@ const onMoveEvnet = (event) => {
                     <div class="text-[22px] font-[400] text-[var(--dialog-text-color)]">
                         导航管理
                     </div>
-                    <div
+                    <div @contextmenu="menuClickEvent"
                         class="mt-[30px] mb-[20px]  mr-[20px] text-[var(--dialog-text-color)] flex bg-[#ffffff] h-[500px] rounded-xl shadow-sm p-[30px] pr-[15px]">
+                        <!-- 分类名称列表 -->
                         <div class="h-[370px]">
                             <el-scrollbar>
                                 <ul class="text-[18px] pr-[20px]">
-                                    <VueDraggable  v-model="navigationNameList" :scroll="true" @end="onSortDragEnd">
+                                    <VueDraggable v-model="sortNameList" :scroll="true" @end="onSortDragEnd">
 
-                                        <li v-for="(item, index) in navigationNameList"
+                                        <li v-for="(item, index) in sortNameList" menuName="sortItem"
                                             @click="changeCurrentNavigationEvent(index)" :key="item.id"
-                                            :class="`sortsLi-Class ${currentNavigationIndex == index ? '!bg-[#edf2fbcc] text-[#759add]' : ''}`">
+                                            :class="`sortsLi-Class ${currentSortIndex == index ? '!bg-[#edf2fbcc] text-[#759add]' : ''}`">
                                             <div class="sortText-class">
                                                 <el-tooltip class="box-item" :disabled="!isShowTooltip" effect="light"
                                                     :content="item.name" placement="top">
@@ -106,7 +172,7 @@ const onMoveEvnet = (event) => {
                                                         ref="sortsTextList">{{ item.name }}</div>
                                                 </el-tooltip>
                                             </div>
-                                            <div class="sortSvg-class">
+                                            <div class="sortSvg-class" @click="deleteNavigationEvent(index)">
                                                 <svg viewBox="0 0 24 24" width="1.2em" height="1.2em">
                                                     <path fill="none" stroke="currentColor" stroke-linecap="round"
                                                         stroke-linejoin="round" stroke-width="1.5"
@@ -118,9 +184,9 @@ const onMoveEvnet = (event) => {
                                     </VueDraggable>
                                 </ul>
                             </el-scrollbar>
-                            <div
+                            <div @click="addSortEvent"
                                 class="h-[50px] flex items-center justify-center transition-all pr-[10px] leading-[50px] w-[230px] pl-[20px] mt-[8px] rounded-[7px] bg-[#5f8ad8] text-[#fff] text-[18px]">
-                                <div class="sortText-class">新增分类</div>
+                                <div class="sortText-class">添加分类</div>
                                 <div class="flex items-center w-[38px] h-[38px] pt-[0.3px]">
                                     <svg viewBox="0 0 24 24" width="1em" height="1em"
                                         class="text-[#fff] w-[100%] h-[100%] my-1 mx-2 rounded-[10px] z-1">
@@ -132,12 +198,14 @@ const onMoveEvnet = (event) => {
                                 </div>
                             </div>
                         </div>
+
+                        <!-- 导航列表 -->
                         <div>
                             <el-scrollbar>
                                 <ul class="ml-[20px] flex flex-wrap mt-[-10px] pb-[30px] text-[18px] font-sans">
-                                    <VueDraggable @move="onMoveEvnet" handle=".handleNavigation" v-model="currentNavigationList"
-                                        @end="onNavigationDragEnd" class="flex flex-wrap">
-                                        <li v-for="(item, index) in currentNavigationList" :key="item.id"
+                                    <VueDraggable @move="onMoveEvnet" handle=".handleNavigation"
+                                        v-model="currentSortList" @end="onNavigationDragEnd" class="flex flex-wrap">
+                                        <li v-for="(item, index) in currentSortList" :key="item.id"
                                             class="bg-[#fff] handleNavigation delay-75 hover:scale-[1.05] ease-in-out transition-all relative overflow-hidden pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px]">
                                             <div class=" relative z-10">
                                                 <div v-show="item.iconType == 'Icon'"
@@ -216,6 +284,10 @@ const onMoveEvnet = (event) => {
     </div>
 </template>
 <style scoped>
+::v-deep(.el-message-box) {
+    @apply !w-[1000px];
+}
+
 .sortSvg-class {
     @apply hidden;
 }

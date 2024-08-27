@@ -48,8 +48,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div   @contextmenu="menuClickEvent">
+  <div >
     <div
+    @contextmenu="menuClickEvent"
       ref="currentImageDom"
       class="h-[100vh] flex flex-col bg-cover bg-center text-[#fff] transition-all"
       style="transition: background-size 0.5s linear, background-image 0.5s"
