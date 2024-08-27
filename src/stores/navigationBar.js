@@ -36,7 +36,7 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
                     name: '1',
                     iconType: 'Text',
                     isShowOnDesktop: true,
-                    icon: '123',
+                    icon: '',
                     sortId: 1,
                 },
                 {
@@ -54,7 +54,7 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
                     name: '3',
                     iconType: 'Text',
                     isShowOnDesktop: true,
-                    icon: '123',
+                    icon: '',
                     sortId: 1,
                 }
             ]

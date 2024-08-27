@@ -35,7 +35,7 @@ export const useSearchPartStore = defineStore('searchPart', () => {
             name: '谷歌',
             placeHolder: 'Google',
             searchUrlMod: 'https://www.google.com/search?q=#context#',
-            searchTipsMod: 'http://suggestqueries.google.com/complete/search?client=youtube&q=123&jsonp=window.google.ac.h',
+            searchTipsMod: 'http://suggestqueries.google.com/complete/search?client=youtube&q=#context#&jsonp=window.google.ac.h',
             jsonpKey: 'jsonp',
         }
     ]) //搜素引擎信息
