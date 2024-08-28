@@ -14,7 +14,7 @@ let { isShowNavigationManagementDialog } = storeToRefs(useIsShowDialogsStore())
 // pinia->useNavigationBarStore
 import { useNavigationBarStore } from '@/stores/navigationBar'
 let { allNavigationList, sortNameList, currentSortList, currentSortIndex } = storeToRefs(useNavigationBarStore())
-const { changeCurrentNavigation, deleteSort,addSort } = useNavigationBarStore()
+const { changeCurrentNavigation, deleteSort, addSort } = useNavigationBarStore()
 
 // pinia->useMenuLayoutStore
 import { useMenuLayoutStore } from "@/stores/menuLayout";
@@ -27,12 +27,18 @@ const changeCurrentNavigationEvent = (index) => {
 
 //右键点击事件
 const menuClickEvent = (e) => {
-  e.preventDefault();
-  menuClickSlove(e);
+    e.preventDefault();
+    menuClickSlove(e);
 };
 
 //删除分类栏目事件
 const deleteNavigationEvent = (index) => {
+    if (sortNameList.value.length <= 1) {
+        return ElMessage({
+            type: 'error',
+            message: '至少保留一个分类',
+        })
+    }
     let { name, id } = sortNameList.value[index];
 
     ElMessageBox.confirm(
@@ -60,6 +66,18 @@ const deleteNavigationEvent = (index) => {
 
 }
 
+//判断分类是否重名
+const checkSortNameRepeat = (name) => {
+    let isRepeat = false;
+    sortNameList.value.forEach((item) => {
+
+        if (item.name == name) {
+            isRepeat = true;
+        }
+    })
+    return isRepeat;
+}
+
 //新增分类事件
 const addSortEvent = () => {
     ElMessageBox.prompt('分类名称', '新增分类', {
@@ -69,11 +87,19 @@ const addSortEvent = () => {
         inputErrorMessage: '分类名称不能为空',
     })
         .then(({ value }) => {
-            addSort(value);
-            ElMessage({
-                type: 'success',
-                message: `新增分类 ${value} 成功`,
-            })
+            value = value.trim();
+            if (!checkSortNameRepeat(value)) {
+                addSort(value);
+                ElMessage({
+                    type: 'success',
+                    message: `新增分类 ${value} 成功`,
+                })
+            } else {
+                ElMessage({
+                    type: 'error',
+                    message: '分类名称重复',
+                })
+            }
         })
         .catch(() => {
             ElMessage({
@@ -111,7 +137,7 @@ const checkNavigationTextOverflow = (index) => {
     isShowTooltip.value = navigationText.offsetWidth < navigationText.scrollWidth;
 }
 
-//拖动栏目
+//拖动栏目结束
 const onSortDragEnd = (event) => {
     let { oldIndex, newIndex } = event;
 
@@ -123,21 +149,27 @@ const onSortDragEnd = (event) => {
     changeCurrentNavigation(newIndex);
 }
 
-//拖动导航
-const onNavigationDragEnd = (event) => {
-    let { oldIndex, newIndex } = event;
-    let NavigationIndex = currentSortIndex.value;
-    let temp = allNavigationList.value[NavigationIndex]['items'][oldIndex];
+//深拷贝
+function deepClone(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
 
-    allNavigationList.value[NavigationIndex]['items'][oldIndex] = allNavigationList.value[NavigationIndex]['items'][newIndex];
-    allNavigationList.value[NavigationIndex]['items'][newIndex] = temp;
+//拖动导航结束
+const onNavigationDragEnd = (event) => {
+    let { oldIndex, newIndex ,item} = event;
+    console.log(oldIndex,newIndex);
+    item.style.opacity = 1;
+    let NavigationIndex = currentSortIndex.value;
+    let currentNavigationList =allNavigationList.value[NavigationIndex].items
+    let tempOld=deepClone(currentNavigationList[oldIndex]);
+    currentNavigationList.splice(oldIndex,1);
+    currentNavigationList.splice(newIndex,0,tempOld);
 }
 
 //移动事件
 const onMoveEvnet = (event) => {
     //被拖拽的元素
     const draggedElement = event.dragged;
-
     //目标被替换的元素
     const targetElement = event.related;
     if (targetElement.classList.contains('no-drag') || draggedElement.classList.contains('no-drag')) {
@@ -145,6 +177,15 @@ const onMoveEvnet = (event) => {
         return false;
     }
 };
+
+//导航拖动开始事件
+const onNavigationDragStart = (event) => {
+    let {item} = event;
+    //透明度设为0
+    item.style.opacity = 0;
+}
+
+
 </script>
 <template>
     <div>
@@ -154,7 +195,7 @@ const onMoveEvnet = (event) => {
                     <div class="text-[22px] font-[400] text-[var(--dialog-text-color)]">
                         导航管理
                     </div>
-                    <div @contextmenu="menuClickEvent"
+                    <div @contextmenu="menuClickEvent" menuName="navigationManagementInner"
                         class="mt-[30px] mb-[20px]  mr-[20px] text-[var(--dialog-text-color)] flex bg-[#ffffff] h-[500px] rounded-xl shadow-sm p-[30px] pr-[15px]">
                         <!-- 分类名称列表 -->
                         <div class="h-[370px]">
@@ -203,10 +244,11 @@ const onMoveEvnet = (event) => {
                         <div>
                             <el-scrollbar>
                                 <ul class="ml-[20px] flex flex-wrap mt-[-10px] pb-[30px] text-[18px] font-sans">
-                                    <VueDraggable @move="onMoveEvnet" handle=".handleNavigation"
-                                        v-model="currentSortList" @end="onNavigationDragEnd" class="flex flex-wrap">
+                                    <VueDraggable @move="onMoveEvnet" handle=".handleNavigation" 
+                                        v-model="currentSortList" @end="onNavigationDragEnd" @start="onNavigationDragStart" class="flex flex-wrap">
                                         <li v-for="(item, index) in currentSortList" :key="item.id"
-                                            class="bg-[#fff] handleNavigation delay-75 hover:scale-[1.05] ease-in-out transition-all relative overflow-hidden pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px]">
+                                            menuName="navigationItem"
+                                            class="bg-[#fff] handleNavigation delay-75 hover:scale-[1.05] transition-transform relative overflow-hidden pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px]">
                                             <div class=" relative z-10">
                                                 <div v-show="item.iconType == 'Icon'"
                                                     class="w-[55px] h-[55px] rounded-2xl">

@@ -252,6 +252,7 @@ export const useSearchPartStore = defineStore('searchPart', () => {
 
     //输入框获取焦点
     let searchOnFocus = () => {
+
         isShowManualMockBackground.value = true
         isShowSearchMask.value = true
         //放大

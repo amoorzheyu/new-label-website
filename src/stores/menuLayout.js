@@ -73,12 +73,26 @@ export const useMenuLayoutStore = defineStore('menuLayout', () => {
             isShowSwitchTheme.value = true
         },
         sortItem: () => {
+            isShowEdit.value = true
+            isShowDelete.value = true
+            isShowAddClass.value = true
+            isShowSetting.value = true
+            isShowSwitchTheme.value = true
+        },
+        navigationManagementInner: () => {
             isShowAddNavigation.value = true
             isShowAddClass.value = true
             isShowSetting.value = true
             isShowSwitchTheme.value = true
         },
-
+        navigationItem: () => {
+            isShowEdit.value = true
+            isShowAddToDeskTop.value = true
+            isShowDelete.value = true
+            isShowAddNavigation.value = true
+            isShowSetting.value = true
+            isShowSwitchTheme.value = true
+        }
     }
 
     //找到最近拥有menuName属性的父元素或自身
@@ -92,9 +106,10 @@ export const useMenuLayoutStore = defineStore('menuLayout', () => {
         let getMenuNameDomToParent = (dom) => {
             if (dom.hasAttribute('menuName')) {
                 returnMenuName = dom.getAttribute('menuName')
+                return;
             } else {
                 if (dom.parentNode) {
-                    getMenuNameDomToParent(dom.parentNode)
+                    getMenuNameDomToParent(dom.parentNode, returnMenuName)
                 }
                 else {
                     return;
@@ -102,9 +117,10 @@ export const useMenuLayoutStore = defineStore('menuLayout', () => {
             }
         }
         if (dom.hasAttribute('menuName')) {
+
             returnMenuName = dom.getAttribute('menuName')
         } else {
-            return findParentWithMenuName(dom.parentNode)
+            getMenuNameDomToParent(dom, returnMenuName)
         }
         return returnMenuName;
     }
@@ -114,12 +130,16 @@ export const useMenuLayoutStore = defineStore('menuLayout', () => {
 
         setAllFalse();
         let menuName = findParentWithMenuName(target);
-
         switch (menuName) {
             case 'sortItem':
                 menuTextStateFuns['sortItem']();
                 break;
-
+            case 'navigationManagementInner':
+                menuTextStateFuns['navigationManagementInner']();
+                break;
+            case 'navigationItem':
+                menuTextStateFuns['navigationItem']();
+                break;
             default:
                 menuTextStateFuns['comment']();
                 break;

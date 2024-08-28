@@ -59,160 +59,160 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
                 }
             ]
         },
-        {
-            id: 1,
-            name: '导航 1',
-            items: [
-                {
-                    id: 1,
-                    url: '',
-                    name: '项目 1-1',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 1,
-                },
-                {
-                    id: 2,
-                    url: '',
-                    name: '项目 1-2',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 2,
-                }
-            ]
-        },
-        {
-            id: 2,
-            name: '导航 2',
-            items: [
-                {
-                    id: 3,
-                    url: '',
-                    name: '项目 2-1',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 3,
-                    sortName: '项目 2-1'
-                },
-                {
-                    id: 4,
-                    url: '',
-                    name: '项目 2-2',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 4,
-                    sortName: '项目 2-2'
-                }
-            ]
-        },
-        {
-            id: 3,
-            name: '导航 3',
-            items: [
-                {
-                    id: 5,
-                    url: '',
-                    name: '项目 3-1',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 5,
-                    sortName: '项目 3-1'
-                },
-                {
-                    id: 6,
-                    url: '',
-                    name: '项目 3-2',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 6,
-                    sortName: '项目 3-2'
-                }
-            ]
-        },
-        {
-            id: 4,
-            name: '导航 4',
-            items: [
-                {
-                    id: 5,
-                    url: '',
-                    name: '项目 4-1',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 5,
-                    sortName: '项目 4-1'
-                },
-                {
-                    id: 6,
-                    url: '',
-                    name: '项目 4-2',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 6,
-                    sortName: '项目 4-2'
-                }
-            ]
-        },
-        {
-            id: 5,
-            name: '导航 5',
-            items: [
-                {
-                    id: 0,
-                    url: '',
-                    name: '项目 5-1',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 5,
-                    sortName: '项目 5-1'
-                },
-                {
-                    id: 6,
-                    url: '',
-                    name: '项目 3-2',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 6,
-                    sortName: '项目 3-2'
-                }
-            ]
-        },
-        {
-            id: 6,
-            name: '导航 6',
-            items: [
-                {
-                    id: 5,
-                    url: '',
-                    name: '项目 3-1',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 5,
-                    sortName: '项目 3-1'
-                },
-                {
-                    id: 6,
-                    url: '',
-                    name: '项目 3-2',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 6,
-                    sortName: '项目 3-2'
-                }
-            ]
-        }
+        // {
+        //     id: 1,
+        //     name: '导航 1',
+        //     items: [
+        //         {
+        //             id: 1,
+        //             url: '',
+        //             name: '项目 1-1',
+        //             iconType: 'Text',
+        //             isShowOnDesktop: true,
+        //             icon: '',
+        //             sortId: 1,
+        //         },
+        //         {
+        //             id: 2,
+        //             url: '',
+        //             name: '项目 1-2',
+        //             iconType: 'Text',
+        //             isShowOnDesktop: true,
+        //             icon: '',
+        //             sortId: 2,
+        //         }
+        //     ]
+        // },
+        // {
+        //     id: 2,
+        //     name: '导航 2',
+        //     items: [
+        //         {
+        //             id: 3,
+        //             url: '',
+        //             name: '项目 2-1',
+        //             iconType: 'Text',
+        //             isShowOnDesktop: true,
+        //             icon: '',
+        //             sortId: 3,
+        //             sortName: '项目 2-1'
+        //         },
+        //         {
+        //             id: 4,
+        //             url: '',
+        //             name: '项目 2-2',
+        //             iconType: 'Text',
+        //             isShowOnDesktop: true,
+        //             icon: '',
+        //             sortId: 4,
+        //             sortName: '项目 2-2'
+        //         }
+        //     ]
+        // },
+        // {
+        //     id: 3,
+        //     name: '导航 3',
+        //     items: [
+        //         {
+        //             id: 5,
+        //             url: '',
+        //             name: '项目 3-1',
+        //             iconType: 'Text',
+        //             isShowOnDesktop: true,
+        //             icon: '',
+        //             sortId: 5,
+        //             sortName: '项目 3-1'
+        //         },
+        //         {
+        //             id: 6,
+        //             url: '',
+        //             name: '项目 3-2',
+        //             iconType: 'Text',
+        //             isShowOnDesktop: true,
+        //             icon: '',
+        //             sortId: 6,
+        //             sortName: '项目 3-2'
+        //         }
+        //     ]
+        // },
+        // {
+        //     id: 4,
+        //     name: '导航 4',
+        //     items: [
+        //         {
+        //             id: 5,
+        //             url: '',
+        //             name: '项目 4-1',
+        //             iconType: 'Text',
+        //             isShowOnDesktop: true,
+        //             icon: '',
+        //             sortId: 5,
+        //             sortName: '项目 4-1'
+        //         },
+        //         {
+        //             id: 6,
+        //             url: '',
+        //             name: '项目 4-2',
+        //             iconType: 'Text',
+        //             isShowOnDesktop: true,
+        //             icon: '',
+        //             sortId: 6,
+        //             sortName: '项目 4-2'
+        //         }
+        //     ]
+        // },
+        // {
+        //     id: 5,
+        //     name: '导航 5',
+        //     items: [
+        //         {
+        //             id: 0,
+        //             url: '',
+        //             name: '项目 5-1',
+        //             iconType: 'Text',
+        //             isShowOnDesktop: true,
+        //             icon: '',
+        //             sortId: 5,
+        //             sortName: '项目 5-1'
+        //         },
+        //         {
+        //             id: 6,
+        //             url: '',
+        //             name: '项目 3-2',
+        //             iconType: 'Text',
+        //             isShowOnDesktop: true,
+        //             icon: '',
+        //             sortId: 6,
+        //             sortName: '项目 3-2'
+        //         }
+        //     ]
+        // },
+        // {
+        //     id: 6,
+        //     name: '导航 6',
+        //     items: [
+        //         {
+        //             id: 5,
+        //             url: '',
+        //             name: '项目 3-1',
+        //             iconType: 'Text',
+        //             isShowOnDesktop: true,
+        //             icon: '',
+        //             sortId: 5,
+        //             sortName: '项目 3-1'
+        //         },
+        //         {
+        //             id: 6,
+        //             url: '',
+        //             name: '项目 3-2',
+        //             iconType: 'Text',
+        //             isShowOnDesktop: true,
+        //             icon: '',
+        //             sortId: 6,
+        //             sortName: '项目 3-2'
+        //         }
+        //     ]
+        // }
     ]);
 
     //当前选中分类索引

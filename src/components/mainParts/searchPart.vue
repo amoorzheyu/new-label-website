@@ -23,7 +23,9 @@ const searchBarOutClickEvent = () => {
 
 //搜索所有部分点击事件
 const searchBarClickEvent = () => {
+    if(isShowSearchMask.value){
     inputFocus();
+    }
 }
 
 //输入框键盘事件
