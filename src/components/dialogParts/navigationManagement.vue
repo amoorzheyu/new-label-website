@@ -20,9 +20,11 @@ const { changeCurrentNavigation, deleteSort, addSort } = useNavigationBarStore()
 import { useMenuLayoutStore } from "@/stores/menuLayout";
 let { menuClickSlove } = useMenuLayoutStore();
 
+//是否正在被拖拽
+let isDraging = ref(false);
+
 //点击切换分类事件
 const changeCurrentNavigationEvent = (index) => {
-    drag.value = true
     changeCurrentNavigation(index);
 }
 
@@ -140,6 +142,7 @@ const checkNavigationTextOverflow = (index) => {
 
 //栏目拖动开始事件
 const onSortDragStart = (event) => {
+
     let { item } = event;
     //透明度设为0
     item.style.opacity = 0;
@@ -148,13 +151,14 @@ const onSortDragStart = (event) => {
 
 //拖动栏目结束
 const onSortDragEnd = (event) => {
+ 
     let { oldIndex, newIndex, item } = event;
     item.style.opacity = 1;
 
     if (currentSortIndex.value == oldIndex) {
         changeCurrentNavigation(newIndex);
     } else if (currentSortIndex.value == newIndex) {
-        changeCurrentNavigation(oldIndex);
+        changeCurrentNavigation(newIndex+1);
     }
     let tempOld = deepClone(allNavigationList.value[oldIndex]);
     allNavigationList.value.splice(oldIndex, 1)
@@ -167,9 +171,17 @@ function deepClone(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
 
+//导航拖动开始事件
+const onNavigationDragStart = (event) => {
+    isDraging.value=true;
+    let { item } = event;
+    //透明度设为0
+    item.style.opacity = 0;
+}
+
 //拖动导航结束
 const onNavigationDragEnd = (event) => {
-
+    isDraging.value=false;
     let { oldIndex, newIndex, item } = event;
     item.style.opacity = 1;
     let NavigationIndex = currentSortIndex.value;
@@ -185,18 +197,18 @@ const onMoveEvnet = (event) => {
     const draggedElement = event.dragged;
     //目标被替换的元素
     const targetElement = event.related;
+
+    //添加类
+    // if(targetElement)
+    // targetElement.classList.add('node-move');
+
     if (targetElement.classList.contains('no-drag') || draggedElement.classList.contains('no-drag')) {
         // 阻止拖拽
         return false;
     }
 };
 
-//导航拖动开始事件
-const onNavigationDragStart = (event) => {
-    let { item } = event;
-    //透明度设为0
-    item.style.opacity = 0;
-}
+
 
 
 </script>
@@ -214,9 +226,8 @@ const onNavigationDragStart = (event) => {
                         <div class="h-[370px]">
                             <el-scrollbar>
                                 <ul class="text-[18px] pr-[20px]">
-                                    <VueDraggable v-model="sortNameList" :scroll="true" @end="onSortDragEnd"
-                                        @start="onSortDragStart">
-
+                                    <VueDraggable v-model="sortNameList" :scroll="true" @end="onSortDragEnd" :animation="300"
+                                        :scrollSensitivity="200" @start="onSortDragStart">
                                         <li v-for="(item, index) in sortNameList" menuName="sortItem"
                                             @click="changeCurrentNavigationEvent(index)" :key="item.id"
                                             :class="`sortsLi-Class ${currentSortIndex == index ? '!bg-[#edf2fbcc] text-[#759add]' : ''}`">
@@ -258,79 +269,76 @@ const onNavigationDragStart = (event) => {
                         <div>
                             <el-scrollbar>
                                 <ul class="ml-[20px] flex flex-wrap mt-[-10px] pb-[30px] text-[18px] font-sans">
-                                    <VueDraggable @move="onMoveEvnet" handle=".handleNavigation"
+                                    <VueDraggable @move="onMoveEvnet" handle=".handleNavigation"  :animation="250"
                                         v-model="currentSortList" @end="onNavigationDragEnd"
                                         @start="onNavigationDragStart" class="flex flex-wrap">
-                                            <li v-for="(item, index) in currentSortList" :key="item.id"
-                                                menuName="navigationItem"
-                                                class="bg-[#fff] handleNavigation delay-75 hover:scale-[1.05] transition-transform relative overflow-hidden pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px]">
-                                                <div class=" relative z-10">
-                                                    <div v-show="item.iconType == 'Icon'"
-                                                        class="w-[55px] h-[55px] rounded-2xl">
-                                                        <img :src="item?.icon" alt="" srcset=""
-                                                            class="w-[100%] h-[100%] rounded-xl">
-                                                    </div>
-                                                    <div v-show="item.iconType == 'Text'"
-                                                        class="text-[#94b1e5] w-[50px] h-[50px] flex text-[40px] justify-center font-[950] mt-[-5px]">
-                                                        {{ item.name[0] }}
-                                                    </div>
+                                        <li v-for="(item, index) in currentSortList" :key="item.id"
+                                            menuName="navigationItem"
+                                            :class="`bg-[#fff] handleNavigation relative overflow-hidden ${(!isDraging)?'hover:scale-[1.05] transition-transform  duration-200  ease-in-out':''}    pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px]`">
+                                            <div class=" relative z-10">
+                                                <div v-show="item.iconType == 'Icon'"
+                                                    class="w-[55px] h-[55px] rounded-2xl">
+                                                    <img :src="item?.icon" alt="" srcset=""
+                                                        class="w-[100%] h-[100%] rounded-xl">
                                                 </div>
+                                                <div v-show="item.iconType == 'Text'"
+                                                    class="text-[#94b1e5] w-[50px] h-[50px] flex text-[40px] justify-center font-[950] mt-[-5px]">
+                                                    {{ item.name[0] }}
+                                                </div>
+                                            </div>
+                                            <div class=" text-[#656565] h-[30px] leading-[30px] w-[80%] relative z-50">
+                                                <el-tooltip class="box-item" :disabled="!isShowTooltip" effect="light"
+                                                    :content="item.name" placement="bottom-start">
+                                                    <div class="truncate  text-center  font-[550]"
+                                                        @mouseover="checkNavigationTextOverflow(index)"
+                                                        ref="navigationTextList">{{ item.name }}</div>
+                                                </el-tooltip>
+                                            </div>
+                                            <div class="absolute opacity-15 -rotate-[40deg] top-[0%] left-[45%]">
+                                                <div v-show="item.iconType == 'Icon'"
+                                                    class="w-[120px] h-[120px] rounded-2xl translate-x-[0%] translate-y-[10%] rotate-[10deg]">
+                                                    <img :src="item?.icon" alt="" srcset=""
+                                                        class="w-[100%] h-[100%] rounded-2xl">
+                                                </div>
+                                                <div v-show="item.iconType == 'Text'"
+                                                    class="text-[#94b1e5] text-[115px] justify-center font-[950] mt-[-10px]">
+                                                    {{ item.name[0] }}
+                                                </div>
+                                            </div>
+
+                                        </li>
+
+                                        <li
+                                            class=" no-drag delay-75 hover:scale-[1.05] ease-in-out transition-all relative overflow-hidden pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px]">
+                                            <div class=" relative z-10">
+                                                <div class="w-[50px] h-[50px]">
+                                                    <svg viewBox="0 0 24 24" width="1em" height="1em"
+                                                        class="text-[#3D7FDBFF] text-[#5f8ad8] w-[100%] h-[100%] mt-[5px] rounded-[10px] z-1">
+                                                        <path fill="none" stroke="currentColor" stroke-linecap="round"
+                                                            stroke-linejoin="round" stroke-width="1.5"
+                                                            d="M8 12h4m4 0h-4m0 0V8m0 4v4m0 6c5.523 0 10-4.477 10-10S17.523 2 12 2S2 6.477 2 12s4.477 10 10 10">
+                                                        </path>
+                                                    </svg>
+                                                </div>
+
+                                            </div>
+                                            <div
+                                                class="truncate font-[550] text-[#656565] h-[35px] leading-[30px] w-[80%] text-center">
+                                                添加导航</div>
+                                            <div class="absolute opacity-15 -rotate-[40deg] top-[0%] left-[45%]">
                                                 <div
-                                                    class=" text-[#656565] h-[30px] leading-[30px] w-[80%] relative z-50">
-                                                    <el-tooltip class="box-item" :disabled="!isShowTooltip"
-                                                        effect="light" :content="item.name" placement="bottom-start">
-                                                        <div class="truncate  text-center  font-[550]"
-                                                            @mouseover="checkNavigationTextOverflow(index)"
-                                                            ref="navigationTextList">{{ item.name }}</div>
-                                                    </el-tooltip>
+                                                    class="w-[110px] h-[110px] rounded-2xl translate-x-[-20%] translate-y-[10%] rotate-[0deg]">
+                                                    <svg viewBox="0 0 24 24" width="1em" height="1em"
+                                                        class="text-[#3D7FDBFF] text-[#5f8ad8] w-[100%] h-[100%] my-1 mx-2 rounded-[10px] z-1">
+                                                        <path fill="none" stroke="currentColor" stroke-linecap="round"
+                                                            stroke-linejoin="round" stroke-width="1.5"
+                                                            d="M8 12h4m4 0h-4m0 0V8m0 4v4m0 6c5.523 0 10-4.477 10-10S17.523 2 12 2S2 6.477 2 12s4.477 10 10 10">
+                                                        </path>
+                                                    </svg>
                                                 </div>
-                                                <div class="absolute opacity-15 -rotate-[40deg] top-[0%] left-[45%]">
-                                                    <div v-show="item.iconType == 'Icon'"
-                                                        class="w-[120px] h-[120px] rounded-2xl translate-x-[0%] translate-y-[10%] rotate-[10deg]">
-                                                        <img :src="item?.icon" alt="" srcset=""
-                                                            class="w-[100%] h-[100%] rounded-2xl">
-                                                    </div>
-                                                    <div v-show="item.iconType == 'Text'"
-                                                        class="text-[#94b1e5] text-[115px] justify-center font-[950] mt-[-10px]">
-                                                        {{ item.name[0] }}
-                                                    </div>
-                                                </div>
+                                            </div>
 
-                                            </li>
-
-                                            <li
-                                                class=" no-drag delay-75 hover:scale-[1.05] ease-in-out transition-all relative overflow-hidden pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px]">
-                                                <div class=" relative z-10">
-                                                    <div class="w-[50px] h-[50px]">
-                                                        <svg viewBox="0 0 24 24" width="1em" height="1em"
-                                                            class="text-[#3D7FDBFF] text-[#5f8ad8] w-[100%] h-[100%] mt-[5px] rounded-[10px] z-1">
-                                                            <path fill="none" stroke="currentColor"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="1.5"
-                                                                d="M8 12h4m4 0h-4m0 0V8m0 4v4m0 6c5.523 0 10-4.477 10-10S17.523 2 12 2S2 6.477 2 12s4.477 10 10 10">
-                                                            </path>
-                                                        </svg>
-                                                    </div>
-
-                                                </div>
-                                                <div
-                                                    class="truncate font-[550] text-[#656565] h-[35px] leading-[30px] w-[80%] text-center">
-                                                    添加导航</div>
-                                                <div class="absolute opacity-15 -rotate-[40deg] top-[0%] left-[45%]">
-                                                    <div
-                                                        class="w-[110px] h-[110px] rounded-2xl translate-x-[-20%] translate-y-[10%] rotate-[0deg]">
-                                                        <svg viewBox="0 0 24 24" width="1em" height="1em"
-                                                            class="text-[#3D7FDBFF] text-[#5f8ad8] w-[100%] h-[100%] my-1 mx-2 rounded-[10px] z-1">
-                                                            <path fill="none" stroke="currentColor"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="1.5"
-                                                                d="M8 12h4m4 0h-4m0 0V8m0 4v4m0 6c5.523 0 10-4.477 10-10S17.523 2 12 2S2 6.477 2 12s4.477 10 10 10">
-                                                            </path>
-                                                        </svg>
-                                                    </div>
-                                                </div>
-
-                                            </li>
+                                        </li>
                                     </VueDraggable>
                                 </ul>
                             </el-scrollbar>
@@ -351,7 +359,7 @@ const onNavigationDragStart = (event) => {
 }
 
 .sortSvg-class:hover {
-    @apply scale-[1.2] transition-all;
+    @apply scale-[1.2] transition-all ease-in-out duration-200;
 }
 
 .sortsLi-Class:hover .sortSvg-class {
@@ -368,7 +376,7 @@ const onNavigationDragStart = (event) => {
 }
 
 .sortsLi-Class {
-    @apply h-[50px] flex justify-between items-center transition-all pr-[10px] leading-[50px] w-[230px] pl-[20px] mt-[8px] rounded-[7px];
+    @apply h-[50px] flex justify-between items-center  pr-[10px] leading-[50px] w-[230px] pl-[20px] mt-[8px] rounded-[7px];
 }
 
 /* 以下为修改el遮罩的样式 */
@@ -383,7 +391,7 @@ const onNavigationDragStart = (event) => {
 
 ::v-deep(.el-dialog) {
     border-radius: 12px;
-    @apply pl-[30px] pr-[8px] pt-[25px] bg-[var(--background-color-dialog-large-box)] w-[1000px] h-[620px] top-[180px];
+    @apply pl-[30px] pr-[8px] pt-[25px] bg-[var(--background-color-dialog-large-box)] w-[1000px] h-[620px] ;
 }
 
 ::v-deep(.el-dialog__header) {
@@ -410,4 +418,9 @@ const onNavigationDragStart = (event) => {
     background-color: #464649ff;
 }
 
+.node-move {
+    transition: transform 5s ease-in-out;
+    transform: translateX(-50px);
+    /* 你可以调整这个值来实现动画效果 */
+}
 </style>

@@ -212,6 +212,58 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
                     sortName: '项目 3-2'
                 }
             ]
+        },
+        {
+            id: 7,
+            name: '导航 7',
+            items: [
+                {
+                    id: 5,
+                    url: '',
+                    name: '项目 3-1',
+                    iconType: 'Text',
+                    isShowOnDesktop: true,
+                    icon: '',
+                    sortId: 5,
+                    sortName: '项目 3-1'
+                },
+                {
+                    id: 6,
+                    url: '',
+                    name: '项目 3-2',
+                    iconType: 'Text',
+                    isShowOnDesktop: true,
+                    icon: '',
+                    sortId: 6,
+                    sortName: '项目 3-2'
+                }
+            ]
+        },
+        {
+            id: 8,
+            name: '导航 8',
+            items: [
+                {
+                    id: 5,
+                    url: '',
+                    name: '项目 3-1',
+                    iconType: 'Text',
+                    isShowOnDesktop: true,
+                    icon: '',
+                    sortId: 5,
+                    sortName: '项目 3-1'
+                },
+                {
+                    id: 6,
+                    url: '',
+                    name: '项目 3-2',
+                    iconType: 'Text',
+                    isShowOnDesktop: true,
+                    icon: '',
+                    sortId: 6,
+                    sortName: '项目 3-2'
+                }
+            ]
         }
     ]);
 
