@@ -391,7 +391,7 @@ const onMoveEvnet = (event) => {
 
 ::v-deep(.el-dialog) {
     border-radius: 12px;
-    @apply pl-[30px] pr-[8px] pt-[25px] bg-[var(--background-color-dialog-large-box)] w-[1000px] h-[620px] ;
+    @apply pl-[30px] pr-[8px] pt-[25px] bg-[var(--background-color-dialog-large-box)] mt-0 w-[1000px] h-[620px] fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%];
 }
 
 ::v-deep(.el-dialog__header) {

@@ -4,12 +4,10 @@ import { storeToRefs } from "pinia";
 import headerPart from "@/components/headerPart.vue";
 import mainPart from "@/components/mainPart.vue";
 import footerPart from "@/components/footerPart.vue";
-
 import menuPart from "@/components/mainParts/menuPart.vue";
-
 import settings from "@/components/dialogParts/settings.vue";
-
 import navigationManagement from "@/components/dialogParts/navigationManagement.vue";
+import navigationDetails from "@/components/dialogParts/navigationDetails.vue";
 
 // pinia->useThemeSwapStore
 import { useThemeSwapStore } from "@/stores/themeSwap";
@@ -83,6 +81,9 @@ onMounted(() => {
       </div>
       <div>
         <navigationManagement></navigationManagement>
+      </div>
+      <div>
+        <navigationDetails></navigationDetails>
       </div>
       <div ref="menuDom" class="absolute top-0 transition-opacity ease-in-out duration-500 z-[-1]">
         <menuPart></menuPart>

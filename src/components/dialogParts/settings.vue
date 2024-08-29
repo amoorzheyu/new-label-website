@@ -253,7 +253,7 @@ const closedDialog=()=>{
 
 ::v-deep(.el-dialog) {
     border-radius: 12px;
-    @apply pl-[30px] pr-[8px] pt-[25px] bg-[var(--background-color-dialog-large-box)] w-[1000px] ;
+    @apply pl-[30px] pr-[8px] pt-[25px] bg-[var(--background-color-dialog-large-box)] w-[1000px] mt-0 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%];
 }
 
 ::v-deep(.el-dialog__header) {

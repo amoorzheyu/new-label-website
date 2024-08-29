@@ -267,6 +267,12 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         }
     ]);
 
+    //是否显示导航详情面板
+    let isShowNavigationDetailPanel = ref(false);
+
+    //导航详情面板作用
+    let navigationDetailPanelType = ref('add')
+
     //当前选中分类索引
     let currentSortIndex = ref(0)
 
@@ -327,6 +333,8 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         currentSortIndex,
         changeCurrentNavigation,
         deleteSort,
-        addSort
+        addSort,
+        isShowNavigationDetailPanel,
+        navigationDetailPanelType
     }
 })
