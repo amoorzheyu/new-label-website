@@ -5,10 +5,9 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 
 // pinia->useNavigationBarStore
 import { useNavigationBarStore } from '@/stores/navigationBar'
-let { isShowNavigationDetailPanel, navigationDetailPanelType } = storeToRefs(useNavigationBarStore())
+let { isShowNavigationDetailPanel, navigationDetailPanelType, sortNameList } = storeToRefs(useNavigationBarStore())
+const { addSort, getWebsiteInfo } = useNavigationBarStore()
 
-//TODO:test
-isShowNavigationDetailPanel.value = true
 
 //当前导航详情对话框类型名称
 let navigationDetailPanelTypeName = computed(() => {
@@ -27,14 +26,138 @@ let navigationDetailItem = ref({
     iconType: 'Text',
     isShowOnDesktop: false,
     icon: '',
+    sortIndex: 0
 })
+
+const rules = ref({
+    url: [
+        { required: true, message: '请输入完整网址', trigger: 'blur' },
+        { type: 'url', message: '请输入正确的网址', trigger: ['blur', 'change'] }
+    ],
+    name: [
+        { required: true, message: '请输入导航名称', trigger: 'blur' },
+        //设置不全为空格
+        {
+            validator: (rule, value, callback) => {
+                if (value.replace(/\s/g, '') == '') {
+                    callback(new Error('导航名称不能为空'))
+                } else {
+                    callback()
+                }
+            }
+        }
+    ],
+    icon: [
+        { required: true, message: '请输入图标链接', trigger: 'blur' },
+        { type: 'url', message: '请输入正确的图标链接', trigger: ['blur'] }
+    ],
+    sortIndex: [
+        { required: true, message: '请选择分类', trigger: 'change' }
+    ]
+})
+
+//新增分类输入框值
+let newOptValue = ref('')
+
+//判断分类是否重名
+const checkSortNameRepeat = (name) => {
+    let isRepeat = false;
+    sortNameList.value.forEach((item) => {
+
+        if (item.name == name) {
+            isRepeat = true;
+        }
+    })
+    return isRepeat;
+}
+
+//新增分类事件
+const addSortEvent = () => {
+    let value = newOptValue.value;
+
+    value = value.trim();
+
+
+    if (!value) [
+        ElMessage({
+            message: '分类名不能为空',
+            type: 'error',
+        })
+    ]
+
+    if (!checkSortNameRepeat(value)) {
+        addSort(value);
+        ElMessage({
+            message: '新增分类成功',
+            type: 'success',
+        })
+    } else {
+        ElMessage({
+            message: '分类名重复',
+            type: 'error',
+        })
+    }
+    newOptValue.value = '';
+}
+
+//当前是否正在加载网站信息
+let isLoadingWebsiteInfo = ref(false);
+
+
+//获取网站信息点击事件
+const getWebsiteInfoEvent = async () => {
+    isLoadingWebsiteInfo.value = true;
+    let url = navigationDetailItem.value.url;
+    let { iconUrl, title } = await getWebsiteInfo(url);
+
+    //去前后空格
+    iconUrl = iconUrl.trim();
+    title = title.trim();
+
+    if (!iconUrl) {
+        iconUrl = -1;
+    }
+    if (!title) {
+
+        title = -1;
+    }
+
+
+    if (iconUrl == -1) {
+        ElMessage({
+            message: '获取图标失败',
+            type: 'error',
+        })
+    } else {
+        ElMessage({
+            message: '获取图标成功',
+            type: 'success',
+        })
+        navigationDetailItem.value.icon = iconUrl;
+        navigationDetailItem.value.iconType = 'Icon';
+    }
+
+    if (title == -1) {
+        ElMessage({
+            message: '获取网站名称失败',
+            type: 'error',
+        })
+    } else {
+        ElMessage({
+            message: '获取网站名称成功',
+            type: 'success',
+        })
+        navigationDetailItem.value.name = title;
+    }
+    isLoadingWebsiteInfo.value = false;
+}
 
 
 </script>
 <template>
     <div>
         <div class=" overflow-hidden">
-            <el-dialog modal-class="modal-myClass" @closed="closedDialog" v-model="isShowNavigationDetailPanel">
+            <el-dialog modal-class="modal-myClass" v-model="isShowNavigationDetailPanel">
                 <div>
                     <div class="text-[22px] font-[400] text-[var(--dialog-text-color)]">
                         {{ navigationDetailPanelTypeName }}
@@ -42,38 +165,55 @@ let navigationDetailItem = ref({
                     <div class="flex mt-[30px] min-h-[505px] justify-between mr-[30px]">
                         <div
                             class="bg-[#fff] w-[655px] rounded-3xl shadow-sm flex flex-col px-[30px] pt-[30px] pb-[50px] text-[18px]">
-                            <div>
-                                <div class="title-part-class">完整网址</div>
-                                <div>
-                                    <div><el-input v-model="input" style="width: 240px" placeholder="Please input"
-                                            clearable /></div>
-                                    <div></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="title-part-class">导航名称</div>
-                                <div></div>
-                            </div>
-                            <div>
-                                <div class="title-part-class">图标类型</div>
-                                <div></div>
-                            </div>
-                            <div>
-                                <div class="title-part-class">显示在桌面</div>
-                                <div></div>
-                            </div>
-                            <div v-show="navigationDetailItem.iconType == 'Icon'">
-                                <div class="title-part-class">图标链接</div>
-                                <div></div>
-                            </div>
-                            <div>
-                                <div class="title-part-class">分类</div>
-                                <div></div>
-                            </div>
+
+                            <el-form :rules="rules" :model="navigationDetailItem" require-asterisk-position="right"
+                                label-width="auto" label-position="top">
+
+                                <el-form-item label="完整网址" prop="url">
+                                    <el-input v-model="navigationDetailItem.url"
+                                        placeholder="https://szcyyds.blog.csdn.net"></el-input>
+                                    <el-button size="large" type="primary" :loading="isLoadingWebsiteInfo"
+                                        class="!w-[100px]" @click="getWebsiteInfoEvent">获取信息</el-button>
+                                </el-form-item>
+                                <el-form-item label="导航名称" prop="name">
+                                    <el-input v-model="navigationDetailItem.name" placeholder="桑桑新标签"></el-input>
+                                </el-form-item>
+                                <el-form-item label="图标类型:"
+                                    class="icon-type-part-class !flex items-center justify-center">
+                                    <el-radio-group v-model="navigationDetailItem.iconType" class="">
+                                        <el-radio label="Text">文字</el-radio>
+                                        <el-radio label="Icon">图标</el-radio>
+                                    </el-radio-group>
+                                </el-form-item>
+                                <el-form-item label="是否显示在桌面:" class="!flex items-center isShowOnDesktop-part-class">
+                                    <el-switch v-model="navigationDetailItem.isShowOnDesktop" size="large"></el-switch>
+                                </el-form-item>
+                                <el-form-item v-show="navigationDetailItem.iconType == 'Icon'" label="图标链接" prop="icon">
+                                    <el-input v-model="navigationDetailItem.icon"
+                                        placeholder="https://szcyyds.blog.csdn.net/favicon.ico"></el-input>
+                                </el-form-item>
+                                <el-form-item label="分类" prop="sortIndex">
+                                    <el-select v-model="navigationDetailItem.sortIndex" :teleported="false" filterable
+                                        placeholder="请选择分类" popper-class="select-popper-class">
+                                        <el-option v-for="item in sortNameList" :key="item.id" :label="item.name"
+                                            :value="item.id" />
+                                        <template #footer>
+                                            <div class="flex">
+                                                <el-input v-model="newOptValue" class="option-input mb-2 mt-2 h-[40px]"
+                                                    placeholder="请输入新分类名" />
+                                                <el-button type="primary" @click="addSortEvent" class="mt-[6px]">
+                                                    确定
+                                                </el-button>
+                                            </div>
+
+                                        </template>
+                                    </el-select>
+                                </el-form-item>
+                            </el-form>
                         </div>
                         <div class="bg-[#fff] w-[255px] rounded-3xl shadow-sm"></div>
                     </div>
-                    <div class="flex justify-end items-center mr-[30px] mb-[-15px] h-[100px]">
+                    <div class="flex justify-end items-center mr-[30px] mb-[-15px] h-[100px] footer-part">
                         <el-button size="large" type="primary">保存</el-button>
                     </div>
                 </div>
@@ -82,9 +222,79 @@ let navigationDetailItem = ref({
     </div>
 </template>
 <style scoped>
+::v-deep(.el-form-item) {
+    @apply !mb-[35px];
+}
 
-.title-part-class{
+::v-deep(.el-select-dropdown__item) {
+    @apply !text-[18px] !h-[45px] leading-[45px];
+}
+
+::v-deep(.el-select__wrapper) {
+    @apply h-[45px] rounded-lg text-[18px];
+}
+
+::v-deep(.isShowOnDesktop-part-class .el-switch) {
+    @apply mt-[-5px];
+}
+
+::v-deep(.icon-type-part-class .el-radio__label) {
+    @apply !text-[18px];
+}
+
+::v-deep(.icon-type-part-class .el-radio-group) {
+    @apply mt-[-8px] ml-5;
+}
+
+::v-deep(.icon-type-part-class .el-radio__input) {
+    @apply flex items-center justify-center;
+}
+
+::v-deep(.icon-type-part-class .el-radio__inner) {
+    @apply w-[20px] h-[20px];
+}
+
+
+::v-depp(.el-form-item) {
+    @apply !mb-[50px];
+}
+
+::v-deep(.el-form-item__label) {
+    @apply !text-[18px];
+}
+
+::v-deep(.el-form-item__content) {
+    @apply flex-nowrap;
+}
+
+::v-deep(.el-button:active) {
+    @apply !bg-[#cedbf3]
+}
+
+::v-deep(.el-button:hover) {
+    @apply !bg-[#d8e3f6] text-[#4e7dd4];
+}
+
+::v-deep(.el-button) {
+    @apply !w-[120px] h-[43px] rounded-lg text-[18px] ml-3 text-[#4e7dd4] bg-[#e3eaf8] border-none;
+}
+
+::v-deep(.el-form-item:nth-child(1) .el-input__wrapper) {
+    @apply rounded-lg h-[42px] text-[18px];
+}
+
+::v-deep(.el-form-item:nth-child(2) .el-input__wrapper) {
+    @apply rounded-lg h-[42px] text-[18px];
+}
+
+::v-deep(.el-form-item:nth-child(5) .el-input__wrapper) {
+    @apply rounded-lg h-[42px] text-[18px];
+}
+
+
+.title-part-class {
     padding-bottom: 10px;
+    margin-top: 30px;
 }
 
 .title-part-class::after {
@@ -94,7 +304,7 @@ let navigationDetailItem = ref({
 }
 
 /* 以下为修改el按钮的样式 */
-::v-deep(.el-button) {
+::v-deep(.footer-part .el-button) {
     @apply w-[80px] h-[50px] rounded-xl text-[18px];
 }
 

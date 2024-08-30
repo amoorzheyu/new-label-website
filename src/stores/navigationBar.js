@@ -5,6 +5,9 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
+//引入axios
+import axios from 'axios'
+
 export const useNavigationBarStore = defineStore('navigationBar', () => {
 
     /**
@@ -280,7 +283,7 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
     let changeCurrentNavigation = (index) => {
         currentSortIndex.value = index
     }
-    
+
     //当前分类内容列表
     let currentSortList = computed(() => {
         return allNavigationList.value[currentSortIndex.value].items;
@@ -299,7 +302,10 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
     })
 
     //删除分类
-    let deleteSort = (index,id) => {
+    let deleteSort = (index, id) => {
+        if (index == allNavigationList.value.length - 1) {
+            currentSortIndex.value = currentSortIndex.value - 1
+        }
         allNavigationList.value.splice(index, 1)
     }
 
@@ -324,6 +330,56 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         return maxId + 1
     }
 
+    //获取网站图标
+    let getWebsiteIcon = async (url) => {
+        //向/getIcon发送请求
+        return await axios.get('/getIcon', {
+            params: {
+                website: url
+            }
+        }).then(res => {
+
+            if (res.status == 200) {
+                if (typeof res?.data=='string') {
+                    return res.data
+                } else {
+                    return -1;
+                }
+            } else {
+                return -1;
+            }
+        })
+    }
+
+    //获取网站标题名
+    let getWebsiteTitle = async (url) => {
+        const originUrl = 'https://v2.api-m.com/api/title?url='
+
+        url = originUrl + url
+
+        return await axios.get(url).then(res => {
+            if (res.data.code == 200) {
+                if (typeof (res?.data?.data)=='string') {
+                    return res.data.data
+                } else {
+                    return -1;
+                }
+            } else {
+                return -1;
+            }
+        })
+    }
+    //获取网站信息
+    let getWebsiteInfo = async (url) => {
+        let iconUrl = await getWebsiteIcon(url)
+        let title = await getWebsiteTitle(url)
+
+
+        return {
+            iconUrl: iconUrl,
+            title: title
+        }
+    }
 
     return {
         showingNavigationList,
@@ -335,6 +391,7 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         deleteSort,
         addSort,
         isShowNavigationDetailPanel,
-        navigationDetailPanelType
+        navigationDetailPanelType,
+        getWebsiteInfo
     }
 })

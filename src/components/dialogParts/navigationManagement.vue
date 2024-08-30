@@ -13,7 +13,7 @@ let { isShowNavigationManagementDialog } = storeToRefs(useIsShowDialogsStore())
 
 // pinia->useNavigationBarStore
 import { useNavigationBarStore } from '@/stores/navigationBar'
-let { allNavigationList, sortNameList, currentSortList, currentSortIndex } = storeToRefs(useNavigationBarStore())
+let { allNavigationList, sortNameList, currentSortList, currentSortIndex, isShowNavigationDetailPanel, navigationDetailPanelType } = storeToRefs(useNavigationBarStore())
 const { changeCurrentNavigation, deleteSort, addSort } = useNavigationBarStore()
 
 // pinia->useMenuLayoutStore
@@ -151,14 +151,14 @@ const onSortDragStart = (event) => {
 
 //拖动栏目结束
 const onSortDragEnd = (event) => {
- 
+
     let { oldIndex, newIndex, item } = event;
     item.style.opacity = 1;
 
     if (currentSortIndex.value == oldIndex) {
         changeCurrentNavigation(newIndex);
     } else if (currentSortIndex.value == newIndex) {
-        changeCurrentNavigation(newIndex+1);
+        changeCurrentNavigation(newIndex + 1);
     }
     let tempOld = deepClone(allNavigationList.value[oldIndex]);
     allNavigationList.value.splice(oldIndex, 1)
@@ -173,7 +173,7 @@ function deepClone(obj) {
 
 //导航拖动开始事件
 const onNavigationDragStart = (event) => {
-    isDraging.value=true;
+    isDraging.value = true;
     let { item } = event;
     //透明度设为0
     item.style.opacity = 0;
@@ -181,7 +181,7 @@ const onNavigationDragStart = (event) => {
 
 //拖动导航结束
 const onNavigationDragEnd = (event) => {
-    isDraging.value=false;
+    isDraging.value = false;
     let { oldIndex, newIndex, item } = event;
     item.style.opacity = 1;
     let NavigationIndex = currentSortIndex.value;
@@ -198,18 +198,17 @@ const onMoveEvnet = (event) => {
     //目标被替换的元素
     const targetElement = event.related;
 
-    //添加类
-    // if(targetElement)
-    // targetElement.classList.add('node-move');
-
     if (targetElement.classList.contains('no-drag') || draggedElement.classList.contains('no-drag')) {
         // 阻止拖拽
         return false;
     }
 };
 
-
-
+//显示导航对话框事件
+const showNavigationDetailDialogEvent = () => {
+    navigationDetailPanelType.value = 'add'
+    isShowNavigationDetailPanel.value = true;
+}
 
 </script>
 <template>
@@ -226,8 +225,8 @@ const onMoveEvnet = (event) => {
                         <div class="h-[370px]">
                             <el-scrollbar>
                                 <ul class="text-[18px] pr-[20px]">
-                                    <VueDraggable v-model="sortNameList" :scroll="true" @end="onSortDragEnd" :animation="300"
-                                        :scrollSensitivity="200" @start="onSortDragStart">
+                                    <VueDraggable v-model="sortNameList" :scroll="true" @end="onSortDragEnd"
+                                        :animation="300" :scrollSensitivity="200" @start="onSortDragStart">
                                         <li v-for="(item, index) in sortNameList" menuName="sortItem"
                                             @click="changeCurrentNavigationEvent(index)" :key="item.id"
                                             :class="`sortsLi-Class ${currentSortIndex == index ? '!bg-[#edf2fbcc] text-[#759add]' : ''}`">
@@ -238,7 +237,7 @@ const onMoveEvnet = (event) => {
                                                         ref="sortsTextList">{{ item.name }}</div>
                                                 </el-tooltip>
                                             </div>
-                                            <div class="sortSvg-class" @click="deleteNavigationEvent(index)">
+                                            <div class="sortSvg-class" @click.stop="deleteNavigationEvent(index)">
                                                 <svg viewBox="0 0 24 24" width="1.2em" height="1.2em">
                                                     <path fill="none" stroke="currentColor" stroke-linecap="round"
                                                         stroke-linejoin="round" stroke-width="1.5"
@@ -269,12 +268,12 @@ const onMoveEvnet = (event) => {
                         <div>
                             <el-scrollbar>
                                 <ul class="ml-[20px] flex flex-wrap mt-[-10px] pb-[30px] text-[18px] font-sans">
-                                    <VueDraggable @move="onMoveEvnet" handle=".handleNavigation"  :animation="250"
+                                    <VueDraggable @move="onMoveEvnet" handle=".handleNavigation" :animation="250"
                                         v-model="currentSortList" @end="onNavigationDragEnd"
                                         @start="onNavigationDragStart" class="flex flex-wrap">
                                         <li v-for="(item, index) in currentSortList" :key="item.id"
                                             menuName="navigationItem"
-                                            :class="`bg-[#fff] handleNavigation relative overflow-hidden ${(!isDraging)?'hover:scale-[1.05] transition-transform  duration-200  ease-in-out':''}    pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px]`">
+                                            :class="`bg-[#fff] handleNavigation relative overflow-hidden ${(!isDraging) ? 'hover:scale-[1.05] transition-transform  duration-200  ease-in-out' : ''}    pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px]`">
                                             <div class=" relative z-10">
                                                 <div v-show="item.iconType == 'Icon'"
                                                     class="w-[55px] h-[55px] rounded-2xl">
@@ -308,7 +307,7 @@ const onMoveEvnet = (event) => {
 
                                         </li>
 
-                                        <li
+                                        <li @click.stop="showNavigationDetailDialogEvent"
                                             class=" no-drag delay-75 hover:scale-[1.05] ease-in-out transition-all relative overflow-hidden pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px]">
                                             <div class=" relative z-10">
                                                 <div class="w-[50px] h-[50px]">
@@ -376,7 +375,7 @@ const onMoveEvnet = (event) => {
 }
 
 .sortsLi-Class {
-    @apply h-[50px] flex justify-between items-center  pr-[10px] leading-[50px] w-[230px] pl-[20px] mt-[8px] rounded-[7px];
+    @apply h-[50px] flex justify-between items-center pr-[10px] leading-[50px] w-[230px] pl-[20px] mt-[8px] rounded-[7px];
 }
 
 /* 以下为修改el遮罩的样式 */
