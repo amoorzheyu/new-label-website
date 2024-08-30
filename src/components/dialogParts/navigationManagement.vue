@@ -416,7 +416,11 @@ const showNavigationDetailDialogEvent = () => {
 ::v-deep(.el-scrollbar__thumb) {
     background-color: #464649ff;
 }
-
+/* TODO: 想要修改叉叉的线条宽度，没成功 （已解决）*/
+::v-deep(.el-dialog__close>svg>path) {
+    stroke: currentColor;
+    stroke-width: 5rem;
+}
 .node-move {
     transition: transform 5s ease-in-out;
     transform: translateX(-50px);
