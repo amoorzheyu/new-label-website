@@ -99,7 +99,7 @@ export const useMenuLayoutStore = defineStore('menuLayout', () => {
     let findParentWithMenuName = (dom) => {
         //如果为根元素
         if (dom === document.body) {
-            return dom;
+            return '';
         }
 
         let returnMenuName = '';
@@ -108,6 +108,10 @@ export const useMenuLayoutStore = defineStore('menuLayout', () => {
                 returnMenuName = dom.getAttribute('menuName')
                 return;
             } else {
+                //如果为根元素
+                if (dom === document.body) {
+                    return '';
+                }
                 if (dom.parentNode) {
                     getMenuNameDomToParent(dom.parentNode, returnMenuName)
                 }

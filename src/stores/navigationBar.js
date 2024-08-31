@@ -5,15 +5,13 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
+
+import { ElMessage, ElMessageBox } from 'element-plus'
+
 //引入axios
 import axios from 'axios'
 
 export const useNavigationBarStore = defineStore('navigationBar', () => {
-
-    /**
-     * 获取网站图标APIhttps://api.oioweb.cn/api/site/favicon?url=
-     * 获取网站标题 https://v2.api-m.com/api/title?url=
-     */
     //显示的导航栏
     let showingNavigationList = ref([])
 
@@ -301,12 +299,47 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         return list
     })
 
-    //删除分类
-    let deleteSort = (index, id) => {
+    //通过下标删除分类
+    let deleteSortByIndex = (index) => {
         if (index == allNavigationList.value.length - 1) {
             currentSortIndex.value = currentSortIndex.value - 1
         }
         allNavigationList.value.splice(index, 1)
+    }
+
+    //删除分类栏目及其提示封装
+    const deleteNavigationWithNotice = (index) => {
+        if (sortNameList.value.length <= 1) {
+            return ElMessage({
+                type: 'error',
+                message: '至少保留一个分类',
+            })
+        }
+        let { name, id } = sortNameList.value[index];
+
+        ElMessageBox.confirm(
+            `删除分类 ${name} 会删除其中的导航`,
+            '警告',
+            {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+                deleteSortByIndex(index, id);
+                ElMessage({
+                    type: 'success',
+                    message: '删除分类成功',
+                })
+            })
+            .catch(() => {
+                ElMessage({
+                    type: 'info',
+                    message: '已取消删除分类',
+                })
+            })
+
     }
 
     //新增分类
@@ -318,6 +351,50 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         }
         allNavigationList.value.push(newSort)
     }
+
+    //判断分类是否重名
+    const checkSortNameRepeat = (name) => {
+        let isRepeat = false;
+        sortNameList.value.forEach((item) => {
+
+            if (item.name == name) {
+                isRepeat = true;
+            }
+        })
+        return isRepeat;
+    }
+
+    //新增分类及其提示封装
+    const addSortWithNotice = () => {
+        ElMessageBox.prompt('分类名称', '新增分类', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            inputPattern: /\S/,
+            inputErrorMessage: '分类名称不能为空',
+        })
+            .then(({ value }) => {
+                value = value.trim();
+                if (!checkSortNameRepeat(value)) {
+                    addSort(value);
+                    ElMessage({
+                        type: 'success',
+                        message: `新增分类 ${value} 成功`,
+                    })
+                } else {
+                    ElMessage({
+                        type: 'error',
+                        message: '分类名称重复',
+                    })
+                }
+            })
+            .catch(() => {
+                ElMessage({
+                    type: 'info',
+                    message: '已取消新增分类',
+                })
+            })
+    }
+
 
     //获取当前分类最大id的+1
     let getNewSortId = () => {
@@ -340,7 +417,7 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         }).then(res => {
 
             if (res.status == 200) {
-                if (typeof res?.data=='string') {
+                if (typeof res?.data == 'string') {
                     return res.data
                 } else {
                     return -1;
@@ -359,7 +436,7 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
 
         return await axios.get(url).then(res => {
             if (res.data.code == 200) {
-                if (typeof (res?.data?.data)=='string') {
+                if (typeof (res?.data?.data) == 'string') {
                     return res.data.data
                 } else {
                     return -1;
@@ -383,13 +460,13 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
 
     //通过分类ID获取分类的导航的最大id+1
     let getNewNavigationIdById = (id) => {
-        
-        
+
+
         let index = allNavigationList.value.findIndex(item => item.id == id)
-        
+
         let maxId = 0
         allNavigationList.value[index].items.forEach(item => {
-            
+
             if (item.id > maxId) {
                 maxId = item.id
             }
@@ -398,19 +475,19 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
     }
 
     //添加新导航
-    let addNewNavigation =  (item) => {
-        
-        let obj={};
-       
-        obj.url=item.url;
-        
-        obj.name=item.name;
-        obj.iconType=item.iconType;
-        obj.isShowOnDesktop=item.isShowOnDesktop;
-        obj.icon=item.icon;
-        obj.sortId=item.sortId;
-        
-        obj.id=getNewNavigationIdById(obj.sortId);
+    let addNewNavigation = (item) => {
+
+        let obj = {};
+
+        obj.url = item.url;
+
+        obj.name = item.name;
+        obj.iconType = item.iconType;
+        obj.isShowOnDesktop = item.isShowOnDesktop;
+        obj.icon = item.icon;
+        obj.sortId = item.sortId;
+
+        obj.id = getNewNavigationIdById(obj.sortId);
 
         allNavigationList.value.forEach(item => {
             if (item.id == obj.sortId) {
@@ -426,11 +503,13 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         currentSortList,
         currentSortIndex,
         changeCurrentNavigation,
-        deleteSort,
+        deleteSortByIndex,
         addSort,
         isShowNavigationDetailPanel,
         navigationDetailPanelType,
         getWebsiteInfo,
-        addNewNavigation
+        addNewNavigation,
+        deleteNavigationWithNotice,
+        addSortWithNotice
     }
 })

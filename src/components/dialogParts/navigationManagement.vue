@@ -14,7 +14,7 @@ let { isShowNavigationManagementDialog } = storeToRefs(useIsShowDialogsStore())
 // pinia->useNavigationBarStore
 import { useNavigationBarStore } from '@/stores/navigationBar'
 let { allNavigationList, sortNameList, currentSortList, currentSortIndex, isShowNavigationDetailPanel, navigationDetailPanelType } = storeToRefs(useNavigationBarStore())
-const { changeCurrentNavigation, deleteSort, addSort } = useNavigationBarStore()
+const { changeCurrentNavigation,addSortWithNotice, addSort,deleteNavigationWithNotice } = useNavigationBarStore()
 
 // pinia->useMenuLayoutStore
 import { useMenuLayoutStore } from "@/stores/menuLayout";
@@ -36,80 +36,12 @@ const menuClickEvent = (e) => {
 
 //删除分类栏目事件
 const deleteNavigationEvent = (index) => {
-    if (sortNameList.value.length <= 1) {
-        return ElMessage({
-            type: 'error',
-            message: '至少保留一个分类',
-        })
-    }
-    let { name, id } = sortNameList.value[index];
-
-    ElMessageBox.confirm(
-        `删除分类 ${name} 会删除其中的导航`,
-        '警告',
-        {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-        }
-    )
-        .then(() => {
-            deleteSort(index, id);
-            ElMessage({
-                type: 'success',
-                message: '删除分类成功',
-            })
-        })
-        .catch(() => {
-            ElMessage({
-                type: 'info',
-                message: '已取消删除分类',
-            })
-        })
-
-}
-
-//判断分类是否重名
-const checkSortNameRepeat = (name) => {
-    let isRepeat = false;
-    sortNameList.value.forEach((item) => {
-
-        if (item.name == name) {
-            isRepeat = true;
-        }
-    })
-    return isRepeat;
+    deleteNavigationWithNotice(index)
 }
 
 //新增分类事件
 const addSortEvent = () => {
-    ElMessageBox.prompt('分类名称', '新增分类', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        inputPattern: /\S/,
-        inputErrorMessage: '分类名称不能为空',
-    })
-        .then(({ value }) => {
-            value = value.trim();
-            if (!checkSortNameRepeat(value)) {
-                addSort(value);
-                ElMessage({
-                    type: 'success',
-                    message: `新增分类 ${value} 成功`,
-                })
-            } else {
-                ElMessage({
-                    type: 'error',
-                    message: '分类名称重复',
-                })
-            }
-        })
-        .catch(() => {
-            ElMessage({
-                type: 'info',
-                message: '已取消新增分类',
-            })
-        })
+    addSortWithNotice();
 }
 
 
