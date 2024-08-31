@@ -133,9 +133,15 @@ const checkSortsTextOverflow = (index) => {
 //导航文本Dom组
 let navigationTextList = ref([])
 
+//手动设置导航文本DOM防止默认乱序
+const setNavItemRef = (el, index) => {
+    if (el) {
+        navigationTextList.value[index] = (el)
+    }
+}
+
 //导航文本Dom移入事件
 const checkNavigationTextOverflow = (index) => {
-
     let navigationText = navigationTextList.value[index];
     isShowTooltip.value = navigationText.offsetWidth < navigationText.scrollWidth;
 }
@@ -147,7 +153,6 @@ const onSortDragStart = (event) => {
     //透明度设为0
     item.style.opacity = 0;
 }
-
 
 //拖动栏目结束
 const onSortDragEnd = (event) => {
@@ -167,7 +172,7 @@ const onSortDragEnd = (event) => {
 }
 
 //深拷贝
-function deepClone(obj) {
+const deepClone=(obj)=> {
     return JSON.parse(JSON.stringify(obj));
 }
 
@@ -290,7 +295,7 @@ const showNavigationDetailDialogEvent = () => {
                                                     :content="item.name" placement="bottom-start">
                                                     <div class="truncate  text-center  font-[550]"
                                                         @mouseover="checkNavigationTextOverflow(index)"
-                                                        ref="navigationTextList">{{ item.name }}</div>
+                                                        :ref="(el) => setNavItemRef(el, index)">{{ item.name }}</div>
                                                 </el-tooltip>
                                             </div>
                                             <div class="absolute opacity-15 -rotate-[40deg] top-[0%] left-[45%]">

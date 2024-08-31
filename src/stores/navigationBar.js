@@ -36,7 +36,7 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
                 {
                     id: 1,
                     url: '',
-                    name: '1',
+                    name: '1111111111111111111111',
                     iconType: 'Text',
                     isShowOnDesktop: true,
                     icon: '',
@@ -381,6 +381,44 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         }
     }
 
+    //通过分类ID获取分类的导航的最大id+1
+    let getNewNavigationIdById = (id) => {
+        
+        
+        let index = allNavigationList.value.findIndex(item => item.id == id)
+        
+        let maxId = 0
+        allNavigationList.value[index].items.forEach(item => {
+            
+            if (item.id > maxId) {
+                maxId = item.id
+            }
+        })
+        return maxId + 1
+    }
+
+    //添加新导航
+    let addNewNavigation =  (item) => {
+        
+        let obj={};
+       
+        obj.url=item.url;
+        
+        obj.name=item.name;
+        obj.iconType=item.iconType;
+        obj.isShowOnDesktop=item.isShowOnDesktop;
+        obj.icon=item.icon;
+        obj.sortId=item.sortId;
+        
+        obj.id=getNewNavigationIdById(obj.sortId);
+
+        allNavigationList.value.forEach(item => {
+            if (item.id == obj.sortId) {
+                item.items.push(obj)
+            }
+        })
+    }
+
     return {
         showingNavigationList,
         allNavigationList,
@@ -392,6 +430,7 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         addSort,
         isShowNavigationDetailPanel,
         navigationDetailPanelType,
-        getWebsiteInfo
+        getWebsiteInfo,
+        addNewNavigation
     }
 })

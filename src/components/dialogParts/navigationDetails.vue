@@ -6,8 +6,10 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 // pinia->useNavigationBarStore
 import { useNavigationBarStore } from '@/stores/navigationBar'
 let { isShowNavigationDetailPanel, navigationDetailPanelType, sortNameList } = storeToRefs(useNavigationBarStore())
-const { addSort, getWebsiteInfo } = useNavigationBarStore()
+const { addSort, getWebsiteInfo,addNewNavigation } = useNavigationBarStore()
 
+//表单dom
+let form = ref(null)
 
 //当前导航详情对话框类型名称
 let navigationDetailPanelTypeName = computed(() => {
@@ -26,7 +28,7 @@ let navigationDetailItem = ref({
     iconType: 'Text',
     isShowOnDesktop: false,
     icon: '',
-    sortIndex: 0
+    sortId: 0
 })
 
 const rules = ref({
@@ -51,7 +53,7 @@ const rules = ref({
         { required: true, message: '请输入图标链接', trigger: 'blur' },
         { type: 'url', message: '请输入正确的图标链接', trigger: ['blur'] }
     ],
-    sortIndex: [
+    sortId: [
         { required: true, message: '请选择分类', trigger: 'change' }
     ]
 })
@@ -111,8 +113,8 @@ const getWebsiteInfoEvent = async () => {
     let { iconUrl, title } = await getWebsiteInfo(url);
 
     //去前后空格
-    iconUrl = iconUrl.trim;
-    title = title.trim;
+    iconUrl = iconUrl.trim();
+    title = title.trim();
 
     if (!iconUrl) {
         iconUrl = -1;
@@ -152,13 +154,30 @@ const getWebsiteInfoEvent = async () => {
     isLoadingWebsiteInfo.value = false;
 }
 
+//保存我的提交
+const saveMyChange = async () => {
+    if(navigationDetailPanelType.value=='add'){
+        try{
+            await form.value.validate();
+            //添加导航
+            addNewNavigation(navigationDetailItem.value)
+
+        }catch(e){
+            console.log(e)
+            ElMessage({
+                message: '请填写完整信息',
+                type: 'error',
+            })
+        }
+    }
+}
 
 </script>
 <template>
     <div>
         <div class=" overflow-hidden">
             <el-dialog modal-class="modal-myClass" v-model="isShowNavigationDetailPanel">
-                <div>
+                <div class="text-[#000]">
                     <div class="text-[22px] font-[400] text-[var(--dialog-text-color)]">
                         {{ navigationDetailPanelTypeName }}
                     </div>
@@ -166,7 +185,7 @@ const getWebsiteInfoEvent = async () => {
                         <div
                             class="bg-[#fff] w-[655px] rounded-3xl shadow-sm flex flex-col px-[30px] pt-[30px] pb-[50px] text-[18px]">
 
-                            <el-form :rules="rules" :model="navigationDetailItem" require-asterisk-position="right"
+                            <el-form :rules="rules" :model="navigationDetailItem" require-asterisk-position="right" ref="form"
                                 label-width="auto" label-position="top">
 
                                 <el-form-item label="完整网址" prop="url">
@@ -192,8 +211,8 @@ const getWebsiteInfoEvent = async () => {
                                     <el-input v-model="navigationDetailItem.icon"
                                         placeholder="https://szcyyds.blog.csdn.net/favicon.ico"></el-input>
                                 </el-form-item>
-                                <el-form-item label="分类" prop="sortIndex">
-                                    <el-select v-model="navigationDetailItem.sortIndex" :teleported="false" filterable
+                                <el-form-item label="分类" prop="sortId">
+                                    <el-select v-model="navigationDetailItem.sortId" :teleported="false" filterable
                                         placeholder="请选择分类" popper-class="select-popper-class">
                                         <el-option v-for="item in sortNameList" :key="item.id" :label="item.name"
                                             :value="item.id" />
@@ -211,10 +230,44 @@ const getWebsiteInfoEvent = async () => {
                                 </el-form-item>
                             </el-form>
                         </div>
-                        <div class="bg-[#fff] w-[255px] rounded-3xl shadow-sm"></div>
+                        <div class="bg-[#fff] w-[255px] rounded-3xl shadow-sm relative">
+                            <div class="text-[20px] font-[548] top-[5%] left-[10%]  absolute">预览</div>
+                            <div class="bg-[#fff] handleNavigation absolute overflow-hidden pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px] top-[35%] left-[46%] translate-x-[-50%]">
+                                            <div class=" relative z-10">
+                                                <div v-show="navigationDetailItem.iconType == 'Icon'"
+                                                    class="w-[55px] h-[55px] rounded-2xl">
+                                                    <img :src="navigationDetailItem.icon" alt="" srcset=""
+                                                        class="w-[100%] h-[100%] rounded-xl">
+                                                </div>
+                                                <div v-show="navigationDetailItem.iconType == 'Text'"
+                                                    class="text-[#94b1e5] w-[50px] h-[50px] flex text-[40px] justify-center font-[950] mt-[-5px]">
+                                                    {{ navigationDetailItem.name[0] }}
+                                                </div>
+                                            </div>
+                                            <div class=" text-[#656565] h-[30px] leading-[30px] w-[80%] relative z-50">
+                                                <el-tooltip class="box-item" :disabled="true" effect="light"
+                                                    :content="navigationDetailItem.name" placement="bottom-start">
+                                                    <div class="truncate  text-center  font-[550]"
+                                                        ref="navigationTextList">{{ navigationDetailItem.name }}</div>
+                                                </el-tooltip>
+                                            </div>
+                                            <div class="absolute opacity-15 -rotate-[40deg] top-[0%] left-[45%]">
+                                                <div v-show="navigationDetailItem.iconType == 'Icon'"
+                                                    class="w-[120px] h-[120px] rounded-2xl translate-x-[0%] translate-y-[10%] rotate-[10deg]">
+                                                    <img :src="navigationDetailItem?.icon" alt="" srcset=""
+                                                        class="w-[100%] h-[100%] rounded-2xl">
+                                                </div>
+                                                <div v-show="navigationDetailItem.iconType == 'Text'"
+                                                    class="text-[#94b1e5] text-[115px] justify-center font-[950] mt-[-10px]">
+                                                    {{ navigationDetailItem.name[0] }}
+                                                </div>
+                                            </div>
+
+                                        </div>
+                        </div>
                     </div>
                     <div class="flex justify-end items-center mr-[30px] mb-[-15px] h-[100px] footer-part">
-                        <el-button size="large" type="primary">保存</el-button>
+                        <el-button size="large" type="primary" @click="saveMyChange">保存</el-button>
                     </div>
                 </div>
             </el-dialog>
