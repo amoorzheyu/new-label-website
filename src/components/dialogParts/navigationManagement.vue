@@ -13,8 +13,8 @@ let { isShowNavigationManagementDialog } = storeToRefs(useIsShowDialogsStore())
 
 // pinia->useNavigationBarStore
 import { useNavigationBarStore } from '@/stores/navigationBar'
-let { allNavigationList, sortNameList, currentSortList, currentSortIndex, isShowNavigationDetailPanel, navigationDetailPanelType } = storeToRefs(useNavigationBarStore())
-const { changeCurrentNavigation,addSortWithNotice, addSort,deleteNavigationWithNotice } = useNavigationBarStore()
+let { allNavigationList, sortNameList,rightClickSortIndex,rightClickNavIndex, currentSortInnerNavList, currentSortIndex, isShowNavigationDetailPanel, navigationDetailPanelType } = storeToRefs(useNavigationBarStore())
+const { changeCurrentNavigation,addNavigationOnNavigationManagement,addSortWithNotice, addSort,deleteSortWithNotice } = useNavigationBarStore()
 
 // pinia->useMenuLayoutStore
 import { useMenuLayoutStore } from "@/stores/menuLayout";
@@ -35,15 +35,14 @@ const menuClickEvent = (e) => {
 };
 
 //删除分类栏目事件
-const deleteNavigationEvent = (index) => {
-    deleteNavigationWithNotice(index)
+const deleteSortEvent = (index) => {
+    deleteSortWithNotice(index)
 }
 
 //新增分类事件
 const addSortEvent = () => {
     addSortWithNotice();
 }
-
 
 //关闭对话框（动画结束）
 const closedDialog = () => {
@@ -141,11 +140,22 @@ const onMoveEvnet = (event) => {
     }
 };
 
-//显示导航对话框事件
+//点击显示添加导航对话框事件
 const showNavigationDetailDialogEvent = () => {
-    navigationDetailPanelType.value = 'add'
-    isShowNavigationDetailPanel.value = true;
+    addNavigationOnNavigationManagement()
 }
+
+//右键点击分类事件
+const rightClickSortEvent = (sortId) => {
+    rightClickSortIndex.value = sortId
+}
+
+//右键点击导航事件
+const rightClickNavEvent = (sortId,navId) => {
+    rightClickNavIndex.value = navId
+    rightClickSortIndex.value=sortId
+}
+
 
 </script>
 <template>
@@ -164,7 +174,7 @@ const showNavigationDetailDialogEvent = () => {
                                 <ul class="text-[18px] pr-[20px]">
                                     <VueDraggable v-model="sortNameList" :scroll="true" @end="onSortDragEnd"
                                         :animation="300" :scrollSensitivity="200" @start="onSortDragStart">
-                                        <li v-for="(item, index) in sortNameList" menuName="sortItem"
+                                        <li v-for="(item, index) in sortNameList" menuName="sortItem" @contextmenu="rightClickSortEvent(index)"
                                             @click="changeCurrentNavigationEvent(index)" :key="item.id"
                                             :class="`sortsLi-Class ${currentSortIndex == index ? '!bg-[#edf2fbcc] text-[#759add]' : ''}`">
                                             <div class="sortText-class">
@@ -174,7 +184,7 @@ const showNavigationDetailDialogEvent = () => {
                                                         ref="sortsTextList">{{ item.name }}</div>
                                                 </el-tooltip>
                                             </div>
-                                            <div class="sortSvg-class" @click.stop="deleteNavigationEvent(index)">
+                                            <div class="sortSvg-class" @click.stop="deleteSortEvent(index)">
                                                 <svg viewBox="0 0 24 24" width="1.2em" height="1.2em">
                                                     <path fill="none" stroke="currentColor" stroke-linecap="round"
                                                         stroke-linejoin="round" stroke-width="1.5"
@@ -206,9 +216,9 @@ const showNavigationDetailDialogEvent = () => {
                             <el-scrollbar>
                                 <ul class="ml-[20px] flex flex-wrap mt-[-10px] pb-[30px] text-[18px] font-sans">
                                     <VueDraggable @move="onMoveEvnet" handle=".handleNavigation" :animation="250"
-                                        v-model="currentSortList" @end="onNavigationDragEnd"
+                                        v-model="currentSortInnerNavList" @end="onNavigationDragEnd"
                                         @start="onNavigationDragStart" class="flex flex-wrap">
-                                        <li v-for="(item, index) in currentSortList" :key="item.id"
+                                        <li v-for="(item, index) in currentSortInnerNavList" :key="item.id" @contextmenu="rightClickNavEvent(currentSortIndex,index)"
                                             menuName="navigationItem"
                                             :class="`bg-[#fff] handleNavigation relative overflow-hidden ${(!isDraging) ? 'hover:scale-[1.05] transition-transform  duration-200  ease-in-out' : ''}    pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px]`">
                                             <div class=" relative z-10">

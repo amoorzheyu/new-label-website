@@ -1,0 +1,71 @@
+Date : 2024-08-31 16:37:17
+Directory : d:\code\vue\new-label-website
+Total : 31 files,  5966 codes, 136 comments, 449 blanks, all 6551 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| JSON               |          2 |      3,114 |          0 |          2 |      3,116 |
+| Vue                |         10 |      1,626 |          6 |        222 |      1,854 |
+| JavaScript         |         12 |      1,078 |        127 |        190 |      1,395 |
+| PostCSS            |          3 |        108 |          3 |         17 |        128 |
+| Markdown           |          1 |         18 |          0 |         15 |         33 |
+| HTML               |          1 |         13 |          0 |          1 |         14 |
+| JSON with Comments |          1 |          8 |          0 |          1 |          9 |
+| XML                |          1 |          1 |          0 |          1 |          2 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                              | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                 |         31 |      5,966 |        136 |        449 |      6,551 |
+| . (Files)                                                                         |          8 |      3,194 |          2 |         24 |      3,220 |
+| src                                                                               |         23 |      2,772 |        134 |        425 |      3,331 |
+| src (Files)                                                                       |          2 |        100 |          0 |         14 |        114 |
+| src\assets                                                                        |          4 |        109 |          3 |         18 |        130 |
+| src\components                                                                    |          9 |      1,539 |          6 |        213 |      1,758 |
+| src\components (Files)                                                            |          3 |         93 |          0 |         11 |        104 |
+| src\components\dialogParts                                                        |          3 |        909 |          2 |        144 |      1,055 |
+| src\components\mainParts                                                          |          3 |        537 |          4 |         58 |        599 |
+| src\stores                                                                        |          8 |      1,024 |        125 |        180 |      1,329 |
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                          | language           | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| d:\code\vue\new-label-website\README.md                                           | Markdown           |         18 |          0 |         15 |         33 |
+| d:\code\vue\new-label-website\index.html                                          | HTML               |         13 |          0 |          1 |         14 |
+| d:\code\vue\new-label-website\jsconfig.json                                       | JSON with Comments |          8 |          0 |          1 |          9 |
+| d:\code\vue\new-label-website\package-lock.json                                   | JSON               |      3,080 |          0 |          1 |      3,081 |
+| d:\code\vue\new-label-website\package.json                                        | JSON               |         34 |          0 |          1 |         35 |
+| d:\code\vue\new-label-website\postcss.config.js                                   | JavaScript         |          6 |          0 |          1 |          7 |
+| d:\code\vue\new-label-website\src\App.vue                                         | Vue                |         87 |          0 |          9 |         96 |
+| d:\code\vue\new-label-website\src\assets\base.css                                 | PostCSS            |         71 |          2 |         14 |         87 |
+| d:\code\vue\new-label-website\src\assets\logo.svg                                 | XML                |          1 |          0 |          1 |          2 |
+| d:\code\vue\new-label-website\src\assets\main.css                                 | PostCSS            |         13 |          0 |          2 |         15 |
+| d:\code\vue\new-label-website\src\assets\theme.css                                | PostCSS            |         24 |          1 |          1 |         26 |
+| d:\code\vue\new-label-website\src\components\dialogParts\navigationDetails.vue    | Vue                |        339 |          0 |         58 |        397 |
+| d:\code\vue\new-label-website\src\components\dialogParts\navigationManagement.vue | Vue                |        320 |          2 |         54 |        376 |
+| d:\code\vue\new-label-website\src\components\dialogParts\settings.vue             | Vue                |        250 |          0 |         32 |        282 |
+| d:\code\vue\new-label-website\src\components\footerPart.vue                       | Vue                |          8 |          0 |          3 |         11 |
+| d:\code\vue\new-label-website\src\components\headerPart.vue                       | Vue                |         70 |          0 |          7 |         77 |
+| d:\code\vue\new-label-website\src\components\mainPart.vue                         | Vue                |         15 |          0 |          1 |         16 |
+| d:\code\vue\new-label-website\src\components\mainParts\dateDesk.vue               | Vue                |         77 |          0 |         15 |         92 |
+| d:\code\vue\new-label-website\src\components\mainParts\menuPart.vue               | Vue                |        271 |          0 |         16 |        287 |
+| d:\code\vue\new-label-website\src\components\mainParts\searchPart.vue             | Vue                |        189 |          4 |         27 |        220 |
+| d:\code\vue\new-label-website\src\main.js                                         | JavaScript         |         13 |          0 |          5 |         18 |
+| d:\code\vue\new-label-website\src\stores\backgroundImage.js                       | JavaScript         |         52 |         18 |         25 |         95 |
+| d:\code\vue\new-label-website\src\stores\isShowDialogs.js                         | JavaScript         |          7 |          3 |          7 |         17 |
+| d:\code\vue\new-label-website\src\stores\layoutElement.js                         | JavaScript         |         18 |          3 |          4 |         25 |
+| d:\code\vue\new-label-website\src\stores\menuLayout.js                            | JavaScript         |        142 |         25 |         36 |        203 |
+| d:\code\vue\new-label-website\src\stores\navigationBar.js                         | JavaScript         |        495 |         32 |         50 |        577 |
+| d:\code\vue\new-label-website\src\stores\searchPart.js                            | JavaScript         |        244 |         29 |         40 |        313 |
+| d:\code\vue\new-label-website\src\stores\settingopt.js                            | JavaScript         |         17 |          6 |          9 |         32 |
+| d:\code\vue\new-label-website\src\stores\themeSwap.js                             | JavaScript         |         49 |          9 |          9 |         67 |
+| d:\code\vue\new-label-website\tailwind.config.js                                  | JavaScript         |         11 |          1 |          2 |         14 |
+| d:\code\vue\new-label-website\vite.config.js                                      | JavaScript         |         24 |          1 |          2 |         27 |
+| Total                                                                             |                    |      5,966 |        136 |        449 |      6,551 |
++-----------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+

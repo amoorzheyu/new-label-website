@@ -51,6 +51,9 @@ export const useMenuLayoutStore = defineStore('menuLayout', () => {
     //是否显示切换主题
     let isShowSwitchTheme = ref(false)
 
+    //菜单关键词
+    let menuKeyWord = ref('')
+
     //将所有显示状态设为false
     let setAllFalse = () => {
         isShowEdit.value = false
@@ -134,6 +137,7 @@ export const useMenuLayoutStore = defineStore('menuLayout', () => {
 
         setAllFalse();
         let menuName = findParentWithMenuName(target);
+        menuKeyWord.value=menuName;
         switch (menuName) {
             case 'sortItem':
                 menuTextStateFuns['sortItem']();
@@ -192,7 +196,8 @@ export const useMenuLayoutStore = defineStore('menuLayout', () => {
         isShowAddClass,
         isShowSetting,
         isShowSwitchTheme,
-        menuClickSlove
+        menuClickSlove,
+        menuKeyWord
     }
 
 })

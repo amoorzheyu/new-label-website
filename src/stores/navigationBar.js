@@ -20,249 +20,25 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
     let allNavigationList = ref([
         {
             id: 0,
-            name: '默认1111111111111111111',
+            name: '默认',
             items: [
                 {
                     id: 0,
-                    url: '',
-                    name: '项目1-0',
+                    url: 'https://blog.csdn.net/m0_73756108?type=blog',
+                    name: '代码对我眨眼睛-CSDN博客',
                     iconType: 'Icon',
                     isShowOnDesktop: true,
-                    icon: 'https://blog.csdn.net/favicon.ico',
+                    icon: 'https://g.csdnimg.cn/static/logo/favicon32.ico',
                     sortId: 0,
                 },
                 {
                     id: 1,
-                    url: '',
-                    name: '1111111111111111111111',
+                    url: 'https://uiverse.io/profile/adamgiebl',
+                    name: 'uiverse',
                     iconType: 'Text',
                     isShowOnDesktop: true,
                     icon: '',
-                    sortId: 1,
-                },
-                {
-                    id: 2,
-                    url: '',
-                    name: '2',
-                    iconType: 'Icon',
-                    isShowOnDesktop: true,
-                    icon: 'https://blog.csdn.net/favicon.ico',
                     sortId: 0,
-                },
-                {
-                    id: 3,
-                    url: '',
-                    name: '3',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 1,
-                }
-            ]
-        },
-        {
-            id: 1,
-            name: '导航 1',
-            items: [
-                {
-                    id: 1,
-                    url: '',
-                    name: '项目 1-1',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 1,
-                },
-                {
-                    id: 2,
-                    url: '',
-                    name: '项目 1-2',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 2,
-                }
-            ]
-        },
-        {
-            id: 2,
-            name: '导航 2',
-            items: [
-                {
-                    id: 3,
-                    url: '',
-                    name: '项目 2-1',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 3,
-                    sortName: '项目 2-1'
-                },
-                {
-                    id: 4,
-                    url: '',
-                    name: '项目 2-2',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 4,
-                    sortName: '项目 2-2'
-                }
-            ]
-        },
-        {
-            id: 3,
-            name: '导航 3',
-            items: [
-                {
-                    id: 5,
-                    url: '',
-                    name: '项目 3-1',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 5,
-                    sortName: '项目 3-1'
-                },
-                {
-                    id: 6,
-                    url: '',
-                    name: '项目 3-2',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 6,
-                    sortName: '项目 3-2'
-                }
-            ]
-        },
-        {
-            id: 4,
-            name: '导航 4',
-            items: [
-                {
-                    id: 5,
-                    url: '',
-                    name: '项目 4-1',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 5,
-                    sortName: '项目 4-1'
-                },
-                {
-                    id: 6,
-                    url: '',
-                    name: '项目 4-2',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 6,
-                    sortName: '项目 4-2'
-                }
-            ]
-        },
-        {
-            id: 5,
-            name: '导航 5',
-            items: [
-                {
-                    id: 0,
-                    url: '',
-                    name: '项目 5-1',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 5,
-                    sortName: '项目 5-1'
-                },
-                {
-                    id: 6,
-                    url: '',
-                    name: '项目 3-2',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 6,
-                    sortName: '项目 3-2'
-                }
-            ]
-        },
-        {
-            id: 6,
-            name: '导航 6',
-            items: [
-                {
-                    id: 5,
-                    url: '',
-                    name: '项目 3-1',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 5,
-                    sortName: '项目 3-1'
-                },
-                {
-                    id: 6,
-                    url: '',
-                    name: '项目 3-2',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 6,
-                    sortName: '项目 3-2'
-                }
-            ]
-        },
-        {
-            id: 7,
-            name: '导航 7',
-            items: [
-                {
-                    id: 5,
-                    url: '',
-                    name: '项目 3-1',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 5,
-                    sortName: '项目 3-1'
-                },
-                {
-                    id: 6,
-                    url: '',
-                    name: '项目 3-2',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 6,
-                    sortName: '项目 3-2'
-                }
-            ]
-        },
-        {
-            id: 8,
-            name: '导航 8',
-            items: [
-                {
-                    id: 5,
-                    url: '',
-                    name: '项目 3-1',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 5,
-                    sortName: '项目 3-1'
-                },
-                {
-                    id: 6,
-                    url: '',
-                    name: '项目 3-2',
-                    iconType: 'Text',
-                    isShowOnDesktop: true,
-                    icon: '',
-                    sortId: 6,
-                    sortName: '项目 3-2'
                 }
             ]
         }
@@ -277,13 +53,41 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
     //当前选中分类索引
     let currentSortIndex = ref(0)
 
+
+    //当前添加或修改导航默认内容
+    let navigationDetailItem = ref({
+        url: '',
+        name: '',
+        iconType: 'Text',
+        isShowOnDesktop: false,
+        icon: '',
+        sortId: 0
+    })
+
+    //复原当前添加或修改导航默认内容
+    let resetNavigationDetailItem = () => {
+        navigationDetailItem.value = {
+            url: '',
+            name: '',
+            iconType: 'Text',
+            isShowOnDesktop: false,
+            icon: '',
+            sortId: 0
+        }
+    }
+
+    //右键选中的分类下标
+    let rightClickSortIndex = ref(0)
+
+    //右键选中的导航下标
+    let rightClickNavIndex = ref(0)
     //点击切换当前分类
     let changeCurrentNavigation = (index) => {
         currentSortIndex.value = index
     }
 
     //当前分类内容列表
-    let currentSortList = computed(() => {
+    let currentSortInnerNavList = computed(() => {
         return allNavigationList.value[currentSortIndex.value].items;
     })
 
@@ -308,7 +112,7 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
     }
 
     //删除分类栏目及其提示封装
-    const deleteNavigationWithNotice = (index) => {
+    const deleteSortWithNotice = (index) => {
         if (sortNameList.value.length <= 1) {
             return ElMessage({
                 type: 'error',
@@ -460,11 +264,13 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
 
     //通过分类ID获取分类的导航的最大id+1
     let getNewNavigationIdById = (id) => {
-
-
         let index = allNavigationList.value.findIndex(item => item.id == id)
 
         let maxId = 0
+
+        if(allNavigationList.value[index].items.length==0){
+            return maxId
+        }
         allNavigationList.value[index].items.forEach(item => {
 
             if (item.id > maxId) {
@@ -496,11 +302,153 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         })
     }
 
+    //当前分类id
+    let currentSortId = computed(() => {
+        return allNavigationList.value[currentSortIndex.value].id
+    })
+
+    //在桌面触发的添加导航
+    let addNavigationOnDesktop = () => {
+        isShowNavigationDetailPanel.value = true;
+        navigationDetailPanelType.value = 'add';
+        resetNavigationDetailItem();
+        navigationDetailItem.value.isShowOnDesktop = true;
+    }
+
+    //在导航管理触发的添加导航
+    let addNavigationOnNavigationManagement = () => {
+        isShowNavigationDetailPanel.value = true;
+        navigationDetailPanelType.value = 'add';
+        resetNavigationDetailItem();
+        navigationDetailItem.value.isShowOnDesktop = false;
+        navigationDetailItem.value.sortId = currentSortId.value;
+    }
+
+    //通过菜单删除分类栏目事件
+    let deleteSortFromMenu = () => {
+        deleteSortWithNotice(rightClickSortIndex.value)
+    }
+
+    //通过菜单编辑分类名
+    let editSortName = () => {
+        ElMessageBox.prompt('分类名称', '编辑分类', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            inputPattern: /\S/,
+            inputErrorMessage: '分类名称不能为空',
+            inputValue: allNavigationList.value[rightClickSortIndex.value].name
+
+        })
+            .then(({ value }) => {
+                value = value.trim();
+                if (!checkSortNameRepeat(value)) {
+                    allNavigationList.value[rightClickSortIndex.value].name = value;
+                    ElMessage({
+                        type: 'success',
+                        message: `编辑分类 ${value} 成功`,
+                    })
+                } else {
+                    ElMessage({
+                        type: 'error',
+                        message: '分类名称重复',
+                    })
+                }
+            })
+    }
+
+    //通过菜单在导航管理中删除导航
+    let deleteSortWithNoticeOnManagement = () => {
+        ElMessageBox.confirm('确定删除该导航吗？', '删除导航', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+        })
+            .then(() => {
+                let rightClickSelectedSortItemsList = allNavigationList.value[rightClickSortIndex.value].items;
+                rightClickSelectedSortItemsList.splice(rightClickNavIndex.value, 1)
+
+
+                ElMessage({
+                    type: 'success',
+                    message: '删除导航成功',
+                })
+            })
+            .catch(() => {
+                ElMessage({
+                    type: 'info',
+                    message: '已取消删除导航',
+                })
+            })
+    }
+
+    //通过菜单添加为桌面导航
+    let addNavigationToDesktop = () => {
+        let item = allNavigationList.value[rightClickSortIndex.value].items[rightClickNavIndex.value]
+
+        if (item.isShowOnDesktop) {
+            ElMessage({
+                type: 'error',
+                message: '该导航已添加到桌面',
+            })
+        } else {
+            item.isShowOnDesktop = true;
+            ElMessage({
+                type: 'success',
+                message: '添加桌面导航成功',
+            })
+        }
+    }
+
+    //在导航管理中通过菜单编辑导航
+    let editNavigationOnNavigationManagement = () => {
+        let item = allNavigationList.value[rightClickSortIndex.value].items[rightClickNavIndex.value]
+
+        isShowNavigationDetailPanel.value = true;
+        navigationDetailPanelType.value = 'edit';
+        resetNavigationDetailItem();
+        navigationDetailItem.value.url = item.url;
+        navigationDetailItem.value.name = item.name;
+        navigationDetailItem.value.iconType = item.iconType;
+        navigationDetailItem.value.isShowOnDesktop = item.isShowOnDesktop;
+        navigationDetailItem.value.icon = item.icon;
+        navigationDetailItem.value.sortId = item.sortId;
+    }
+
+    //保存当前导航修改
+    let saveNavigationDetailEdit = () => {
+        //右击时的分类id
+        let rightClickSortId = allNavigationList.value[rightClickSortIndex.value].id;
+
+        //修改后的分类id
+        let fixSortId = navigationDetailItem.value.sortId;
+        let endItem=allNavigationList.value[rightClickSortIndex.value].items[rightClickNavIndex.value];
+
+        //修改后的分类下标
+        let fixSortIndex = allNavigationList.value.findIndex(item => item.id == fixSortId);
+        if (rightClickSortId == fixSortId) {
+
+        } else {
+            allNavigationList.value[rightClickSortIndex.value].items.splice(rightClickNavIndex.value, 1)
+            let newNavIndex=getNewNavigationIdById(fixSortId);
+            let newObj={};
+            allNavigationList.value[fixSortIndex].items.push(newObj);
+            endItem=allNavigationList.value[fixSortIndex].items[newNavIndex];
+            endItem.id=newNavIndex;
+            currentSortIndex.value=fixSortIndex;
+        }
+
+        endItem.url = navigationDetailItem.value.url;
+        endItem.name = navigationDetailItem.value.name;
+        endItem.iconType = navigationDetailItem.value.iconType;
+        endItem.isShowOnDesktop = navigationDetailItem.value.isShowOnDesktop;
+        endItem.icon = navigationDetailItem.value.icon;
+        endItem.sortId = navigationDetailItem.value.sortId;
+    }
     return {
         showingNavigationList,
         allNavigationList,
         sortNameList,
-        currentSortList,
+        currentSortInnerNavList,
         currentSortIndex,
         changeCurrentNavigation,
         deleteSortByIndex,
@@ -509,7 +457,19 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         navigationDetailPanelType,
         getWebsiteInfo,
         addNewNavigation,
-        deleteNavigationWithNotice,
-        addSortWithNotice
+        deleteSortWithNotice,
+        addSortWithNotice,
+        currentSortId,
+        navigationDetailItem,
+        addNavigationOnDesktop,
+        addNavigationOnNavigationManagement,
+        rightClickSortIndex,
+        rightClickNavIndex,
+        deleteSortFromMenu,
+        editSortName,
+        deleteSortWithNoticeOnManagement,
+        addNavigationToDesktop,
+        editNavigationOnNavigationManagement,
+        saveNavigationDetailEdit
     }
 })

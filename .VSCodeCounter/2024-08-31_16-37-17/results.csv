@@ -1,0 +1,33 @@
+"filename", "language", "JavaScript", "Vue", "PostCSS", "JSON", "XML", "Markdown", "JSON with Comments", "HTML", "comment", "blank", "total"
+"d:\code\vue\new-label-website\README.md", "Markdown", 0, 0, 0, 0, 0, 18, 0, 0, 0, 15, 33
+"d:\code\vue\new-label-website\index.html", "HTML", 0, 0, 0, 0, 0, 0, 0, 13, 0, 1, 14
+"d:\code\vue\new-label-website\jsconfig.json", "JSON with Comments", 0, 0, 0, 0, 0, 0, 8, 0, 0, 1, 9
+"d:\code\vue\new-label-website\package-lock.json", "JSON", 0, 0, 0, 3080, 0, 0, 0, 0, 0, 1, 3081
+"d:\code\vue\new-label-website\package.json", "JSON", 0, 0, 0, 34, 0, 0, 0, 0, 0, 1, 35
+"d:\code\vue\new-label-website\postcss.config.js", "JavaScript", 6, 0, 0, 0, 0, 0, 0, 0, 0, 1, 7
+"d:\code\vue\new-label-website\src\App.vue", "Vue", 0, 87, 0, 0, 0, 0, 0, 0, 0, 9, 96
+"d:\code\vue\new-label-website\src\assets\base.css", "PostCSS", 0, 0, 71, 0, 0, 0, 0, 0, 2, 14, 87
+"d:\code\vue\new-label-website\src\assets\logo.svg", "XML", 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 2
+"d:\code\vue\new-label-website\src\assets\main.css", "PostCSS", 0, 0, 13, 0, 0, 0, 0, 0, 0, 2, 15
+"d:\code\vue\new-label-website\src\assets\theme.css", "PostCSS", 0, 0, 24, 0, 0, 0, 0, 0, 1, 1, 26
+"d:\code\vue\new-label-website\src\components\dialogParts\navigationDetails.vue", "Vue", 0, 339, 0, 0, 0, 0, 0, 0, 0, 58, 397
+"d:\code\vue\new-label-website\src\components\dialogParts\navigationManagement.vue", "Vue", 0, 320, 0, 0, 0, 0, 0, 0, 2, 54, 376
+"d:\code\vue\new-label-website\src\components\dialogParts\settings.vue", "Vue", 0, 250, 0, 0, 0, 0, 0, 0, 0, 32, 282
+"d:\code\vue\new-label-website\src\components\footerPart.vue", "Vue", 0, 8, 0, 0, 0, 0, 0, 0, 0, 3, 11
+"d:\code\vue\new-label-website\src\components\headerPart.vue", "Vue", 0, 70, 0, 0, 0, 0, 0, 0, 0, 7, 77
+"d:\code\vue\new-label-website\src\components\mainPart.vue", "Vue", 0, 15, 0, 0, 0, 0, 0, 0, 0, 1, 16
+"d:\code\vue\new-label-website\src\components\mainParts\dateDesk.vue", "Vue", 0, 77, 0, 0, 0, 0, 0, 0, 0, 15, 92
+"d:\code\vue\new-label-website\src\components\mainParts\menuPart.vue", "Vue", 0, 271, 0, 0, 0, 0, 0, 0, 0, 16, 287
+"d:\code\vue\new-label-website\src\components\mainParts\searchPart.vue", "Vue", 0, 189, 0, 0, 0, 0, 0, 0, 4, 27, 220
+"d:\code\vue\new-label-website\src\main.js", "JavaScript", 13, 0, 0, 0, 0, 0, 0, 0, 0, 5, 18
+"d:\code\vue\new-label-website\src\stores\backgroundImage.js", "JavaScript", 52, 0, 0, 0, 0, 0, 0, 0, 18, 25, 95
+"d:\code\vue\new-label-website\src\stores\isShowDialogs.js", "JavaScript", 7, 0, 0, 0, 0, 0, 0, 0, 3, 7, 17
+"d:\code\vue\new-label-website\src\stores\layoutElement.js", "JavaScript", 18, 0, 0, 0, 0, 0, 0, 0, 3, 4, 25
+"d:\code\vue\new-label-website\src\stores\menuLayout.js", "JavaScript", 142, 0, 0, 0, 0, 0, 0, 0, 25, 36, 203
+"d:\code\vue\new-label-website\src\stores\navigationBar.js", "JavaScript", 495, 0, 0, 0, 0, 0, 0, 0, 32, 50, 577
+"d:\code\vue\new-label-website\src\stores\searchPart.js", "JavaScript", 244, 0, 0, 0, 0, 0, 0, 0, 29, 40, 313
+"d:\code\vue\new-label-website\src\stores\settingopt.js", "JavaScript", 17, 0, 0, 0, 0, 0, 0, 0, 6, 9, 32
+"d:\code\vue\new-label-website\src\stores\themeSwap.js", "JavaScript", 49, 0, 0, 0, 0, 0, 0, 0, 9, 9, 67
+"d:\code\vue\new-label-website\tailwind.config.js", "JavaScript", 11, 0, 0, 0, 0, 0, 0, 0, 1, 2, 14
+"d:\code\vue\new-label-website\vite.config.js", "JavaScript", 24, 0, 0, 0, 0, 0, 0, 0, 1, 2, 27
+"Total", "-", 1078, 1626, 108, 3114, 1, 18, 8, 13, 136, 449, 6551
