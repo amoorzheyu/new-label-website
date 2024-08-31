@@ -111,8 +111,8 @@ const getWebsiteInfoEvent = async () => {
     let { iconUrl, title } = await getWebsiteInfo(url);
 
     //去前后空格
-    iconUrl = iconUrl.trim();
-    title = title.trim();
+    iconUrl = iconUrl.trim;
+    title = title.trim;
 
     if (!iconUrl) {
         iconUrl = -1;
