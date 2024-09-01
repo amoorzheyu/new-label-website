@@ -170,6 +170,11 @@ const rightClickNavEvent = (sortId, navId) => {
 }
 
 
+//点击跳转网页
+const clickToWebEvent=(url)=>{
+    window.open(url)
+}
+
 </script>
 <template>
     <div>
@@ -232,7 +237,7 @@ const rightClickNavEvent = (sortId, navId) => {
                                     <VueDraggable @move="onMoveEvnet" handle=".handleNavigation" :animation="250"
                                         v-model="currentSortInnerNavList" @end="onNavigationDragEnd"
                                         @start="onNavigationDragStart" class="flex flex-wrap">
-                                        <li v-for="(item, index) in currentSortInnerNavList" :key="item.id"
+                                        <li v-for="(item, index) in currentSortInnerNavList" :key="item.id" @click="clickToWebEvent(item.url)"
                                             @contextmenu="rightClickNavEvent(currentSortIndex, index)"
                                             menuName="navigationItem"
                                             :class="`bg-[#fff] handleNavigation relative overflow-hidden ${(!isDraging) ? 'hover:scale-[1.05] transition-transform  duration-200  ease-in-out' : ''}    pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px]`">

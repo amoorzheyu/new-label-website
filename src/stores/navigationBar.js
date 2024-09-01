@@ -13,7 +13,78 @@ import axios from 'axios'
 
 export const useNavigationBarStore = defineStore('navigationBar', () => {
     //显示的导航栏
-    let showingNavigationList = ref([])
+    let showingNavigationList = ref([
+        {
+            id: 0,
+            url: 'https://blog.csdn.net/m0_73756108?type=blog',
+            name: '代码对我眨眼睛-CSDN博客',
+            iconType: 'Icon',
+            isShowOnDesktop: true,
+            icon: 'https://g.csdnimg.cn/static/logo/favicon32.ico',
+            navIndex: 0,
+            sortId: 0,
+        },
+        {
+            id: 1,
+            url: 'https://uiverse.io/profile/adamgiebl',
+            name: 'uiverse',
+            iconType: 'Text',
+            isShowOnDesktop: true,
+            icon: '',
+            navIndex: 1,
+            sortId: 0,
+        },
+        {
+            id: 2,
+            url: 'https://blog.csdn.net/m0_73756108?type=blog',
+            name: '代码对我眨眼睛-CSDN博客',
+            iconType: 'Icon',
+            isShowOnDesktop: true,
+            icon: 'https://g.csdnimg.cn/static/logo/favicon32.ico',
+            navIndex: 0,
+            sortId: 0,
+        },
+        {
+            id: 4,
+            url: 'https://uiverse.io/profile/adamgiebl',
+            name: 'uiverse',
+            iconType: 'Text',
+            isShowOnDesktop: true,
+            icon: '',
+            navIndex: 1,
+            sortId: 0,
+        },
+        {
+            id: 5,
+            url: 'https://blog.csdn.net/m0_73756108?type=blog',
+            name: '代码对我眨眼睛-CSDN博客',
+            iconType: 'Icon',
+            isShowOnDesktop: true,
+            icon: 'https://g.csdnimg.cn/static/logo/favicon32.ico',
+            navIndex: 0,
+            sortId: 0,
+        },
+        {
+            id: 6,
+            url: 'https://uiverse.io/profile/adamgiebl',
+            name: 'uiverse',
+            iconType: 'Text',
+            isShowOnDesktop: true,
+            icon: '',
+            navIndex: 1,
+            sortId: 0,
+        },
+        {
+            id: 7,
+            url: 'https://blog.csdn.net/m0_73756108?type=blog',
+            name: '代码对我眨眼睛-CSDN博客',
+            iconType: 'Icon',
+            isShowOnDesktop: true,
+            icon: 'https://g.csdnimg.cn/static/logo/favicon32.ico',
+            navIndex: 0,
+            sortId: 0,
+        }
+    ])
 
     //所有导航栏
     //🌹编了一些数据
@@ -268,7 +339,7 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
 
         let maxId = 0
 
-        if(allNavigationList.value[index].items.length==0){
+        if (allNavigationList.value[index].items.length == 0) {
             return maxId
         }
         allNavigationList.value[index].items.forEach(item => {
@@ -421,7 +492,7 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
 
         //修改后的分类id
         let fixSortId = navigationDetailItem.value.sortId;
-        let endItem=allNavigationList.value[rightClickSortIndex.value].items[rightClickNavIndex.value];
+        let endItem = allNavigationList.value[rightClickSortIndex.value].items[rightClickNavIndex.value];
 
         //修改后的分类下标
         let fixSortIndex = allNavigationList.value.findIndex(item => item.id == fixSortId);
@@ -429,12 +500,12 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
 
         } else {
             allNavigationList.value[rightClickSortIndex.value].items.splice(rightClickNavIndex.value, 1)
-            let newNavIndex=getNewNavigationIdById(fixSortId);
-            let newObj={};
+            let newNavIndex = getNewNavigationIdById(fixSortId);
+            let newObj = {};
             allNavigationList.value[fixSortIndex].items.push(newObj);
-            endItem=allNavigationList.value[fixSortIndex].items[newNavIndex];
-            endItem.id=newNavIndex;
-            currentSortIndex.value=fixSortIndex;
+            endItem = allNavigationList.value[fixSortIndex].items[newNavIndex];
+            endItem.id = newNavIndex;
+            currentSortIndex.value = fixSortIndex;
         }
 
         endItem.url = navigationDetailItem.value.url;

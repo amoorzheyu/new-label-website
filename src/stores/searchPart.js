@@ -309,5 +309,5 @@ export const useSearchPartStore = defineStore('searchPart', () => {
         }
     }
 
-    return { inputDom, searchText, searchPlaceHolder, searchEngineName, isShowSearchMask, searchTips, isShowSearchTips, searchEnginesMess, nowSelectedSearchTipsIndex, searchEngineIndex,searchOnKeyup, searchOnFocus, searchOnBlur, getTipListsMess, changeSearchEngine, searchObtOnClick, searchTipsOnClick, inputFocus, clearSearchTextOnClick }
+    return { inputDom,searchText, searchPlaceHolder, searchEngineName, isShowSearchMask, searchTips, isShowSearchTips, searchEnginesMess, nowSelectedSearchTipsIndex, searchEngineIndex,searchOnKeyup, searchOnFocus, searchOnBlur, getTipListsMess, changeSearchEngine, searchObtOnClick, searchTipsOnClick, inputFocus, clearSearchTextOnClick }
 })

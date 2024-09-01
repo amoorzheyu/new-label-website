@@ -76,7 +76,7 @@ onMounted(() => {
 
 </script>
 <template>
-    <div class="z-40 relative">
+    <div class="z-40 relative mt-[-20px]">
         <div v-show="!isShowDatePart" class="h-[222px]">
         </div>
         <div v-show="isShowDatePart" class="font-bold text-[var(--date-text-color)] flex justify-center">
@@ -84,7 +84,7 @@ onMounted(() => {
                 <div class="text-[128px] font-bold">
                     {{ timeStr }}
                 </div>
-                <div class="text-[20px] font-bold">{{ dateStr }}</div>
+                <div class="text-[22px] font-bold mt-[-20px]">{{ dateStr }}</div>
             </div>
         </div>
     </div>
