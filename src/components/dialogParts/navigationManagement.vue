@@ -13,8 +13,8 @@ let { isShowNavigationManagementDialog } = storeToRefs(useIsShowDialogsStore())
 
 // pinia->useNavigationBarStore
 import { useNavigationBarStore } from '@/stores/navigationBar'
-let { allNavigationList, sortNameList,rightClickSortIndex,rightClickNavIndex, currentSortInnerNavList, currentSortIndex, isShowNavigationDetailPanel, navigationDetailPanelType } = storeToRefs(useNavigationBarStore())
-const { changeCurrentNavigation,addNavigationOnNavigationManagement,addSortWithNotice, addSort,deleteSortWithNotice } = useNavigationBarStore()
+let { allNavigationList, sortNameList, rightClickSortIndex, rightClickNavIndex, currentSortInnerNavList, currentSortIndex, isShowNavigationDetailPanel, navigationDetailPanelType } = storeToRefs(useNavigationBarStore())
+const { changeCurrentNavigation, addNavigationOnNavigationManagement, addSortWithNotice, addSort, deleteSortWithNotice } = useNavigationBarStore()
 
 // pinia->useMenuLayoutStore
 import { useMenuLayoutStore } from "@/stores/menuLayout";
@@ -90,11 +90,24 @@ const onSortDragEnd = (event) => {
 
     let { oldIndex, newIndex, item } = event;
     item.style.opacity = 1;
+    let length = allNavigationList.value.length;
+    let currentSortIndexCopy = currentSortIndex.value
 
     if (currentSortIndex.value == oldIndex) {
+
         changeCurrentNavigation(newIndex);
     } else if (currentSortIndex.value == newIndex) {
-        changeCurrentNavigation(newIndex + 1);
+        if (newIndex == length - 1) {
+            changeCurrentNavigation(newIndex - 1);
+        } else {
+            changeCurrentNavigation(newIndex + 1);
+        }
+    } else {
+        if (oldIndex > currentSortIndexCopy && newIndex < currentSortIndexCopy) {
+            changeCurrentNavigation(currentSortIndexCopy + 1)
+        } else if (oldIndex < currentSortIndexCopy && newIndex > currentSortIndexCopy) {
+            changeCurrentNavigation(currentSortIndexCopy - 1);
+        }
     }
     let tempOld = deepClone(allNavigationList.value[oldIndex]);
     allNavigationList.value.splice(oldIndex, 1)
@@ -103,7 +116,7 @@ const onSortDragEnd = (event) => {
 }
 
 //深拷贝
-const deepClone=(obj)=> {
+const deepClone = (obj) => {
     return JSON.parse(JSON.stringify(obj));
 }
 
@@ -151,9 +164,9 @@ const rightClickSortEvent = (sortId) => {
 }
 
 //右键点击导航事件
-const rightClickNavEvent = (sortId,navId) => {
+const rightClickNavEvent = (sortId, navId) => {
     rightClickNavIndex.value = navId
-    rightClickSortIndex.value=sortId
+    rightClickSortIndex.value = sortId
 }
 
 
@@ -174,7 +187,8 @@ const rightClickNavEvent = (sortId,navId) => {
                                 <ul class="text-[18px] pr-[20px]">
                                     <VueDraggable v-model="sortNameList" :scroll="true" @end="onSortDragEnd"
                                         :animation="300" :scrollSensitivity="200" @start="onSortDragStart">
-                                        <li v-for="(item, index) in sortNameList" menuName="sortItem" @contextmenu="rightClickSortEvent(index)"
+                                        <li v-for="(item, index) in sortNameList" menuName="sortItem"
+                                            @contextmenu="rightClickSortEvent(index)"
                                             @click="changeCurrentNavigationEvent(index)" :key="item.id"
                                             :class="`sortsLi-Class ${currentSortIndex == index ? '!bg-[#edf2fbcc] text-[#759add]' : ''}`">
                                             <div class="sortText-class">
@@ -218,7 +232,8 @@ const rightClickNavEvent = (sortId,navId) => {
                                     <VueDraggable @move="onMoveEvnet" handle=".handleNavigation" :animation="250"
                                         v-model="currentSortInnerNavList" @end="onNavigationDragEnd"
                                         @start="onNavigationDragStart" class="flex flex-wrap">
-                                        <li v-for="(item, index) in currentSortInnerNavList" :key="item.id" @contextmenu="rightClickNavEvent(currentSortIndex,index)"
+                                        <li v-for="(item, index) in currentSortInnerNavList" :key="item.id"
+                                            @contextmenu="rightClickNavEvent(currentSortIndex, index)"
                                             menuName="navigationItem"
                                             :class="`bg-[#fff] handleNavigation relative overflow-hidden ${(!isDraging) ? 'hover:scale-[1.05] transition-transform  duration-200  ease-in-out' : ''}    pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px]`">
                                             <div class=" relative z-10">
@@ -363,11 +378,13 @@ const rightClickNavEvent = (sortId,navId) => {
 ::v-deep(.el-scrollbar__thumb) {
     background-color: #464649ff;
 }
+
 /* TODO: 想要修改叉叉的线条宽度，没成功 （已解决）*/
 ::v-deep(.el-dialog__close>svg>path) {
     stroke: currentColor;
     stroke-width: 5rem;
 }
+
 .node-move {
     transition: transform 5s ease-in-out;
     transform: translateX(-50px);

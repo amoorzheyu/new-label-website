@@ -70,29 +70,31 @@ const addSortEvent = () => {
     value = value.trim();
 
 
-    if (!value) [
+    if (!value) {
         ElMessage({
             message: '分类名不能为空',
             type: 'error',
         })
-    ]
+        return;
+    }
 
     if (!checkSortNameRepeat(value)) {
         addSort(value);
         //新增分类的id
         let newSortId = sortNameList.value[sortNameList.value.length - 1].id;
-        navigationDetailItem.value.sortId=newSortId;
+        navigationDetailItem.value.sortId = newSortId;
         ElMessage({
             message: '新增分类成功',
             type: 'success',
         })
+        newOptValue.value = '';
     } else {
         ElMessage({
             message: '分类名重复',
             type: 'error',
         })
     }
-    newOptValue.value = '';
+
 }
 
 //当前是否正在加载网站信息
