@@ -81,7 +81,7 @@ const clickToWebEvent=(url)=>{
                 <VueDraggable @move="onMoveEvnet" handle=".handleNavigation" :animation="250"
                     v-model="showingNavigationList" @end="onNavigationDragEnd" @start="onNavigationDragStart"
                     class="flex flex-wrap">
-                    <div v-for="(item, index) in showingNavigationList" :key="item.id" @click="clickToWebEvent(item.url)"
+                    <div v-for="(item, index) in showingNavigationList" :key="item.id" v-show="item.isShowOnDesktop" @click="clickToWebEvent(item.url)"
                         @contextmenu="rightClickNavEvent(currentSortIndex, index)" menuName="deskNavigationItem"
                         :class="`bg-[#fff] handleNavigation relative overflow-hidden ${(!isDraging) ? 'hover:scale-[1.05] transition-transform  duration-200  ease-in-out' : ''}    pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[10px] mb-[10px] rounded-2xl shadow-lg border-[#00000013] border-[2px]`">
                         <div class=" relative z-10">

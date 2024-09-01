@@ -33,56 +33,6 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
             icon: '',
             navIndex: 1,
             sortId: 0,
-        },
-        {
-            id: 2,
-            url: 'https://blog.csdn.net/m0_73756108?type=blog',
-            name: '代码对我眨眼睛-CSDN博客',
-            iconType: 'Icon',
-            isShowOnDesktop: true,
-            icon: 'https://g.csdnimg.cn/static/logo/favicon32.ico',
-            navIndex: 0,
-            sortId: 0,
-        },
-        {
-            id: 4,
-            url: 'https://uiverse.io/profile/adamgiebl',
-            name: 'uiverse',
-            iconType: 'Text',
-            isShowOnDesktop: true,
-            icon: '',
-            navIndex: 1,
-            sortId: 0,
-        },
-        {
-            id: 5,
-            url: 'https://blog.csdn.net/m0_73756108?type=blog',
-            name: '代码对我眨眼睛-CSDN博客',
-            iconType: 'Icon',
-            isShowOnDesktop: true,
-            icon: 'https://g.csdnimg.cn/static/logo/favicon32.ico',
-            navIndex: 0,
-            sortId: 0,
-        },
-        {
-            id: 6,
-            url: 'https://uiverse.io/profile/adamgiebl',
-            name: 'uiverse',
-            iconType: 'Text',
-            isShowOnDesktop: true,
-            icon: '',
-            navIndex: 1,
-            sortId: 0,
-        },
-        {
-            id: 7,
-            url: 'https://blog.csdn.net/m0_73756108?type=blog',
-            name: '代码对我眨眼睛-CSDN博客',
-            iconType: 'Icon',
-            isShowOnDesktop: true,
-            icon: 'https://g.csdnimg.cn/static/logo/favicon32.ico',
-            navIndex: 0,
-            sortId: 0,
         }
     ])
 
@@ -176,9 +126,15 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
 
     //通过下标删除分类
     let deleteSortByIndex = (index) => {
-        if (index == allNavigationList.value.length - 1) {
+        allNavigationList.value[index].items.forEach(item => {
+            deleteNavigationFromManageChangeDeskNav(index, item.id)
+        })
+
+        //如果前面删了一位，则需要重新计算下标
+        if (index < currentSortIndex.value) {
             currentSortIndex.value = currentSortIndex.value - 1
         }
+
         allNavigationList.value.splice(index, 1)
     }
 
@@ -371,7 +327,43 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
                 item.items.push(obj)
             }
         })
+
+        //判断是否添加到桌面
+        if (obj.isShowOnDesktop) {
+            addNewNavigationToDesktop(obj)
+        }
     }
+
+    //获取桌面导航下最大id+1
+    const getNewNavigationIdOnDesktopIdNext = () => {
+        if (showingNavigationList.value.length == 0) {
+            return 0;
+        }
+
+        let maxId = 0
+        showingNavigationList.value.forEach(item => {
+            if (item.id > maxId) {
+                maxId = item.id
+            }
+        })
+        return maxId + 1
+
+    }
+    //添加新导航到桌面
+    const addNewNavigationToDesktop = (obj) => {
+        let newObj = {}
+        newObj.id = getNewNavigationIdOnDesktopIdNext();
+        newObj.name = obj.name;
+        newObj.url = obj.url;
+        newObj.icon = obj.icon;
+        newObj.iconType = obj.iconType;
+        newObj.isShowOnDesktop = obj.isShowOnDesktop;
+        newObj.sortId = obj.sortId;
+        newObj.navIndex = obj.id;
+        showingNavigationList.value.push(newObj);
+    }
+
+
 
     //当前分类id
     let currentSortId = computed(() => {
@@ -427,6 +419,14 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
             })
     }
 
+    //导航管理中删除导航触发的桌面导航变化
+    const deleteNavigationFromManageChangeDeskNav = (sortId, navIndex) => {
+        let deskNavIndex = getDesktopNavigationIndexBySortIdAndNavId(sortId, navIndex)
+        if (deskNavIndex != -1) {
+            showingNavigationList.value.splice(deskNavIndex, 1)
+        }
+    }
+
     //通过菜单在导航管理中删除导航
     let deleteSortWithNoticeOnManagement = () => {
         ElMessageBox.confirm('确定删除该导航吗？', '删除导航', {
@@ -435,16 +435,17 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
             type: 'warning',
         })
             .then(() => {
+                let { id, sortId } = allNavigationList.value[rightClickSortIndex.value].items[rightClickNavIndex.value]
                 let rightClickSelectedSortItemsList = allNavigationList.value[rightClickSortIndex.value].items;
                 rightClickSelectedSortItemsList.splice(rightClickNavIndex.value, 1)
-
-
+                deleteNavigationFromManageChangeDeskNav(sortId, id);
                 ElMessage({
                     type: 'success',
                     message: '删除导航成功',
                 })
             })
-            .catch(() => {
+            .catch((e) => {
+                console.error(e)
                 ElMessage({
                     type: 'info',
                     message: '已取消删除导航',
@@ -462,7 +463,13 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
                 message: '该导航已添加到桌面',
             })
         } else {
+
+            let sortId = rightClickSortIndex.value
+            let navId = rightClickNavIndex.value
+            let item = allNavigationList.value[sortId].items[navId]
             item.isShowOnDesktop = true;
+            saveNavigationDetailEditChangeOnNavigationManagement(item, sortId)
+
             ElMessage({
                 type: 'success',
                 message: '添加桌面导航成功',
@@ -485,6 +492,32 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         navigationDetailItem.value.sortId = item.sortId;
     }
 
+    //通过分类id与导航id返回对应桌面导航的索引
+    let getDesktopNavigationIndexBySortIdAndNavId = (sortId, navIndex) => {
+        return showingNavigationList.value.findIndex(item => (item.navIndex == navIndex) && (item.sortId == sortId))
+    }
+
+    //处理修改导航对桌面导航的修改
+    let saveNavigationDetailEditChangeOnNavigationManagement = (item, oldSortId) => {
+        let deskNavIndex = getDesktopNavigationIndexBySortIdAndNavId(oldSortId, item.id);
+        if (deskNavIndex == -1) {
+            let nextDeskNavId = getNewNavigationIdOnDesktopIdNext();
+            let obj = {
+                id: nextDeskNavId
+            }
+            showingNavigationList.value.push(obj)
+            deskNavIndex = showingNavigationList.value.length - 1
+        }
+        let showDeskNavItem = showingNavigationList.value[deskNavIndex];
+        showDeskNavItem.url = item.url;
+        showDeskNavItem.name = item.name;
+        showDeskNavItem.iconType = item.iconType;
+        showDeskNavItem.icon = item.icon;
+        showDeskNavItem.sortId = item.sortId;
+        showDeskNavItem.isShowOnDesktop = item.isShowOnDesktop;
+        showDeskNavItem.navIndex = item.id;
+    }
+
     //保存当前导航修改
     let saveNavigationDetailEdit = () => {
         //右击时的分类id
@@ -493,6 +526,9 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         //修改后的分类id
         let fixSortId = navigationDetailItem.value.sortId;
         let endItem = allNavigationList.value[rightClickSortIndex.value].items[rightClickNavIndex.value];
+        let oldSortId = endItem.sortId
+        //修改前该导航是否在桌面上
+        let isShowOnDesktopBefore = endItem.isShowOnDesktop;
 
         //修改后的分类下标
         let fixSortIndex = allNavigationList.value.findIndex(item => item.id == fixSortId);
@@ -514,6 +550,8 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         endItem.isShowOnDesktop = navigationDetailItem.value.isShowOnDesktop;
         endItem.icon = navigationDetailItem.value.icon;
         endItem.sortId = navigationDetailItem.value.sortId;
+
+        saveNavigationDetailEditChangeOnNavigationManagement(endItem, oldSortId);
     }
     return {
         showingNavigationList,
