@@ -3,10 +3,14 @@
  */
 
 import { ref, computed, watch } from 'vue'
-import { defineStore } from 'pinia'
+import { defineStore ,storeToRefs} from 'pinia'
+
+// pinia->useNavigationBarStore
+import { useNavigationBarStore } from './navigationBar'
 
 export const useMenuLayoutStore = defineStore('menuLayout', () => {
 
+    let {isRightClickToNavShowOnDesktop} =storeToRefs( useNavigationBarStore())
     //菜单Dom
     let menuDom = ref(null)
 
@@ -90,9 +94,17 @@ export const useMenuLayoutStore = defineStore('menuLayout', () => {
         },
         navigationItem: () => {
             isShowEdit.value = true
-            isShowAddToDeskTop.value = true
+            isShowAddToDeskTop.value = !isRightClickToNavShowOnDesktop.value
+            isShowRemoveFromDeskTop.value = isRightClickToNavShowOnDesktop.value
             isShowDelete.value = true
             isShowAddNavigation.value = true
+            isShowSetting.value = true
+            isShowSwitchTheme.value = true
+        },
+        deskNavigationItem:()=>{
+            isShowEdit.value = true
+            isShowRemoveFromDeskTop.value = true
+            isShowDelete.value = true
             isShowSetting.value = true
             isShowSwitchTheme.value = true
         }
@@ -147,6 +159,9 @@ export const useMenuLayoutStore = defineStore('menuLayout', () => {
                 break;
             case 'navigationItem':
                 menuTextStateFuns['navigationItem']();
+                break;
+            case 'deskNavigationItem':
+                menuTextStateFuns['deskNavigationItem']();
                 break;
             default:
                 menuTextStateFuns['comment']();

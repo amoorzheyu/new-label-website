@@ -31,7 +31,18 @@ let { isShowSettingDialog, isShowNavigationManagementDialog } = storeToRefs(useI
 
 // pinia->useNavigationBarStore
 import { useNavigationBarStore } from '@/stores/navigationBar'
-let { addNavigationOnNavigationManagement, editNavigationOnNavigationManagement, deleteSortWithNoticeOnManagement, addNavigationToDesktop, deleteSortFromMenu, editSortName, addNavigationOnDesktop, addSortWithNotice } = useNavigationBarStore()
+let { addNavigationOnNavigationManagement,
+  removeNavFromDeskByMenuOnDesk,
+  fixNewrightClickSortIndexAndrightClickNavIndexByDesktopNavIndex,
+  editNavigationOnNavigationManagement,
+  deleteSortWithNoticeOnManagement,
+  addNavigationToDesktop,
+  deleteSortFromMenu,
+  editSortName,
+  addNavigationOnDesktop,
+  addSortWithNotice,
+  removeNavigationOnDesktopByMenu,
+  removeNavFromDeskByMenuOnNavigationManagement } = useNavigationBarStore()
 
 // 切换主题
 const changeThemeEvent = () => {
@@ -74,7 +85,9 @@ const deleteEvent = () => {
       break;
     case 'sortItem':
       deleteSortFromMenu()
-
+      break;
+    case 'deskNavigationItem':
+      removeNavigationOnDesktopByMenu()
       break;
     default:
   }
@@ -96,6 +109,9 @@ const editEvent = () => {
     case 'sortItem':
       editSortName();
       break;
+    case 'deskNavigationItem':
+      fixNewrightClickSortIndexAndrightClickNavIndexByDesktopNavIndex();
+      break;
     default:
   }
   isShowMenu.value = false
@@ -104,6 +120,21 @@ const editEvent = () => {
 //添加为桌面导航点击事件
 const addToDeskTopEvent = () => {
   addNavigationToDesktop();
+  isShowMenu.value = false
+};
+
+//移出桌面事件
+const removeFromDeskTopEvent = () => {
+  switch (menuKeyWord.value) {
+    case 'navigationItem':
+    removeNavFromDeskByMenuOnNavigationManagement();
+      break;
+    case 'deskNavigationItem':
+      removeNavFromDeskByMenuOnDesk();
+      break;
+    default:
+  }
+
   isShowMenu.value = false
 };
 
@@ -127,7 +158,7 @@ const clickMenuOutsideEvent = () => {
           <div>编辑</div>
         </div>
       </div>
-      <div v-show="isShowRemoveFromDeskTop" class="menuItem">
+      <div v-show="isShowRemoveFromDeskTop" class="menuItem" @click="removeFromDeskTopEvent">
         <div>
           <div>
             <svg viewBox="0 0 24 24" width="1em" height="1em">

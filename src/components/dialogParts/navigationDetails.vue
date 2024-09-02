@@ -168,8 +168,10 @@ const saveMyChange = async () => {
             })
         }
     } else if (navigationDetailPanelType.value == 'edit') {
+        
         try {
             await form.value.validate();
+            
             //保存当前导航修改
             saveNavigationDetailEdit();
             isShowNavigationDetailPanel.value = false;
@@ -178,7 +180,7 @@ const saveMyChange = async () => {
                 type: 'success',
             })
         } catch (e) {
-            console.log(e)
+            console.error(e);
             ElMessage({
                 message: '请填写完整信息',
                 type: 'error',

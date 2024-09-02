@@ -9,7 +9,7 @@ let { isSwapTobuttomNavigation, isAdaptiveNavigationWidth, isShowNavigationBar }
 
 // pinia->useNavigationBarStore
 import { useNavigationBarStore } from '@/stores/navigationBar'
-let { showingNavigationList } = storeToRefs(useNavigationBarStore())
+let { showingNavigationList ,showingNavigationListLengthWithOutHidden, rightClickDeskNavIndex} = storeToRefs(useNavigationBarStore())
 
 //pinia->useSearchPartStore
 import { useSearchPartStore } from '@/stores/searchPart'
@@ -30,6 +30,12 @@ const setNavItemRef = (el, index) => {
         navigationTextList.value[index] = (el)
     }
 }
+
+//右键点击桌面导航
+const rightClickDeskNavEvent = (index) => {
+    rightClickDeskNavIndex.value = index;
+}
+
 
 //导航文本Dom移入事件
 const checkNavigationTextOverflow = (index) => {
@@ -77,12 +83,12 @@ const clickToWebEvent=(url)=>{
         v-show="isShowNavigationBar&&!isShowSearchMask">
         <div
             class="px-[5px] overflow-hidden py-[5px]  min-h-[155px] max-h-[300px] mx-auto bg-[var(--ground-glass-boardr-color)] backdrop-blur-2xl rounded-[20px] shadow-md">
-            <el-scrollbar :height="`${showingNavigationList.length>6?'290px':'145px'}`">
+            <el-scrollbar :height="`${showingNavigationListLengthWithOutHidden>6?'290px':'145px'}`">
                 <VueDraggable @move="onMoveEvnet" handle=".handleNavigation" :animation="250"
                     v-model="showingNavigationList" @end="onNavigationDragEnd" @start="onNavigationDragStart"
                     class="flex flex-wrap">
-                    <div v-for="(item, index) in showingNavigationList" :key="item.id" v-show="item.isShowOnDesktop" @click="clickToWebEvent(item.url)"
-                        @contextmenu="rightClickNavEvent(currentSortIndex, index)" menuName="deskNavigationItem"
+                    <div v-for="(item, index) in showingNavigationList" :key="item.id" v-show="item.isShowOnDesktop" @click="clickToWebEvent(item.url) "
+                        @contextmenu="rightClickDeskNavEvent(index)" menuName="deskNavigationItem"
                         :class="`bg-[#fff] handleNavigation relative overflow-hidden ${(!isDraging) ? 'hover:scale-[1.05] transition-transform  duration-200  ease-in-out' : ''}    pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[10px] mb-[10px] rounded-2xl shadow-lg border-[#00000013] border-[2px]`">
                         <div class=" relative z-10">
                             <div v-show="item.iconType == 'Icon'" class="w-[55px] h-[55px] rounded-2xl">

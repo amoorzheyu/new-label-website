@@ -4,16 +4,13 @@ import { VueDraggable } from 'vue-draggable-plus'
 
 import { storeToRefs } from 'pinia';
 
-import { ElMessage, ElMessageBox } from 'element-plus'
-
-
 // pinia->useIsShowDialogsStore
 import { useIsShowDialogsStore } from '@/stores/isShowDialogs'
 let { isShowNavigationManagementDialog } = storeToRefs(useIsShowDialogsStore())
 
 // pinia->useNavigationBarStore
 import { useNavigationBarStore } from '@/stores/navigationBar'
-let { allNavigationList, sortNameList, rightClickSortIndex, rightClickNavIndex, currentSortInnerNavList, currentSortIndex, isShowNavigationDetailPanel, navigationDetailPanelType } = storeToRefs(useNavigationBarStore())
+let { allNavigationList, sortNameList,isRightClickToNavShowOnDesktop, rightClickSortIndex, rightClickNavIndex, currentSortInnerNavList, currentSortIndex, isShowNavigationDetailPanel, navigationDetailPanelType } = storeToRefs(useNavigationBarStore())
 const { changeCurrentNavigation, addNavigationOnNavigationManagement, addSortWithNotice, addSort, deleteSortWithNotice } = useNavigationBarStore()
 
 // pinia->useMenuLayoutStore
@@ -167,6 +164,7 @@ const rightClickSortEvent = (sortId) => {
 const rightClickNavEvent = (sortId, navId) => {
     rightClickNavIndex.value = navId
     rightClickSortIndex.value = sortId
+    isRightClickToNavShowOnDesktop.value= allNavigationList.value[rightClickSortIndex.value].items[rightClickNavIndex.value].isShowOnDesktop
 }
 
 
