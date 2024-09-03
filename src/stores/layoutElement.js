@@ -22,4 +22,6 @@ export const useLayoutElementStore = defineStore('layoutElement', () => {
         isAdaptiveNavigationWidth,
         isSwapTobuttomNavigation
     }
+},{
+    persist: true
 })

@@ -80,7 +80,7 @@ onMounted(() => {
         <div v-show="!isShowDatePart" class="h-[222px]">
         </div>
         <div v-show="isShowDatePart" class="font-bold text-[var(--date-text-color)] flex justify-center">
-            <div class="w-[700px] flex flex-col items-end">
+            <div class="w-[700px] min-w-[700px] flex flex-col items-end">
                 <div class="text-[128px] font-bold">
                     {{ timeStr }}
                 </div>

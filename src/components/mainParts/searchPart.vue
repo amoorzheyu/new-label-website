@@ -42,9 +42,9 @@ const searchKeyupEvent = (e) => {
         <div v-show="!isShowSearch" class="h-[80px]"></div>
         <div v-show="isShowSearch" class=" relative z-[30] flex justify-center " @click="searchBarClickEvent"
             v-click-outside="searchBarOutClickEvent">
-            <div class="w-[1000px] h-[80px] flex justify-center relative">
+            <div class="w-[900px] h-[80px] flex justify-center relative">
                 <div
-                    class="button-class  absolute z-10 left-[65px] top-[16px] flex items-center justify-center bg-[var(--ground-glass-background-color)] backdrop-blur-2xl  rounded-[32px] w-[130px] h-[50px]">
+                    class="button-class  absolute z-10 left-[25px] top-[16px] flex items-center justify-center bg-[var(--ground-glass-background-color)] backdrop-blur-2xl  rounded-[32px] w-[130px] h-[50px]">
                     <div class="button-inner-class flex text-[20px] items-center justify-between w-[95px]">
                         <div class="">
                             <div v-show="searchEngineIndex == 0">
@@ -123,7 +123,7 @@ const searchKeyupEvent = (e) => {
                 </div>
                 <!-- 清空搜索框 -->
                 <div v-show="searchText.length != 0"
-                    class="button-clear absolute z-10 right-[120px] top-[16px] flex items-center justify-center rounded-[32px] w-[50px] h-[50px]"
+                    class="button-clear absolute z-10 right-[80px] top-[16px] flex items-center justify-center rounded-[32px] w-[50px] h-[50px]"
                     @click.stop="clearSearchTextOnClick">
                     <div class="w-[30px] h-[30px] text-[var(--ground-glass-icon-color)] button-inner-class">
                         <svg viewBox="0 0 24 24" class="icon">
@@ -136,7 +136,7 @@ const searchKeyupEvent = (e) => {
                 </div>
                 <!-- 搜索 -->
                 <div @click="searchObtOnClick"
-                    class="button-class absolute z-10 right-[60px] top-[16px] flex items-center justify-center bg-[var(--ground-glass-background-color)] backdrop-blur-2xl  rounded-[32px] w-[50px] h-[50px]">
+                    class="button-class absolute z-10 right-[30px] top-[16px] flex items-center justify-center bg-[var(--ground-glass-background-color)] backdrop-blur-2xl  rounded-[32px] w-[50px] h-[50px]">
                     <div class="w-[30px] h-[30px] text-[var(--ground-glass-icon-color)] button-inner-class">
                         <svg viewBox="0 0 24 24">
                             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"

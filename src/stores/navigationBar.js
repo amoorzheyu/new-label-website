@@ -682,4 +682,10 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         isRightClickToNavShowOnDesktop,
         removeNavFromDeskByMenuOnNavigationManagement,
     }
-})
+},
+{
+    persist: {
+        paths: ['allNavigationList', 'showingNavigationList']
+    }
+}
+)
