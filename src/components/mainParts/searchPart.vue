@@ -44,8 +44,8 @@ const searchKeyupEvent = (e) => {
             v-click-outside="searchBarOutClickEvent">
             <div class="w-[900px] h-[80px] flex justify-center relative">
                 <div
-                    class="button-class  absolute z-10 left-[25px] top-[16px] flex items-center justify-center bg-[var(--ground-glass-background-color)] backdrop-blur-2xl  rounded-[32px] w-[130px] h-[50px]">
-                    <div class="button-inner-class flex text-[20px] items-center justify-between w-[95px]">
+                    class="button-class  absolute z-10 left-[15px] top-[16px] flex items-center justify-center bg-[var(--ground-glass-background-color)] backdrop-blur-2xl  rounded-[32px] w-[130px] h-[50px]">
+                    <div class="button-inner-class flex text-[20px] items-center justify-between w-[95px] text-[#dadcdc]">
                         <div class="">
                             <div v-show="searchEngineIndex == 0">
                                 <svg data-v-92a36aee="" viewBox="0 0 24 24" width="1em"
@@ -80,10 +80,10 @@ const searchKeyupEvent = (e) => {
                     </div>
                 </div>
                 <!-- 搜索引擎下拉 -->
-                <div class="button-dropList absolute left-[50px] top-[63px] z-10  pt-[20px]">
+                <div class="button-dropList absolute left-[5px] top-[63px] z-10  pt-[20px]">
                     <div
                         class="flex-col items-center justify-center text-center p-2 bg-[var(--ground-glass-background-color)] backdrop-blur-xl rounded-[16px] ">
-                        <div class="button-dropList-item rounded-[32px]  w-[130px] p-[10px] m-1 text-[20px]"
+                        <div class="button-dropList-item rounded-[32px]  w-[130px] p-[10px] m-1 text-[20px] text-[#f4f0ec]"
                             v-for="(item, index) in searchEnginesMess" @click="changeSearchEngine(index)">
                             <div class="flex justify-center items-center">
                                 <div class="mr-[5px]">

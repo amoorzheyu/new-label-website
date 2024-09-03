@@ -60,7 +60,7 @@ const swapThemeEvent = () => {
 </template>
 <style scoped>
 .button-class {
-  @apply w-[50px] h-[50px] rounded-full text-[var(--ground-glass-icon-color)] flex justify-center items-center bg-[var(--ground-glass-background-color)] mx-[4px] backdrop-blur;
+  @apply w-[50px] h-[50px] rounded-full text-[var(--ground-glass-icon-color)] flex justify-center items-center bg-[var(--ground-glass-background-color)] mx-[4px] backdrop-blur-2xl;
   @apply hover:scale-110 hover:bg-[var(--ground-glass-background-hover-color)] transition-all duration-[200ms] ease-in-out;
   border: 1px solid #fff3;
   box-shadow: 0px 0px 1px 0px #fffc;

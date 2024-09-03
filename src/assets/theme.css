@@ -10,6 +10,20 @@
     --background-color-dialog-area-box-under-line:#cccc;
     --dialog-text-color:#000;
     --switch-background-color:#dbdbdb;
+    --deskNavigation-items-background-color:#fff;
+    --deskNavigation-items-text-color:#000;
+    --menu-background-color:#fff;
+    --menu-background-color-hover:#f3f3f5;
+    --menu-text-color:#000;
+    --navManager-sort-background-color-hover:#EDF2FB;
+    --navManager-sort-add-button-background-color:#6889D2;
+    --navManager-sort-add-button-text-color:#fff;
+    --navDetail-input-inner-background-color:#fff;
+    --navDetail-getMess-button-background-color:#E3EAF8;
+    --navDetail-getMess-button-hover-background-color:#D8E3F6;
+    --navDetail-getMess-button-active-background-color:#CEDBF3;
+
+    --navDetail-select-text-color:#000;
 }
 
 .dark-theme{
@@ -17,10 +31,23 @@
     --ground-glass-background-hover-color:#00000033;
     --ground-glass-icon-color:#babfb8;
     --date-text-color:#000000b3;
-    --ground-glass-boardr-color:#00000020;
+    --ground-glass-boardr-color:#00000060;
     --background-color-dialog-large-box:#18181c;
     --background-color-dialog-area-box:#2c2c31;
     --background-color-dialog-area-box-under-line:#ccc4;
     --dialog-text-color:#e8e8e9;
     --switch-background-color:#56565a;
+    --deskNavigation-items-background-color:#1B1B1E;
+    --deskNavigation-items-text-color:#a9aaa9;
+    --menu-background-color:#48484d;
+    --menu-background-color-hover:#59595d;
+    --menu-text-color:#f6f6f6;
+    --navManager-sort-background-color-hover:#343a49;
+    --navManager-sort-add-button-background-color:#475761;
+    --navManager-sort-add-button-text-color:#fff;
+    --navDetail-input-inner-background-color:#424246;
+    --navDetail-getMess-button-background-color:#353B4A;
+    --navDetail-getMess-button-hover-background-color:#373f50;
+    --navDetail-getMess-button-active-background-color:#333844;
+    --navDetail-select-text-color:#fff;
 }

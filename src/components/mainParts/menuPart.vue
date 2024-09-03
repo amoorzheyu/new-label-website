@@ -145,7 +145,7 @@ const clickMenuOutsideEvent = () => {
 </script>
 <template>
   <div v-click-outside="clickMenuOutsideEvent">
-    <div class="bg-[#fff] text-[#000] px-[18px] py-[10px] rounded-xl shadow">
+    <div class="bg-[var(--menu-background-color)] text-[var(--menu-text-color)] px-[18px] py-[10px] rounded-xl shadow">
       <div v-show="isShowEdit" class="menuItem" @click="editEvent">
         <div>
           <div>
@@ -244,7 +244,7 @@ const clickMenuOutsideEvent = () => {
           <div>添加分类</div>
         </div>
       </div>
-      <div v-show="isShowSetting" @click="settingEvent" class="menuItem border-t-[1px] border-[#ccc9]">
+      <div v-show="isShowSetting" @click="settingEvent" class="menuItem border-t-[1px] border-[var(--background-color-dialog-area-box-under-line)]">
         <div>
           <div>
             <svg viewBox="0 0 24 24" width="1em" height="1em">
@@ -286,7 +286,7 @@ const clickMenuOutsideEvent = () => {
 }
 
 .menuItem>div:hover {
-  @apply bg-[#f3f3f5];
+  @apply bg-[var(--menu-background-color-hover)];
 }
 
 .menuItem>div>div>svg {

@@ -103,50 +103,69 @@ let isLoadingWebsiteInfo = ref(false);
 
 //获取网站信息点击事件
 const getWebsiteInfoEvent = async () => {
-    isLoadingWebsiteInfo.value = true;
+
     let url = navigationDetailItem.value.url;
-    let { iconUrl, title } = await getWebsiteInfo(url);
-
-    //去前后空格
-    iconUrl = iconUrl.trim();
-    title = title.trim();
-
-    if (!iconUrl) {
-        iconUrl = -1;
-    }
-    if (!title) {
-
-        title = -1;
-    }
-
-
-    if (iconUrl == -1) {
+    url = url.trim();
+    if (!url) {
         ElMessage({
-            message: '获取图标失败',
+            message: '网址不能为空',
             type: 'error',
         })
-    } else {
-        ElMessage({
-            message: '获取图标成功',
-            type: 'success',
-        })
-        navigationDetailItem.value.icon = iconUrl;
-        navigationDetailItem.value.iconType = 'Icon';
+        return;
     }
 
-    if (title == -1) {
+    isLoadingWebsiteInfo.value = true;
+
+    try {
+        let { iconUrl, title } = await getWebsiteInfo(url);
+
+        //去前后空格
+        iconUrl = iconUrl.trim();
+        title = title.trim();
+
+        if (!iconUrl) {
+            iconUrl = -1;
+        }
+        if (!title) {
+
+            title = -1;
+        }
+
+
+        if (iconUrl == -1) {
+            ElMessage({
+                message: '获取图标失败',
+                type: 'error',
+            })
+        } else {
+            ElMessage({
+                message: '获取图标成功',
+                type: 'success',
+            })
+            navigationDetailItem.value.icon = iconUrl;
+            navigationDetailItem.value.iconType = 'Icon';
+        }
+
+        if (title == -1) {
+            ElMessage({
+                message: '获取网站名称失败',
+                type: 'error',
+            })
+        } else {
+            ElMessage({
+                message: '获取网站名称成功',
+                type: 'success',
+            })
+            navigationDetailItem.value.name = title;
+        }
+        isLoadingWebsiteInfo.value = false;
+    } catch (e) {
         ElMessage({
-            message: '获取网站名称失败',
+            message: '获取网站信息失败',
             type: 'error',
         })
-    } else {
-        ElMessage({
-            message: '获取网站名称成功',
-            type: 'success',
-        })
-        navigationDetailItem.value.name = title;
+        isLoadingWebsiteInfo.value = false;
     }
-    isLoadingWebsiteInfo.value = false;
 }
 
 //保存我的提交
@@ -168,10 +187,10 @@ const saveMyChange = async () => {
             })
         }
     } else if (navigationDetailPanelType.value == 'edit') {
-        
+
         try {
             await form.value.validate();
-            
+
             //保存当前导航修改
             saveNavigationDetailEdit();
             isShowNavigationDetailPanel.value = false;
@@ -194,13 +213,13 @@ const saveMyChange = async () => {
     <div>
         <div class=" overflow-hidden">
             <el-dialog modal-class="modal-myClass" v-model="isShowNavigationDetailPanel">
-                <div class="text-[#000]">
+                <div class="">
                     <div class="text-[22px] font-[400] text-[var(--dialog-text-color)]">
                         {{ navigationDetailPanelTypeName }}
                     </div>
                     <div class="flex mt-[30px] min-h-[505px] justify-between mr-[30px]">
                         <div
-                            class="bg-[#fff] w-[655px] rounded-3xl shadow-sm flex flex-col px-[30px] pt-[30px] pb-[50px] text-[18px]">
+                            class="bg-[var(--background-color-dialog-area-box)] w-[655px] rounded-3xl shadow-sm flex flex-col px-[30px] pt-[30px] pb-[50px] text-[18px]">
 
                             <el-form :rules="rules" :model="navigationDetailItem" require-asterisk-position="right"
                                 ref="form" label-width="auto" label-position="top">
@@ -247,10 +266,13 @@ const saveMyChange = async () => {
                                 </el-form-item>
                             </el-form>
                         </div>
-                        <div class="bg-[#fff] w-[255px] rounded-3xl shadow-sm relative">
-                            <div class="text-[20px] font-[548] top-[5%] left-[10%]  absolute">预览</div>
+                        <div
+                            class="bg-[var(--background-color-dialog-area-box)] w-[255px] rounded-3xl shadow-sm relative">
                             <div
-                                class="bg-[#fff] handleNavigation absolute overflow-hidden pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px] top-[35%] left-[46%] translate-x-[-50%]">
+                                class="text-[var(--dialog-text-color)] text-[20px] font-[548] top-[5%] left-[10%]  absolute">
+                                预览</div>
+                            <div
+                                class="bg-[var(--deskNavigation-items-background-color)] text-[var(--deskNavigation-items-text-color)] handleNavigation absolute overflow-hidden pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px] top-[35%] left-[46%] translate-x-[-50%]">
                                 <div class=" relative z-10">
                                     <div v-show="navigationDetailItem.iconType == 'Icon'"
                                         class="w-[55px] h-[55px] rounded-2xl">
@@ -262,7 +284,7 @@ const saveMyChange = async () => {
                                         {{ navigationDetailItem.name[0] }}
                                     </div>
                                 </div>
-                                <div class=" text-[#656565] h-[30px] leading-[30px] w-[80%] relative z-50">
+                                <div class=" h-[30px] leading-[30px] w-[80%] relative z-50">
                                     <el-tooltip class="box-item" :disabled="true" effect="light"
                                         :content="navigationDetailItem.name" placement="bottom-start">
                                         <div class="truncate  text-center  font-[550]" ref="navigationTextList">{{
@@ -340,15 +362,15 @@ const saveMyChange = async () => {
 }
 
 ::v-deep(.el-button:active) {
-    @apply !bg-[#cedbf3]
+    @apply !bg-[var(--navDetail-getMess-button-active-background-color)]
 }
 
 ::v-deep(.el-button:hover) {
-    @apply !bg-[#d8e3f6] text-[#4e7dd4];
+    @apply text-[#4e7dd4] bg-[var(--navDetail-getMess-button-hover-background-color)];
 }
 
 ::v-deep(.el-button) {
-    @apply !w-[120px] h-[43px] rounded-lg text-[18px] ml-3 text-[#4e7dd4] bg-[#e3eaf8] border-none;
+    @apply !w-[120px] h-[43px] rounded-lg text-[18px] ml-3 text-[#4e7dd4] bg-[var(--navDetail-getMess-button-background-color)] border-none;
 }
 
 ::v-deep(.el-form-item:nth-child(1) .el-input__wrapper) {
@@ -363,6 +385,13 @@ const saveMyChange = async () => {
     @apply rounded-lg h-[42px] text-[18px];
 }
 
+::v-deep(.el-form-item__label) {
+    @apply text-[var(--dialog-text-color)]
+}
+
+::v-deep(.el-radio__label) {
+    @apply text-[var(--dialog-text-color)]
+}
 
 .title-part-class {
     padding-bottom: 10px;
@@ -373,6 +402,15 @@ const saveMyChange = async () => {
     content: '*';
     color: red;
     margin-left: 5px;
+}
+
+/* 以下为修改el开关的样式 */
+::v-deep(.el-switch__core) {
+    @apply bg-[var(--switch-background-color)] border-none;
+}
+
+::v-deep(.el-switch--large) {
+    @apply scale-[120%];
 }
 
 /* 以下为修改el按钮的样式 */
@@ -417,5 +455,33 @@ const saveMyChange = async () => {
 /* 以下为修改el滚动条样式 */
 ::v-deep(.el-scrollbar__thumb) {
     background-color: #464649ff;
+}
+
+::v-deep(.el-input__wrapper) {
+    @apply bg-[var(--navDetail-input-inner-background-color)];
+}
+
+::v-deep(.el-input__inner) {
+    @apply text-[var(--dialog-text-color)];
+}
+
+::v-deep(.el-select__wrapper) {
+    @apply bg-[var(--navDetail-input-inner-background-color)];
+}
+
+::v-deep(.el-select-dropdown) {
+    @apply bg-[var(--navDetail-input-inner-background-color)];
+}
+
+::v-deep(.is-hovering) {
+    @apply !bg-[var(--navDetail-input-inner-background-color)];
+}
+
+::v-deep(.el-select__selected-item) {
+    @apply text-[var(--navDetail-select-text-color)];
+}
+
+::v-deep(.el-select-dropdown__item) {
+    @apply text-[var(--navDetail-select-text-color)];
 }
 </style>

@@ -183,7 +183,7 @@ const clickToWebEvent=(url)=>{
                         导航管理
                     </div>
                     <div @contextmenu="menuClickEvent" menuName="navigationManagementInner"
-                        class="mt-[30px] mb-[20px]  mr-[20px] text-[var(--dialog-text-color)] flex bg-[#ffffff] h-[500px] rounded-xl shadow-sm p-[30px] pr-[15px]">
+                        class="mt-[30px] mb-[20px]  mr-[20px] text-[var(--dialog-text-color)] flex bg-[var(--background-color-dialog-area-box)] h-[500px] rounded-xl shadow-sm p-[30px] pr-[15px]">
                         <!-- 分类名称列表 -->
                         <div class="h-[370px]">
                             <el-scrollbar>
@@ -193,7 +193,7 @@ const clickToWebEvent=(url)=>{
                                         <li v-for="(item, index) in sortNameList" menuName="sortItem"
                                             @contextmenu="rightClickSortEvent(index)"
                                             @click="changeCurrentNavigationEvent(index)" :key="item.id"
-                                            :class="`sortsLi-Class ${currentSortIndex == index ? '!bg-[#edf2fbcc] text-[#759add]' : ''}`">
+                                            :class="`sortsLi-Class ${currentSortIndex == index ? '!bg-[var(--navManager-sort-background-color-hover)] text-[#6188c9]' : ''}`">
                                             <div class="sortText-class">
                                                 <el-tooltip class="box-item" :disabled="!isShowTooltip" effect="light"
                                                     :content="item.name" placement="top">
@@ -214,11 +214,11 @@ const clickToWebEvent=(url)=>{
                                 </ul>
                             </el-scrollbar>
                             <div @click="addSortEvent"
-                                class="h-[50px] flex items-center justify-center transition-all pr-[10px] leading-[50px] w-[230px] pl-[20px] mt-[8px] rounded-[7px] bg-[#5f8ad8] text-[#fff] text-[18px]">
+                                class="h-[50px] flex items-center justify-center transition-all pr-[10px] leading-[50px] w-[230px] pl-[20px] mt-[8px] rounded-[7px] bg-[var(--navManager-sort-add-button-background-color)] text-[var(--navManager-sort-add-button-text-color)] text-[18px]">
                                 <div class="sortText-class">添加分类</div>
                                 <div class="flex items-center w-[38px] h-[38px] pt-[0.3px]">
                                     <svg viewBox="0 0 24 24" width="1em" height="1em"
-                                        class="text-[#fff] w-[100%] h-[100%] my-1 mx-2 rounded-[10px] z-1">
+                                        class=" w-[100%] h-[100%] my-1 mx-2 rounded-[10px] z-1">
                                         <path fill="none" stroke="currentColor" stroke-linecap="round"
                                             stroke-linejoin="round" stroke-width="1.5"
                                             d="M8 12h4m4 0h-4m0 0V8m0 4v4m0 6c5.523 0 10-4.477 10-10S17.523 2 12 2S2 6.477 2 12s4.477 10 10 10">
@@ -238,7 +238,7 @@ const clickToWebEvent=(url)=>{
                                         <li v-for="(item, index) in currentSortInnerNavList" :key="item.id" @click="clickToWebEvent(item.url)"
                                             @contextmenu="rightClickNavEvent(currentSortIndex, index)"
                                             menuName="navigationItem"
-                                            :class="`bg-[#fff] handleNavigation relative overflow-hidden ${(!isDraging) ? 'hover:scale-[1.05] transition-transform  duration-200  ease-in-out' : ''}    pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px]`">
+                                            :class="`bg-[var(--deskNavigation-items-background-color)] handleNavigation relative overflow-hidden ${(!isDraging) ? 'hover:scale-[1.05] transition-transform  duration-200  ease-in-out' : ''}    pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px]`">
                                             <div class=" relative z-10">
                                                 <div v-show="item.iconType == 'Icon'"
                                                     class="w-[55px] h-[55px] rounded-2xl">
@@ -250,7 +250,7 @@ const clickToWebEvent=(url)=>{
                                                     {{ item.name[0] }}
                                                 </div>
                                             </div>
-                                            <div class=" text-[#656565] h-[30px] leading-[30px] w-[80%] relative z-50">
+                                            <div class=" text-[--deskNavigation-items-text-color] h-[30px] leading-[30px] w-[80%] relative z-50">
                                                 <el-tooltip class="box-item" :disabled="!isShowTooltip" effect="light"
                                                     :content="item.name" placement="bottom-start">
                                                     <div class="truncate  text-center  font-[550]"
@@ -273,7 +273,7 @@ const clickToWebEvent=(url)=>{
                                         </li>
 
                                         <li @click.stop="showNavigationDetailDialogEvent"
-                                            class=" no-drag delay-75 hover:scale-[1.05] ease-in-out transition-all relative overflow-hidden pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px]">
+                                            class=" no-drag delay-75 hover:scale-[1.05] bg-[var(--deskNavigation-items-background-color)] ease-in-out transition-transform relative overflow-hidden pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px]">
                                             <div class=" relative z-10">
                                                 <div class="w-[50px] h-[50px]">
                                                     <svg viewBox="0 0 24 24" width="1em" height="1em"
@@ -287,7 +287,7 @@ const clickToWebEvent=(url)=>{
 
                                             </div>
                                             <div
-                                                class="truncate font-[550] text-[#656565] h-[35px] leading-[30px] w-[80%] text-center">
+                                                class="truncate font-[550] text-[var(--deskNavigation-items-text-color)] h-[35px] leading-[30px] w-[80%] text-center">
                                                 添加导航</div>
                                             <div class="absolute opacity-15 -rotate-[40deg] top-[0%] left-[45%]">
                                                 <div

@@ -89,7 +89,7 @@ const clickToWebEvent=(url)=>{
                     class="flex flex-wrap">
                     <div v-for="(item, index) in showingNavigationList" :key="item.id" v-show="item.isShowOnDesktop" @click="clickToWebEvent(item.url) "
                         @contextmenu="rightClickDeskNavEvent(index)" menuName="deskNavigationItem"
-                        :class="`bg-[#fff] handleNavigation relative overflow-hidden ${(!isDraging) ? 'hover:scale-[1.05] transition-transform  duration-200  ease-in-out' : ''}    pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[10px] mb-[10px] rounded-2xl shadow-lg border-[#00000013] border-[2px]`">
+                        :class="`bg-[var(--deskNavigation-items-background-color)] text-[var(--deskNavigation-items-text-color)] handleNavigation relative overflow-hidden ${(!isDraging) ? 'hover:scale-[1.05] transition-transform  duration-200  ease-in-out' : ''}    pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[10px] mb-[10px] rounded-2xl shadow-lg border-[#00000013] border-[2px]`">
                         <div class=" relative z-10">
                             <div v-show="item.iconType == 'Icon'" class="w-[55px] h-[55px] rounded-2xl">
                                 <img :src="item?.icon" alt="" srcset="" class="w-[100%] h-[100%] rounded-xl">
@@ -99,10 +99,10 @@ const clickToWebEvent=(url)=>{
                                 {{ item.name[0] }}
                             </div>
                         </div>
-                        <div class=" text-[#656565] h-[30px] leading-[30px] w-[80%] relative z-50">
+                        <div class="h-[30px] leading-[30px] w-[80%] relative z-50">
                             <el-tooltip class="box-item" :disabled="!isShowTooltip" effect="light" :content="item.name"
                                 placement="bottom-start">
-                                <div class="truncate  text-center  font-[550]"
+                                <div class="truncate  text-center text-[16px] font-[650]"
                                     @mouseover="checkNavigationTextOverflow(index)"
                                     :ref="(el) => setNavItemRef(el, index)">{{ item.name }}</div>
                             </el-tooltip>
