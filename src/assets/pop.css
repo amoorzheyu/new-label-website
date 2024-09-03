@@ -1,0 +1,28 @@
+/* 新增分类弹窗样式 */
+.el-message-box {
+    border-radius: 1rem !important;
+    padding: 1rem !important;
+}
+
+.el-message-box__headerbtn {
+    display: flex;
+    width: 1rem !important;
+    height: 1rem !important;
+    right: 1rem !important;
+    top: 1rem !important;
+    border-radius: 0.25rem !important;
+    outline: none !important;
+}
+
+.el-message-box__headerbtn>i>svg>path {
+    stroke: currentColor !important;
+    stroke-width: 2rem !important;
+}
+
+.el-message-box__headerbtn:hover {
+    background-color: #dfdfdf !important;
+}
+
+.el-message-box__headerbtn:hover>i>svg>path {
+    stroke: currentColor !important;
+}

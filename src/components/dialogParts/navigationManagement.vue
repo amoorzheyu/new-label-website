@@ -394,3 +394,6 @@ const clickToWebEvent=(url)=>{
     /* 你可以调整这个值来实现动画效果 */
 }
 </style>
+<style>
+@import '@/assets/pop.css'
+</style>
