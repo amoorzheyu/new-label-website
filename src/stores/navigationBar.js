@@ -42,7 +42,7 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         let count = 0;
         showingNavigationList.value.forEach(item => {
             if (item.isShowOnDesktop) {
-                count++;  
+                count++;
             }
         })
         return count;
@@ -383,11 +383,9 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         newObj.isShowOnDesktop = obj.isShowOnDesktop;
         newObj.sortId = obj.sortId;
 
-        //TODO:111
-        let sortIndex=allNavigationList.value.findIndex(item=>item.id==obj.sortId);
-        let navIndex=allNavigationList.value[sortIndex].items.findIndex(item=>item.id==obj.id);
+        let sortIndex = allNavigationList.value.findIndex(item => item.id == obj.sortId);
+        let navIndex = allNavigationList.value[sortIndex].items.findIndex(item => item.id == obj.id);
         newObj.navIndex = navIndex;
-        // newObj.navIndex = obj.id;
 
         showingNavigationList.value.push(newObj);
     }
@@ -536,15 +534,15 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
 
     //通过分类id与导航id返回对应桌面导航的索引
     let getDesktopNavigationIndexBySortIdAndNavId = (sortId, navIndex) => {
-        return showingNavigationList.value.findIndex(item => (item.navIndex == navIndex) && (item.sortId == sortId))
+        return showingNavigationList.value.findIndex(item => ((item.navIndex == navIndex) && (item.sortId == sortId)))
     }
 
     //处理修改导航对桌面导航的修改
     let saveNavigationDetailEditChangeOnNavigationManagement = (item, oldSortId, oldNavIndex) => {
+
         let deskNavIndex = getDesktopNavigationIndexBySortIdAndNavId(oldSortId, oldNavIndex);
 
-
-        if (deskNavIndex == -1) {
+        if (deskNavIndex == -1 && item.isShowOnDesktop) {
             let nextDeskNavId = getNewNavigationIdOnDesktopIdNext();
             let obj = {
                 id: nextDeskNavId
@@ -553,13 +551,52 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
             deskNavIndex = showingNavigationList.value.length - 1
         }
         let showDeskNavItem = showingNavigationList.value[deskNavIndex];
+
         showDeskNavItem.url = item.url;
         showDeskNavItem.name = item.name;
         showDeskNavItem.iconType = item.iconType;
         showDeskNavItem.icon = item.icon;
         showDeskNavItem.sortId = item.sortId;
-        showDeskNavItem.isShowOnDesktop = item.isShowOnDesktop;
-        showDeskNavItem.navIndex = item.id;
+        showDeskNavItem.isShowOnDesktop = item.isShowOnDesktop
+
+        showDeskNavItem.navIndex = oldNavIndex;
+    }
+
+    //在导航管理中通过拖动修改导航顺序对桌面导航的修改
+    let saveNavigationDetailEditChangeOnNavigationManagementByDrag = (oldItem, newItem, oldSortId, oldIndex, newIndex) => {
+
+        let deskNavIndex_old = getDesktopNavigationIndexBySortIdAndNavId(oldSortId, oldIndex);
+        let deskNavIndex_new = getDesktopNavigationIndexBySortIdAndNavId(oldSortId, newIndex);
+            
+        
+        let item = null;
+        let showDeskNavItem = null;
+        let navIndex = null;
+        if (deskNavIndex_old != -1) {
+            item = oldItem;
+            showDeskNavItem = showingNavigationList.value[deskNavIndex_old];
+            showDeskNavItem.url = item.url;
+            showDeskNavItem.name = item.name;
+            showDeskNavItem.iconType = item.iconType;
+            showDeskNavItem.icon = item.icon;
+            showDeskNavItem.sortId = item.sortId;
+            showDeskNavItem.isShowOnDesktop = item.isShowOnDesktop;
+            navIndex = item.navIndex;
+            showDeskNavItem.navIndex = navIndex;
+        }
+
+        if (deskNavIndex_new != -1) {
+            item = newItem;
+            showDeskNavItem = showingNavigationList.value[deskNavIndex_new];
+            showDeskNavItem.url = item.url;
+            showDeskNavItem.name = item.name;
+            showDeskNavItem.iconType = item.iconType;
+            showDeskNavItem.icon = item.icon;
+            showDeskNavItem.sortId = item.sortId;
+            showDeskNavItem.isShowOnDesktop = item.isShowOnDesktop;
+            navIndex = item.navIndex;
+            showDeskNavItem.navIndex = navIndex;
+        }
     }
 
     //保存当前导航修改
@@ -688,6 +725,8 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         removeNavigationOnDesktopByMenu,
         isRightClickToNavShowOnDesktop,
         removeNavFromDeskByMenuOnNavigationManagement,
+        saveNavigationDetailEditChangeOnNavigationManagement,
+        saveNavigationDetailEditChangeOnNavigationManagementByDrag
     }
 },
     {

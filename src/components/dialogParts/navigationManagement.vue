@@ -10,8 +10,15 @@ let { isShowNavigationManagementDialog } = storeToRefs(useIsShowDialogsStore())
 
 // pinia->useNavigationBarStore
 import { useNavigationBarStore } from '@/stores/navigationBar'
-let { allNavigationList, sortNameList,isRightClickToNavShowOnDesktop, rightClickSortIndex, rightClickNavIndex, currentSortInnerNavList, currentSortIndex, isShowNavigationDetailPanel, navigationDetailPanelType } = storeToRefs(useNavigationBarStore())
-const { changeCurrentNavigation, addNavigationOnNavigationManagement, addSortWithNotice, addSort, deleteSortWithNotice } = useNavigationBarStore()
+let { allNavigationList, sortNameList, isRightClickToNavShowOnDesktop, rightClickSortIndex, rightClickNavIndex, currentSortInnerNavList, currentSortIndex, isShowNavigationDetailPanel, navigationDetailPanelType } = storeToRefs(useNavigationBarStore())
+const { changeCurrentNavigation,
+    addNavigationOnNavigationManagement,
+    addSortWithNotice,
+    addSort,
+    deleteSortWithNotice,
+    saveNavigationDetailEditChangeOnNavigationManagement,
+    saveNavigationDetailEditChangeOnNavigationManagementByDrag
+} = useNavigationBarStore()
 
 // pinia->useMenuLayoutStore
 import { useMenuLayoutStore } from "@/stores/menuLayout";
@@ -82,7 +89,7 @@ const onSortDragStart = (event) => {
     item.style.opacity = 0;
 }
 
-//拖动栏目结束
+//拖动分类结束
 const onSortDragEnd = (event) => {
 
     let { oldIndex, newIndex, item } = event;
@@ -133,8 +140,21 @@ const onNavigationDragEnd = (event) => {
     let NavigationIndex = currentSortIndex.value;
     let currentNavigationList = allNavigationList.value[NavigationIndex].items
     let tempOld = deepClone(currentNavigationList[oldIndex]);
+
+    //TODO:同步修改桌面导航
+    let nowItemsList = allNavigationList.value[currentSortIndex.value].items
+    let oldItem=deepClone(nowItemsList[oldIndex])
+    let newItem=deepClone(nowItemsList[newIndex])
+
+
+    oldItem.navIndex=newIndex;
+    newItem.navIndex=oldIndex;
+
+    let nowSortId=allNavigationList.value[currentSortIndex.value].id
+
     currentNavigationList.splice(oldIndex, 1);
     currentNavigationList.splice(newIndex, 0, tempOld);
+    saveNavigationDetailEditChangeOnNavigationManagementByDrag(oldItem,newItem,nowSortId,oldIndex,newIndex)
 }
 
 //移动事件
@@ -164,12 +184,12 @@ const rightClickSortEvent = (sortId) => {
 const rightClickNavEvent = (sortId, navId) => {
     rightClickNavIndex.value = navId
     rightClickSortIndex.value = sortId
-    isRightClickToNavShowOnDesktop.value= allNavigationList.value[rightClickSortIndex.value].items[rightClickNavIndex.value].isShowOnDesktop
+    isRightClickToNavShowOnDesktop.value = allNavigationList.value[rightClickSortIndex.value].items[rightClickNavIndex.value].isShowOnDesktop
 }
 
 
 //点击跳转网页
-const clickToWebEvent=(url)=>{
+const clickToWebEvent = (url) => {
     window.open(url)
 }
 
@@ -235,7 +255,8 @@ const clickToWebEvent=(url)=>{
                                     <VueDraggable @move="onMoveEvnet" handle=".handleNavigation" :animation="250"
                                         v-model="currentSortInnerNavList" @end="onNavigationDragEnd"
                                         @start="onNavigationDragStart" class="flex flex-wrap">
-                                        <li v-for="(item, index) in currentSortInnerNavList" :key="item.id" @click="clickToWebEvent(item.url)"
+                                        <li v-for="(item, index) in currentSortInnerNavList" :key="item.id"
+                                            @click="clickToWebEvent(item.url)"
                                             @contextmenu="rightClickNavEvent(currentSortIndex, index)"
                                             menuName="navigationItem"
                                             :class="`bg-[var(--deskNavigation-items-background-color)] handleNavigation relative overflow-hidden ${(!isDraging) ? 'hover:scale-[1.05] transition-transform  duration-200  ease-in-out' : ''}    pt-[5px] flex flex-col items-center justify-around mx-[10px] w-[130px] h-[125px] mt-[20px] rounded-2xl shadow-lg border-[#00000013] border-[2px]`">
@@ -250,7 +271,8 @@ const clickToWebEvent=(url)=>{
                                                     {{ item.name[0] }}
                                                 </div>
                                             </div>
-                                            <div class=" text-[--deskNavigation-items-text-color] h-[30px] leading-[30px] w-[80%] relative z-50">
+                                            <div
+                                                class=" text-[--deskNavigation-items-text-color] h-[30px] leading-[30px] w-[80%] relative z-50">
                                                 <el-tooltip class="box-item" :disabled="!isShowTooltip" effect="light"
                                                     :content="item.name" placement="bottom-start">
                                                     <div class="truncate  text-center  font-[550]"
