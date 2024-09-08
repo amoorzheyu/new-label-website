@@ -135,11 +135,12 @@ export const useMenuLayoutStore = defineStore('menuLayout', () => {
                 }
             }
         }
+
         if (dom.hasAttribute('menuName')) {
 
             returnMenuName = dom.getAttribute('menuName')
         } else {
-            getMenuNameDomToParent(dom, returnMenuName)
+            getMenuNameDomToParent(dom)
         }
         return returnMenuName;
     }

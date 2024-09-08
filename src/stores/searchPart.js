@@ -161,6 +161,7 @@ export const useSearchPartStore = defineStore('searchPart', () => {
             })
         }
     }
+    
     //清空搜索框
     const clearSearchTextOnClick = () => {
         searchText.value = '';

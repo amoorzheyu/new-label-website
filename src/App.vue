@@ -9,19 +9,21 @@ import settings from "@/components/dialogParts/settings.vue";
 import navigationManagement from "@/components/dialogParts/navigationManagement.vue";
 import navigationDetails from "@/components/dialogParts/navigationDetails.vue";
 import dialogIcon from "@/components/iconComponents/dialogIcon.vue";
-// import  {ElMessage}  from "@element-plus/icons";
+
 // pinia->useThemeSwapStore
 import { useThemeSwapStore } from "@/stores/themeSwap";
 const { initTheme } = useThemeSwapStore();
 
 //pinia->useBackgroundImageStore
 import { useBackgroundImageStore } from "@/stores/backgroundImage";
+
 let {
-  currentImageUrl,
-  currentImageDom,
-  isShowManualMockBackground,
-  manualMockBackgroundDom,
+  currentImageUrl,//当前背景图片URL
+  currentImageDom,//当前背景图片所在Dom
+  isShowManualMockBackground,//是否显示模板背景图片
+  manualMockBackgroundDom,//模板背景图片所在Dom
 } = storeToRefs(useBackgroundImageStore());
+
 const { initBackgroundImage } = useBackgroundImageStore();
 
 // pinia->useMenuLayoutStore

@@ -21,7 +21,7 @@ const swapThemeEvent = () => {
 
 </script>
 <template>
-  <div class=" relative z-40">
+  <div class=" relative z-50" >
     <div v-show="!isShowTopMenu" class="h-[58px]"></div>
     <div class="flex justify-end mr-2 mt-2" v-show="isShowTopMenu">
       <div class="button-class" @click="isShowNavigationManagementDialog=true">

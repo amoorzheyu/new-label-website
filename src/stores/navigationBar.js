@@ -12,6 +12,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import axios from 'axios'
 
 export const useNavigationBarStore = defineStore('navigationBar', () => {
+
     //桌面显示的导航栏
     let showingNavigationList = ref([
         {
@@ -41,7 +42,7 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         let count = 0;
         showingNavigationList.value.forEach(item => {
             if (item.isShowOnDesktop) {
-                count++;
+                count++;  
             }
         })
         return count;
@@ -381,7 +382,13 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         newObj.iconType = obj.iconType;
         newObj.isShowOnDesktop = obj.isShowOnDesktop;
         newObj.sortId = obj.sortId;
-        newObj.navIndex = obj.id;
+
+        //TODO:111
+        let sortIndex=allNavigationList.value.findIndex(item=>item.id==obj.sortId);
+        let navIndex=allNavigationList.value[sortIndex].items.findIndex(item=>item.id==obj.id);
+        newObj.navIndex = navIndex;
+        // newObj.navIndex = obj.id;
+
         showingNavigationList.value.push(newObj);
     }
 
@@ -490,7 +497,7 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
             let navIndex = rightClickNavIndex.value
             let item = allNavigationList.value[sortIndex].items[navIndex]
             item.isShowOnDesktop = true;
-            saveNavigationDetailEditChangeOnNavigationManagement(item, sortId,navIndex)
+            saveNavigationDetailEditChangeOnNavigationManagement(item, sortId, navIndex)
 
             ElMessage({
                 type: 'success',
@@ -643,7 +650,7 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
 
         allNavigationList.value[sortIndex].items[selectNavIndex].isShowOnDesktop = false;
 
-        let deskNavIndex=getDesktopNavigationIndexBySortIdAndNavId(sortId, selectNavIndex);
+        let deskNavIndex = getDesktopNavigationIndexBySortIdAndNavId(sortId, selectNavIndex);
         showingNavigationList.value[deskNavIndex].isShowOnDesktop = false;
     }
 
@@ -683,9 +690,9 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         removeNavFromDeskByMenuOnNavigationManagement,
     }
 },
-{
-    persist: {
-        paths: ['allNavigationList', 'showingNavigationList']
+    {
+        persist: {
+            paths: ['allNavigationList', 'showingNavigationList']
+        }
     }
-}
 )
