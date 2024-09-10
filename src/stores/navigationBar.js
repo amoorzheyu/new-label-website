@@ -302,8 +302,14 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
     }
     //获取网站信息
     let getWebsiteInfo = async (url) => {
-        let iconUrl = await getWebsiteIcon(url)
-        let title = await getWebsiteTitle(url)
+        let iconUrl = '', title = '';
+
+        try {
+            iconUrl = await getWebsiteIcon(url)
+        }
+        catch (e) {
+        }
+        title = await getWebsiteTitle(url)
 
 
         return {
@@ -567,8 +573,8 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
 
         let deskNavIndex_old = getDesktopNavigationIndexBySortIdAndNavId(oldSortId, oldIndex);
         let deskNavIndex_new = getDesktopNavigationIndexBySortIdAndNavId(oldSortId, newIndex);
-            
-        
+
+
         let item = null;
         let showDeskNavItem = null;
         let navIndex = null;
