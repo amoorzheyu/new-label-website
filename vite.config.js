@@ -16,10 +16,10 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     proxy: {
-      '/getIcon': {
-        target: 'https://service.yijun.fun/api/favicon',
+      '/api/getIcon': {
+        target: 'http://localhost:3000',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/getIcon/, '')
+        rewrite: (path) => path.replace(/^\/api/, '/api')
       }
     }
   }

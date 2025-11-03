@@ -263,13 +263,12 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
 
     //获取网站图标
     let getWebsiteIcon = async (url) => {
-        //向/getIcon发送请求
-        return await axios.get('/getIcon', {
+        //向后端API发送请求获取图标
+        return await axios.get('/api/getIcon', {
             params: {
                 website: url
             }
         }).then(res => {
-
             if (res.status == 200) {
                 if (typeof res?.data == 'string') {
                     return res.data
