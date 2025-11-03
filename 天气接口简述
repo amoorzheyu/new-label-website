@@ -1,3 +1,4 @@
+使用的知心天气接口，个人版API无限免费，可自查文档
 https://api.seniverse.com/v3/weather/now.json?key=your_api_key&location=beijing
 
 key在环境变量里有：XINZHI_WEATHER_API_KEY
