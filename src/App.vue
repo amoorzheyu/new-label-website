@@ -9,6 +9,7 @@ import settings from "@/components/dialogParts/settings.vue";
 import navigationManagement from "@/components/dialogParts/navigationManagement.vue";
 import navigationDetails from "@/components/dialogParts/navigationDetails.vue";
 import dialogIcon from "@/components/iconComponents/dialogIcon.vue";
+import { APP_FULL_NAME } from "@/config/appConfig";
 
 // pinia->useThemeSwapStore
 import { useThemeSwapStore } from "@/stores/themeSwap";
@@ -59,11 +60,11 @@ import { ElNotification } from 'element-plus'
 
 const welcomeAndTip = () => {
   ElNotification({
-    title: '桑桑新标签',
+    title: APP_FULL_NAME,
     duration: 60000,
     dangerouslyUseHTMLString: true,
     icon: dialogIcon,
-    message: `欢迎来到桑桑新标签网站，这是一个简洁干净的导航管理网站,在设置中可以配置我们所需的界面布局,可作为您的浏览器新标签页。我们所有的导航及导航分类都可进行<span style="color:#628cd9 ;font-weight: bold;">可视化拖拽管理</span>并且可以使用<span style="color:#628cd9 ;font-weight: bold;">鼠标右键</span>唤出对应的应用菜单进行各种便捷操作。`,
+    message: `欢迎来到${APP_FULL_NAME}网站，这是一个简洁干净的导航管理网站,在设置中可以配置我们所需的界面布局,可作为您的浏览器新标签页。我们所有的导航及导航分类都可进行<span style="color:#628cd9 ;font-weight: bold;">可视化拖拽管理</span>并且可以使用<span style="color:#628cd9 ;font-weight: bold;">鼠标右键</span>唤出对应的应用菜单进行各种便捷操作。`,
   })
   isFirst.value = false;
 }

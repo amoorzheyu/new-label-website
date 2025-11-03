@@ -7,6 +7,10 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import App from './App.vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import { APP_FULL_NAME } from './config/appConfig'
+
+// 设置页面标题
+document.title = APP_FULL_NAME
 
 const app = createApp(App)
 const pinia = createPinia()

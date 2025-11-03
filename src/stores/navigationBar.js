@@ -543,6 +543,19 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
         return showingNavigationList.value.findIndex(item => ((item.navIndex == navIndex) && (item.sortId == sortId)))
     }
 
+    //通过分类id与导航id（唯一标识）返回对应桌面导航的索引
+    let getDesktopNavigationIndexBySortIdAndNavId_Id = (sortId, navId) => {
+        // 先找到分类中id为navId的导航项，获取它的实际索引
+        let sortIndex = allNavigationList.value.findIndex(item => item.id == sortId);
+        if (sortIndex === -1) return -1;
+        
+        let navIndexInAll = allNavigationList.value[sortIndex].items.findIndex(item => item.id == navId);
+        if (navIndexInAll === -1) return -1;
+        
+        // 使用sortId和navIndexInAll查找桌面导航
+        return showingNavigationList.value.findIndex(item => ((item.navIndex == navIndexInAll) && (item.sortId == sortId)))
+    }
+
     //处理修改导航对桌面导航的修改
     let saveNavigationDetailEditChangeOnNavigationManagement = (item, oldSortId, oldNavIndex) => {
 
@@ -569,39 +582,28 @@ export const useNavigationBarStore = defineStore('navigationBar', () => {
     }
 
     //在导航管理中通过拖动修改导航顺序对桌面导航的修改
-    let saveNavigationDetailEditChangeOnNavigationManagementByDrag = (oldItem, newItem, oldSortId, oldIndex, newIndex) => {
-
-        let deskNavIndex_old = getDesktopNavigationIndexBySortIdAndNavId(oldSortId, oldIndex);
-        let deskNavIndex_new = getDesktopNavigationIndexBySortIdAndNavId(oldSortId, newIndex);
-
-
-        let item = null;
-        let showDeskNavItem = null;
-        let navIndex = null;
-        if (deskNavIndex_old != -1) {
-            item = oldItem;
-            showDeskNavItem = showingNavigationList.value[deskNavIndex_old];
-            showDeskNavItem.url = item.url;
-            showDeskNavItem.name = item.name;
-            showDeskNavItem.iconType = item.iconType;
-            showDeskNavItem.icon = item.icon;
-            showDeskNavItem.sortId = item.sortId;
-            showDeskNavItem.isShowOnDesktop = item.isShowOnDesktop;
-            navIndex = item.navIndex;
-            showDeskNavItem.navIndex = navIndex;
-        }
-
-        if (deskNavIndex_new != -1) {
-            item = newItem;
-            showDeskNavItem = showingNavigationList.value[deskNavIndex_new];
-            showDeskNavItem.url = item.url;
-            showDeskNavItem.name = item.name;
-            showDeskNavItem.iconType = item.iconType;
-            showDeskNavItem.icon = item.icon;
-            showDeskNavItem.sortId = item.sortId;
-            showDeskNavItem.isShowOnDesktop = item.isShowOnDesktop;
-            navIndex = item.navIndex;
-            showDeskNavItem.navIndex = navIndex;
+    let saveNavigationDetailEditChangeOnNavigationManagementByDrag = (draggedItem, replacedItem, sortId, draggedItemId, replacedItemId) => {
+        // 更新当前分类所有导航项的桌面导航的navIndex
+        // 这样确保所有项的索引都是正确的，避免重复或遗漏
+        let sortIndex = allNavigationList.value.findIndex(item => item.id == sortId);
+        if (sortIndex !== -1) {
+            // 遍历当前分类的所有导航项，统一更新它们的桌面导航的navIndex和属性
+            allNavigationList.value[sortIndex].items.forEach((navItem, index) => {
+                // 使用id查找对应的桌面导航项
+                let deskNavIndex = getDesktopNavigationIndexBySortIdAndNavId_Id(sortId, navItem.id);
+                if (deskNavIndex !== -1) {
+                    let showDeskNavItem = showingNavigationList.value[deskNavIndex];
+                    // 更新所有属性以确保同步
+                    showDeskNavItem.url = navItem.url;
+                    showDeskNavItem.name = navItem.name;
+                    showDeskNavItem.iconType = navItem.iconType;
+                    showDeskNavItem.icon = navItem.icon;
+                    showDeskNavItem.sortId = navItem.sortId;
+                    showDeskNavItem.isShowOnDesktop = navItem.isShowOnDesktop;
+                    // 更新navIndex为当前索引位置
+                    showDeskNavItem.navIndex = index;
+                }
+            });
         }
     }
 

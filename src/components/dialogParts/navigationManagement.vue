@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, watch } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 
 import { storeToRefs } from 'pinia';
@@ -19,6 +19,19 @@ const { changeCurrentNavigation,
     saveNavigationDetailEditChangeOnNavigationManagement,
     saveNavigationDetailEditChangeOnNavigationManagementByDrag
 } = useNavigationBarStore()
+
+// 创建本地可写的导航列表引用，用于拖拽
+let localNavigationList = ref([])
+
+// 监听 currentSortInnerNavList 变化，同步到本地列表
+watch(currentSortInnerNavList, (newList) => {
+    localNavigationList.value = [...newList]
+}, { immediate: true, deep: true })
+
+// 监听 currentSortIndex 变化，重新同步列表
+watch(currentSortIndex, () => {
+    localNavigationList.value = [...currentSortInnerNavList.value]
+}, { immediate: true })
 
 // pinia->useMenuLayoutStore
 import { useMenuLayoutStore } from "@/stores/menuLayout";
@@ -139,22 +152,37 @@ const onNavigationDragEnd = (event) => {
     item.style.opacity = 1;
     let NavigationIndex = currentSortIndex.value;
     let currentNavigationList = allNavigationList.value[NavigationIndex].items
-    let tempOld = deepClone(currentNavigationList[oldIndex]);
-
-    //TODO:同步修改桌面导航
-    let nowItemsList = allNavigationList.value[currentSortIndex.value].items
-    let oldItem=deepClone(nowItemsList[oldIndex])
-    let newItem=deepClone(nowItemsList[newIndex])
-
-
-    oldItem.navIndex=newIndex;
-    newItem.navIndex=oldIndex;
-
-    let nowSortId=allNavigationList.value[currentSortIndex.value].id
-
-    currentNavigationList.splice(oldIndex, 1);
-    currentNavigationList.splice(newIndex, 0, tempOld);
-    saveNavigationDetailEditChangeOnNavigationManagementByDrag(oldItem,newItem,nowSortId,oldIndex,newIndex)
+    
+    // 将本地列表的更新同步回 store
+    // VueDraggable 已经更新了 localNavigationList，现在需要同步到 allNavigationList
+    currentNavigationList.splice(0, currentNavigationList.length, ...localNavigationList.value);
+    
+    // 保存被拖拽项的ID（在oldIndex位置的项现在移动到了newIndex位置）
+    let draggedItemId = currentNavigationList[newIndex].id;
+    
+    // 保存被替换位置的项的ID
+    // 如果oldIndex < newIndex，被替换的项现在在newIndex-1位置
+    // 如果oldIndex > newIndex，被替换的项现在在newIndex+1位置
+    let replacedItemIndex = oldIndex < newIndex ? newIndex - 1 : newIndex + 1;
+    let replacedItemId = replacedItemIndex >= 0 && replacedItemIndex < currentNavigationList.length 
+        ? currentNavigationList[replacedItemIndex].id 
+        : null;
+    
+    let nowSortId = allNavigationList.value[currentSortIndex.value].id;
+    
+    // 更新所有导航项的navIndex以匹配它们的新位置
+    currentNavigationList.forEach((navItem, index) => {
+        navItem.navIndex = index;
+    });
+    
+    // 获取拖拽后两个项的最新信息
+    let draggedItem = currentNavigationList.find(nav => nav.id === draggedItemId);
+    let replacedItem = replacedItemId ? currentNavigationList.find(nav => nav.id === replacedItemId) : null;
+    
+    // 同步更新桌面导航
+    if (draggedItem) {
+        saveNavigationDetailEditChangeOnNavigationManagementByDrag(draggedItem, replacedItem, nowSortId, draggedItemId, replacedItemId)
+    }
 }
 
 //移动事件
@@ -253,9 +281,9 @@ const clickToWebEvent = (url) => {
                             <el-scrollbar>
                                 <ul class="ml-[20px] flex flex-wrap mt-[-10px] pb-[30px] text-[18px] font-sans">
                                     <VueDraggable @move="onMoveEvnet" handle=".handleNavigation" :animation="250"
-                                        v-model="currentSortInnerNavList" @end="onNavigationDragEnd"
+                                        v-model="localNavigationList" @end="onNavigationDragEnd"
                                         @start="onNavigationDragStart" class="flex flex-wrap">
-                                        <li v-for="(item, index) in currentSortInnerNavList" :key="item.id"
+                                        <li v-for="(item, index) in localNavigationList" :key="item.id"
                                             @click="clickToWebEvent(item.url)"
                                             @contextmenu="rightClickNavEvent(currentSortIndex, index)"
                                             menuName="navigationItem"

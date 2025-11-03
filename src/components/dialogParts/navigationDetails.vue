@@ -3,6 +3,9 @@ import { ref, nextTick, computed } from 'vue'
 import { storeToRefs } from 'pinia';
 import { ElMessage, ElMessageBox } from 'element-plus'
 
+// 应用配置
+import { APP_FULL_NAME } from '@/config/appConfig'
+
 // pinia->useNavigationBarStore
 import { useNavigationBarStore } from '@/stores/navigationBar'
 let { isShowNavigationDetailPanel, navigationDetailPanelType, sortNameList, navigationDetailItem } = storeToRefs(useNavigationBarStore())
@@ -231,7 +234,7 @@ const saveMyChange = async () => {
                                         class="!w-[100px]" @click="getWebsiteInfoEvent">获取信息</el-button>
                                 </el-form-item>
                                 <el-form-item label="导航名称" prop="name">
-                                    <el-input v-model="navigationDetailItem.name" placeholder="桑桑新标签"></el-input>
+                                    <el-input v-model="navigationDetailItem.name" :placeholder="APP_FULL_NAME"></el-input>
                                 </el-form-item>
                                 <el-form-item label="图标类型:"
                                     class="icon-type-part-class !flex items-center justify-center">
