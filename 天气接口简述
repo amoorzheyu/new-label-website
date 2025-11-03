@@ -1,0 +1,26 @@
+https://api.seniverse.com/v3/weather/now.json?key=your_api_key&location=beijing
+
+key在环境变量里有：XINZHI_WEATHER_API_KEY
+location可以是经纬度（格式是 纬度:经度，英文冒号分隔） 也可以是城市名
+
+返回内容格式如下
+{
+  "results": [
+    {
+      "location": {
+        "id": "WX4FBXXFKE4F",
+        "name": "北京",
+        "country": "CN",
+        "path": "北京,北京,中国",
+        "timezone": "Asia/Shanghai",
+        "timezone_offset": "+08:00"
+      },
+      "now": {
+        "text": "雾",
+        "code": "30",
+        "temperature": "4"
+      },
+      "last_update": "2025-11-04T00:10:19+08:00"
+    }
+  ]
+}

@@ -28,5 +28,13 @@ export const useSettingOptStore = defineStore('settingOpt', () => {
 
     let { isShowTopMenu, isShowDatePart, isShowSearch, isShowNavigationBar, isAdaptiveNavigationWidth, isSwapTobuttomNavigation } = storeToRefs(useLayoutElementStore())
 
-    return { isDarkMode, isShowTopMenu, isShowDatePart, isShowSearch, isShowNavigationBar, isAdaptiveNavigationWidth, isSwapTobuttomNavigation }
+    // 天气城市名（默认为空，使用默认值"beijing"）
+    let weatherCity = ref('')
+
+    return { isDarkMode, isShowTopMenu, isShowDatePart, isShowSearch, isShowNavigationBar, isAdaptiveNavigationWidth, isSwapTobuttomNavigation, weatherCity }
+}, {
+    persist: {
+        storage: localStorage,
+        paths: ['weatherCity']
+    }
 })

@@ -12,7 +12,7 @@ let { isShowSettingDialog } = storeToRefs(useIsShowDialogsStore())
 
 // pinia->useSettingOptStore
 import { useSettingOptStore } from '@/stores/settingopt'
-let { isDarkMode, isShowTopMenu, isShowDatePart, isShowNavigationBar, isAdaptiveNavigationWidth, isSwapTobuttomNavigation } = storeToRefs(useSettingOptStore())
+let { isDarkMode, isShowTopMenu, isShowDatePart, isShowNavigationBar, isAdaptiveNavigationWidth, isSwapTobuttomNavigation, weatherCity } = storeToRefs(useSettingOptStore())
 
 
 //pinia->useBackgroundImageStore
@@ -106,10 +106,16 @@ const closedDialog=()=>{
                                                 <el-switch v-model="isAdaptiveNavigationWidth" size="large"></el-switch>
                                             </div>
                                         </li>
-                                        <li class="setting-item-line border-none">
+                                        <li class="setting-item-line">
                                             <div>切换为底部导航栏</div>
                                             <div>
                                                 <el-switch v-model="isSwapTobuttomNavigation" size="large"></el-switch>
+                                            </div>
+                                        </li>
+                                        <li class="setting-item-line border-none">
+                                            <div>天气城市</div>
+                                            <div class="weather-city-input-wrapper">
+                                                <el-input v-model="weatherCity" placeholder="请输入省+市区，如：广东中山" clearable />
                                             </div>
                                         </li>
                                     </ul>
@@ -217,7 +223,24 @@ const closedDialog=()=>{
 
 .setting-item-line {
     line-height: 61px;
+    min-height: 61px;
     @apply flex pr-[5px] justify-between items-center text-[20px] border-b-[1px] border-[var(--background-color-dialog-area-box-under-line)];
+}
+
+.weather-city-input-wrapper {
+    max-width: 300px;
+    width: 300px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+.weather-city-input-wrapper ::v-deep(.el-input) {
+    width: 100%;
+}
+
+.weather-city-input-wrapper ::v-deep(.el-input__wrapper) {
+    width: 100%;
 }
 
 /*  */

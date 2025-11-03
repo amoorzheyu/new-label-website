@@ -4,9 +4,19 @@ import cors from 'cors';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { existsSync } from 'fs';
+import dotenv from 'dotenv';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+// 加载环境变量 - 显式指定 .env 文件路径为项目根目录
+const envPath = join(__dirname, '.env');
+const result = dotenv.config({ path: envPath });
+
+// 只在出错时提示
+if (result.error) {
+    console.warn('⚠️  警告：加载 .env 文件失败:', result.error.message);
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -92,6 +102,61 @@ app.get('/api/getIcon', async (req, res) => {
         } catch (e) {
             return res.status(500).send('获取图标失败');
         }
+    }
+});
+
+/**
+ * 获取天气信息的API接口
+ * @param {string} location - 位置信息（可以是城市名或经纬度，格式：纬度:经度）
+ * @returns {object} - 天气信息
+ */
+app.get('/api/weather', async (req, res) => {
+    // 在 try 外部声明变量，以便 catch 块可以访问
+    let apiKey;
+    let location;
+    
+    try {
+        location = req.query.location;
+        
+        if (!location) {
+            return res.status(400).json({ error: '缺少location参数' });
+        }
+
+        // 从环境变量获取API Key
+        apiKey = process.env.XINZHI_WEATHER_API_KEY;
+        
+        if (!apiKey || apiKey === 'xxx' || apiKey === 'your_api_key_here') {
+            console.error('API密钥未配置或为默认值');
+            return res.status(500).json({ 
+                error: '天气API密钥未配置',
+                hint: '请在 .env 文件中设置环境变量 XINZHI_WEATHER_API_KEY'
+            });
+        }
+
+        // 调用心知天气API
+        const weatherUrl = 'https://api.seniverse.com/v3/weather/now.json';
+        const response = await axios.get(weatherUrl, {
+            params: {
+                key: apiKey,
+                location: location
+            },
+            timeout: 1000
+        });
+
+
+        if (response.data && response.data.results && response.data.results.length > 0) {
+            return res.json(response.data);
+        } else {
+            return res.status(500).json({ error: '天气API返回数据格式异常' });
+        }
+
+    } catch (error) {
+        console.error('获取天气信息时出错:', error.message);
+        
+        if (error.response) {
+            return res.status(error.response.status).json(error.response.data);
+        }
+        return res.status(500).json({ error: '获取天气信息失败: ' + error.message });
     }
 });
 

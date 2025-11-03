@@ -1,5 +1,7 @@
 <script setup>
+import { ref, onMounted, watch } from 'vue';
 import { storeToRefs } from 'pinia';
+import axios from 'axios';
 
 // pinia->useThemeSwapStore
 import { useThemeSwapStore } from '@/stores/themeSwap'
@@ -14,16 +16,106 @@ let { isShowSettingDialog,isShowNavigationManagementDialog } = storeToRefs(useIs
 import { useLayoutElementStore } from '@/stores/layoutElement'
 let { isShowTopMenu } = storeToRefs(useLayoutElementStore())
 
+// pinia->useSettingOptStore
+import { useSettingOptStore } from '@/stores/settingopt'
+let { weatherCity } = storeToRefs(useSettingOptStore())
+
 //切换主题事件
 const swapThemeEvent = () => {
   changeTheme(nowThemeIndex.value)
 }
 
+// 天气相关
+const weatherData = ref(null);
+const isLoadingWeather = ref(false);
+const weatherError = ref(null);
+
+// 获取天气信息
+const getWeather = async (location, isRetry = false) => {
+  try {
+    isLoadingWeather.value = true;
+    weatherError.value = null;
+    const response = await axios.get('/api/weather', {
+      params: { location }
+    });
+    
+    if (response.data && response.data.results && response.data.results.length > 0) {
+      weatherData.value = response.data.results[0];
+      console.log('✅ 天气数据获取成功:', response.data.results[0].location?.name);
+    }
+  } catch (error) {
+    console.error('获取天气失败:', error);
+    if (error.response) {
+      const status = error.response.status;
+      const errorData = error.response.data;
+      const errorMsg = errorData?.error || errorData?.message || '获取天气失败';
+      
+      console.error('API错误:', status, errorMsg);
+      
+      
+      weatherError.value = errorMsg;
+      
+      // 如果是403或401错误，显示更友好的提示
+      if (status === 403 || status === 401) {
+        weatherError.value = status === 403 
+          ? '无法获取该位置的天气数据' 
+          : 'API密钥无效';
+      }
+    } else {
+      weatherError.value = '获取天气失败';
+    }
+  } finally {
+    isLoadingWeather.value = false;
+  }
+};
+
+// 获取天气城市（从设置中读取，如果没有则使用默认值"beijing"）
+const getWeatherCity = () => {
+  return weatherCity.value?.trim() || 'beijing';
+};
+
+// 组件挂载时获取天气
+onMounted(() => {
+  // 直接使用城市名（从设置中读取或使用默认值）
+  const city = getWeatherCity();
+  getWeather(city);
+  
+  // 监听城市名变化，自动更新天气
+  watch(weatherCity, () => {
+    const city = getWeatherCity();
+    getWeather(city);
+  });
+  
+  // 每30分钟更新一次天气
+  setInterval(() => {
+    const city = getWeatherCity();
+    getWeather(city);
+  }, 30 * 60 * 1000);
+});
+
 </script>
 <template>
   <div class=" relative z-50" >
     <div v-show="!isShowTopMenu" class="h-[58px]"></div>
-    <div class="flex justify-end mr-2 mt-2" v-show="isShowTopMenu">
+    <div class="flex justify-between items-center mx-2 mt-2" v-show="isShowTopMenu">
+      <!-- 左侧天气信息 -->
+      <div class="weather-container">
+        <div v-if="isLoadingWeather" class="weather-loading">
+          <svg class="animate-spin" viewBox="0 0 24 24" width="16" height="16">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" opacity="0.25"/>
+            <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+          </svg>
+        </div>
+        <div v-else-if="weatherData" class="weather-info">
+          <span class="weather-city">{{ weatherData.location?.name || '未知' }}</span>
+          <span class="weather-text">{{ weatherData.now?.text || '-' }}</span>
+          <span class="weather-temp">{{ weatherData.now?.temperature || '-' }}°C</span>
+        </div>
+        <div v-else-if="weatherError" class="weather-error">{{ weatherError }}</div>
+      </div>
+      
+      <!-- 右侧按钮组 -->
+      <div class="flex">
       <div class="button-class" @click="isShowNavigationManagementDialog=true">
         <svg class="svg-class" data-v-81d5a9b4="" viewBox="0 0 24 24" width="1em" height="1em">
           <path fill="none" stroke="currentColor" stroke-width="1.5"
@@ -55,6 +147,7 @@ const swapThemeEvent = () => {
           </g>
         </svg>
       </div>
+      </div>
     </div>
   </div>
 </template>
@@ -73,5 +166,35 @@ const swapThemeEvent = () => {
 
 .svg-class {
   @apply w-[30px] h-[30px]
+}
+
+.weather-container {
+  @apply flex items-center;
+}
+
+.weather-loading {
+  @apply text-[var(--ground-glass-icon-color)] flex items-center;
+}
+
+.weather-info {
+  @apply flex items-center gap-2 px-4 py-2 rounded-full text-[var(--ground-glass-icon-color)] bg-[var(--ground-glass-background-color)] backdrop-blur-2xl;
+  border: 1px solid #fff3;
+  box-shadow: 0px 0px 1px 0px #fffc;
+}
+
+.weather-city {
+  @apply font-medium text-sm;
+}
+
+.weather-text {
+  @apply text-sm;
+}
+
+.weather-temp {
+  @apply font-bold text-sm;
+}
+
+.weather-error {
+  @apply text-[var(--ground-glass-icon-color)] text-xs px-3 py-1;
 }
 </style>
